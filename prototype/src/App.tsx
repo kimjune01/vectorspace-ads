@@ -81,9 +81,9 @@ function App() {
     if (!adv) return;
     setTargetingAdvertiserId(id);
     setTargetingState({
-      phase: "initial",
+      phase: "refining",
       locus: adv.center,
-      breadcrumbs: [],
+      breadcrumbs: [adv.center],
       reach: adv.sigma,
       refinementCount: 0,
     });
