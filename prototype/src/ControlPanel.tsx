@@ -86,57 +86,32 @@ export default function ControlPanel({
 
   return (
     <div style={{ width: 320, display: "flex", flexDirection: "column", gap: 12 }}>
-      {/* Header */}
-      <div style={{ padding: "12px 16px", background: "#1a1a2e", borderRadius: 8, color: "white" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <div>
-            <h2 style={{ margin: 0, fontSize: 16 }}>Power Diagram Ad Auction</h2>
-            <p style={{ margin: "4px 0 0", fontSize: 12, color: "#aaa" }}>
-              Drag advertisers. Adjust bids. Watch territories shift.
-            </p>
-          </div>
-          <div
-            title="Score formula: argmax_i [log(bid_i) - ||x - c_i||^2 / sigma_i^2]"
-            style={{
-              width: 22,
-              height: 22,
-              borderRadius: 11,
-              background: "rgba(255,255,255,0.15)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-              fontSize: 13,
-              fontWeight: 700,
-              color: "#aaa",
-              flexShrink: 0,
-            }}
-            onClick={() => setShowFormula((p) => !p)}
+      {/* Formula tooltip */}
+      {showFormula && (
+        <div
+          style={{
+            padding: "8px 10px",
+            background: "#1a1a2e",
+            borderRadius: 6,
+            fontSize: 11,
+            color: "#ccc",
+            fontFamily: "monospace",
+            lineHeight: 1.5,
+          }}
+        >
+          winner(x) = argmax_i [ log(b_i) - ||x - c_i||^2 / sigma_i^2 ]
+          <br />
+          Higher bids expand territory; smaller sigma concentrates it.
+          <span
+            onClick={() => setShowFormula(false)}
+            style={{ float: "right", cursor: "pointer", color: "#888" }}
           >
-            i
-          </div>
+            close
+          </span>
         </div>
-        {showFormula && (
-          <div
-            style={{
-              marginTop: 8,
-              padding: "8px 10px",
-              background: "rgba(255,255,255,0.08)",
-              borderRadius: 6,
-              fontSize: 11,
-              color: "#ccc",
-              fontFamily: "monospace",
-              lineHeight: 1.5,
-            }}
-          >
-            winner(x) = argmax_i [ log(b_i) - ||x - c_i||^2 / sigma_i^2 ]
-            <br />
-            Higher bids expand territory; smaller sigma concentrates it.
-          </div>
-        )}
-      </div>
+      )}
 
-      {/* Toggles */}
+      {/* Toggles + formula link */}
       <Toggle
         checked={anisotropic}
         label={`Anisotropic Mode ${anisotropic ? "ON" : "OFF"}`}
@@ -155,6 +130,14 @@ export default function ControlPanel({
         activeColor="#F44336"
         onClick={onRestrictionsToggle}
       />
+      {!showFormula && (
+        <div
+          onClick={() => setShowFormula(true)}
+          style={{ fontSize: 11, color: "#999", cursor: "pointer", padding: "0 4px" }}
+        >
+          Show score formula
+        </div>
+      )}
 
       {/* Advertiser Controls */}
       {advertisers.map((adv, i) => {
