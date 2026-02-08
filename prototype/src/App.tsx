@@ -209,7 +209,7 @@ function App() {
               onStateChange={setTargetingState}
               onAdvertiserUpdate={handleAdvertiserUpdate}
               onGhostPreview={setGhostPreview}
-              onClose={handleSwitchToExplorer}
+              onSwitchAdvertiser={handleRefineTargeting}
             />
           ) : (
             <ControlPanel

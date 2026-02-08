@@ -13,7 +13,7 @@ interface Props {
   onStateChange: (state: TargetingState) => void;
   onAdvertiserUpdate: (id: string, updates: Partial<Advertiser>) => void;
   onGhostPreview: (pos: [number, number] | null) => void;
-  onClose: () => void;
+  onSwitchAdvertiser: (id: string) => void;
 }
 
 const REACH_PRESETS = [
@@ -31,7 +31,7 @@ export default function TargetingWizard({
   onStateChange,
   onAdvertiserUpdate,
   onGhostPreview,
-  onClose,
+  onSwitchAdvertiser,
 }: Props) {
   const [inputText, setInputText] = useState("");
   const [freeText, setFreeText] = useState("");
@@ -128,38 +128,35 @@ export default function TargetingWizard({
 
   return (
     <div style={{ width: 320, display: "flex", flexDirection: "column", gap: 10 }}>
-      {/* Header */}
+      {/* Advertiser picker */}
       <div style={{
-        padding: "10px 14px",
-        background: "#1a1a2e",
+        padding: "6px",
+        background: "white",
         borderRadius: 8,
-        color: "white",
+        border: "1px solid #e0e0e0",
         display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
+        gap: 4,
       }}>
-        <div>
-          <div style={{ fontSize: 11, color: "#aaa", textTransform: "uppercase", letterSpacing: 0.5 }}>
-            Targeting Wizard
-          </div>
-          <div style={{ fontSize: 14, fontWeight: 600, marginTop: 2 }}>
-            {advertiser.name}
-          </div>
-        </div>
-        <button
-          onClick={onClose}
-          style={{
-            background: "rgba(255,255,255,0.15)",
-            border: "none",
-            color: "#aaa",
-            cursor: "pointer",
-            borderRadius: 4,
-            padding: "4px 8px",
-            fontSize: 12,
-          }}
-        >
-          Close
-        </button>
+        {advertisers.map((a) => (
+          <button
+            key={a.id}
+            onClick={() => onSwitchAdvertiser(a.id)}
+            style={{
+              flex: 1,
+              padding: "6px 4px",
+              background: a.id === advertiser.id ? `${a.color}20` : "#f8f9fa",
+              border: a.id === advertiser.id ? `2px solid ${a.color}` : "1px solid transparent",
+              borderRadius: 6,
+              cursor: "pointer",
+              fontSize: 11,
+              fontWeight: a.id === advertiser.id ? 700 : 400,
+              color: a.id === advertiser.id ? a.color : "#666",
+              textAlign: "center",
+            }}
+          >
+            {a.name}
+          </button>
+        ))}
       </div>
 
       {/* Phase 1: Initial Guess */}
