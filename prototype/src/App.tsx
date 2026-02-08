@@ -22,8 +22,15 @@ function App() {
   const [showRestrictions, setShowRestrictions] = useState(false);
   const [metrics, setMetrics] = useState<AuctionMetrics | null>(null);
   const [draggingId, setDraggingId] = useState<string | null>(null);
-  const [targetingAdvertiserId, setTargetingAdvertiserId] = useState<string | null>(null);
-  const [targetingState, setTargetingState] = useState<TargetingState | null>(null);
+  // Start Nike in the refining phase so the UX is visible on first load
+  const [targetingAdvertiserId, setTargetingAdvertiserId] = useState<string | null>("nike");
+  const [targetingState, setTargetingState] = useState<TargetingState | null>({
+    phase: "refining",
+    locus: [0.6, 0.3], // Nike's default position
+    breadcrumbs: [[0.4, 0.6], [0.6, 0.3]], // Show a prior step: "fitness shoppers" → current
+    reach: 0.3,
+    refinementCount: 1,
+  });
   const [ghostPreview, setGhostPreview] = useState<[number, number] | null>(null);
 
   const handleDragStart = useCallback((id: string) => {
