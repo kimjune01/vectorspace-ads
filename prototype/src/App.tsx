@@ -15,19 +15,21 @@ function makeInitialAdvertisers(): Advertiser[] {
   }));
 }
 
+type AppMode = "explorer" | "targeting";
+
 function App() {
+  const [mode, setMode] = useState<AppMode>("targeting");
   const [advertisers, setAdvertisers] = useState<Advertiser[]>(makeInitialAdvertisers);
   const [anisotropic, setAnisotropic] = useState(false);
   const [showStream, setShowStream] = useState(false);
   const [showRestrictions, setShowRestrictions] = useState(false);
   const [metrics, setMetrics] = useState<AuctionMetrics | null>(null);
   const [draggingId, setDraggingId] = useState<string | null>(null);
-  // Start Nike in the refining phase so the UX is visible on first load
   const [targetingAdvertiserId, setTargetingAdvertiserId] = useState<string | null>("nike");
   const [targetingState, setTargetingState] = useState<TargetingState | null>({
     phase: "refining",
-    locus: [0.6, 0.3], // Nike's default position
-    breadcrumbs: [[0.4, 0.6], [0.6, 0.3]], // Show a prior step: "fitness shoppers" → current
+    locus: [0.6, 0.3],
+    breadcrumbs: [[0.4, 0.6], [0.6, 0.3]],
     reach: 0.3,
     refinementCount: 1,
   });
@@ -79,6 +81,7 @@ function App() {
   const handleRefineTargeting = useCallback((id: string) => {
     const adv = advertisers.find((a) => a.id === id);
     if (!adv) return;
+    setMode("targeting");
     setTargetingAdvertiserId(id);
     setTargetingState({
       phase: "refining",
@@ -89,11 +92,26 @@ function App() {
     });
   }, [advertisers]);
 
-  const handleCloseWizard = useCallback(() => {
-    setTargetingAdvertiserId(null);
-    setTargetingState(null);
+  const handleSwitchToExplorer = useCallback(() => {
+    setMode("explorer");
     setGhostPreview(null);
   }, []);
+
+  const handleSwitchToTargeting = useCallback(() => {
+    setMode("targeting");
+    // If no advertiser selected, default to Nike
+    if (!targetingAdvertiserId) {
+      const nike = advertisers.find((a) => a.id === "nike")!;
+      setTargetingAdvertiserId("nike");
+      setTargetingState({
+        phase: "refining",
+        locus: nike.center,
+        breadcrumbs: [nike.center],
+        reach: nike.sigma,
+        refinementCount: 0,
+      });
+    }
+  }, [targetingAdvertiserId, advertisers]);
 
   const targetingAdvertiser = useMemo(
     () => advertisers.find((a) => a.id === targetingAdvertiserId) ?? null,
@@ -110,7 +128,7 @@ function App() {
     };
   }, [targetingState, targetingAdvertiser]);
 
-  const showWizard = targetingAdvertiserId !== null && targetingState !== null && targetingAdvertiser !== null;
+  const showWizard = mode === "targeting" && targetingAdvertiserId !== null && targetingState !== null && targetingAdvertiser !== null;
 
   return (
     <div
@@ -123,7 +141,7 @@ function App() {
     >
       <div style={{ maxWidth: 960, margin: "0 auto" }}>
         {/* Title */}
-        <div style={{ marginBottom: 20 }}>
+        <div style={{ marginBottom: 0 }}>
           <h1 style={{ margin: 0, fontSize: 24, color: "#1a1a2e" }}>
             Embedding Ad Auction Explorer
           </h1>
@@ -131,6 +149,33 @@ function App() {
             Visualizing how power diagrams allocate advertising territory in continuous embedding
             space
           </p>
+        </div>
+
+        {/* Tab bar */}
+        <div style={{ display: "flex", gap: 0, marginTop: 16, marginBottom: 16 }}>
+          {([
+            { key: "explorer" as AppMode, label: "Auction Explorer", desc: "Drag advertisers, adjust bids, watch territories shift" },
+            { key: "targeting" as AppMode, label: "Targeting Wizard", desc: "Navigate embedding space through language and examples" },
+          ]).map((tab) => (
+            <button
+              key={tab.key}
+              onClick={() => tab.key === "explorer" ? handleSwitchToExplorer() : handleSwitchToTargeting()}
+              style={{
+                flex: 1,
+                padding: "12px 16px",
+                background: mode === tab.key ? "#1a1a2e" : "white",
+                color: mode === tab.key ? "white" : "#555",
+                border: mode === tab.key ? "1px solid #1a1a2e" : "1px solid #ddd",
+                borderRadius: tab.key === "explorer" ? "8px 0 0 8px" : "0 8px 8px 0",
+                cursor: "pointer",
+                textAlign: "left",
+                transition: "all 0.15s",
+              }}
+            >
+              <div style={{ fontSize: 14, fontWeight: 600 }}>{tab.label}</div>
+              <div style={{ fontSize: 11, marginTop: 2, opacity: 0.7 }}>{tab.desc}</div>
+            </button>
+          ))}
         </div>
 
         {/* Main layout */}
@@ -149,10 +194,10 @@ function App() {
             onMetricsUpdate={setMetrics}
             restrictionZones={DEFAULT_RESTRICTION_ZONES}
             showRestrictions={showRestrictions}
-            ghostPreview={ghostPreview}
-            breadcrumbs={targetingState?.breadcrumbs}
-            reachCircle={reachCircle}
-            activeAdvertiserId={targetingAdvertiserId}
+            ghostPreview={showWizard ? ghostPreview : null}
+            breadcrumbs={showWizard ? targetingState?.breadcrumbs : undefined}
+            reachCircle={showWizard ? reachCircle : null}
+            activeAdvertiserId={showWizard ? targetingAdvertiserId : null}
           />
           {showWizard ? (
             <TargetingWizard
@@ -164,7 +209,7 @@ function App() {
               onStateChange={setTargetingState}
               onAdvertiserUpdate={handleAdvertiserUpdate}
               onGhostPreview={setGhostPreview}
-              onClose={handleCloseWizard}
+              onClose={handleSwitchToExplorer}
             />
           ) : (
             <ControlPanel
