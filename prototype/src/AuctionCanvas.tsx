@@ -1,6 +1,6 @@
 import { useRef, useEffect, useCallback } from "react";
-import type { Advertiser, ImpressionCluster } from "./types";
-import { computeAuction, hexToRgb } from "./auction";
+import type { Advertiser, ImpressionCluster, RestrictionZone } from "./types";
+import { computeAuction, hexToRgb, RESTRICTED_SENTINEL } from "./auction";
 
 /**
  * Cross-check with Python reference implementation (shared/auction.py).
@@ -57,6 +57,12 @@ interface Props {
   onDragMove: (x: number, y: number) => void;
   onDragEnd: () => void;
   onMetricsUpdate: (metrics: ReturnType<typeof computeAuction>["metrics"]) => void;
+  restrictionZones?: RestrictionZone[];
+  showRestrictions?: boolean;
+  ghostPreview?: [number, number] | null;
+  breadcrumbs?: [number, number][];
+  reachCircle?: { center: [number, number]; radius: number } | null;
+  activeAdvertiserId?: string | null;
 }
 
 /**
@@ -129,6 +135,12 @@ export default function AuctionCanvas({
   onDragMove,
   onDragEnd,
   onMetricsUpdate,
+  restrictionZones,
+  showRestrictions,
+  ghostPreview,
+  breadcrumbs,
+  reachCircle,
+  activeAdvertiserId,
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const metricsRef = useRef(onMetricsUpdate);
@@ -146,11 +158,13 @@ export default function AuctionCanvas({
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    const zones = showRestrictions ? restrictionZones : undefined;
     const { allocation, density, metrics } = computeAuction(
       advertisers,
       clusters,
       RESOLUTION,
       anisotropic,
+      zones,
     );
 
     metricsRef.current(metrics);
@@ -177,6 +191,17 @@ export default function AuctionCanvas({
         const dstIdx = (py * RESOLUTION + px) * 4;
 
         const winner = allocation[srcIdx];
+
+        // Restricted pixel: gray with diagonal hatch pattern
+        if (winner === RESTRICTED_SENTINEL) {
+          const isHatch = (px + py) % 8 < 4;
+          data[dstIdx] = isHatch ? 180 : 200;
+          data[dstIdx + 1] = isHatch ? 180 : 200;
+          data[dstIdx + 2] = isHatch ? 180 : 200;
+          data[dstIdx + 3] = 255;
+          continue;
+        }
+
         const [cr, cg, cb] = colors[winner];
 
         // Normalized density [0, 1]
@@ -301,6 +326,90 @@ export default function AuctionCanvas({
       }
     }
 
+    // Restriction zone labels
+    if (showRestrictions && restrictionZones) {
+      for (const zone of restrictionZones) {
+        const zx = ((zone.x0 + zone.x1) / 2) * width;
+        const zy = (1 - (zone.y0 + zone.y1) / 2) * height;
+        ctx.font = "bold 10px system-ui, sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillStyle = "rgba(80, 80, 80, 0.9)";
+        ctx.fillText(zone.label, zx, zy);
+      }
+    }
+
+    // Active advertiser highlight ring
+    if (activeAdvertiserId) {
+      const activeAdv = advertisers.find((a) => a.id === activeAdvertiserId);
+      if (activeAdv) {
+        const ax = activeAdv.center[0] * width;
+        const ay = (1 - activeAdv.center[1]) * height;
+        ctx.beginPath();
+        ctx.arc(ax, ay, 20, 0, Math.PI * 2);
+        ctx.strokeStyle = activeAdv.color;
+        ctx.lineWidth = 3;
+        ctx.setLineDash([4, 4]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+    }
+
+    // Breadcrumb trail
+    if (breadcrumbs && breadcrumbs.length > 0) {
+      ctx.fillStyle = "rgba(100, 100, 100, 0.6)";
+      for (const [bx, by] of breadcrumbs) {
+        ctx.beginPath();
+        ctx.arc(bx * width, (1 - by) * height, 4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      // Connect with line
+      if (breadcrumbs.length > 1) {
+        ctx.beginPath();
+        ctx.strokeStyle = "rgba(100, 100, 100, 0.3)";
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([3, 3]);
+        ctx.moveTo(breadcrumbs[0][0] * width, (1 - breadcrumbs[0][1]) * height);
+        for (let i = 1; i < breadcrumbs.length; i++) {
+          ctx.lineTo(breadcrumbs[i][0] * width, (1 - breadcrumbs[i][1]) * height);
+        }
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+    }
+
+    // Reach circle
+    if (reachCircle) {
+      const rcx = reachCircle.center[0] * width;
+      const rcy = (1 - reachCircle.center[1]) * height;
+      const rr = reachCircle.radius * width;
+      ctx.beginPath();
+      ctx.arc(rcx, rcy, rr, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(33, 150, 243, 0.1)";
+      ctx.fill();
+      ctx.strokeStyle = "rgba(33, 150, 243, 0.4)";
+      ctx.lineWidth = 2;
+      ctx.setLineDash([6, 4]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    // Ghost preview marker
+    if (ghostPreview) {
+      const gx = ghostPreview[0] * width;
+      const gy = (1 - ghostPreview[1]) * height;
+      ctx.beginPath();
+      ctx.arc(gx, gy, 12, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(0, 0, 0, 0.4)";
+      ctx.lineWidth = 2;
+      ctx.setLineDash([4, 4]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.beginPath();
+      ctx.arc(gx, gy, 4, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
+      ctx.fill();
+    }
+
     // Axis labels
     ctx.font = "12px system-ui, sans-serif";
     ctx.fillStyle = "#666";
@@ -312,7 +421,7 @@ export default function AuctionCanvas({
     ctx.rotate(-Math.PI / 2);
     ctx.fillText("Intent  (browsing \u2192 purchase-ready)", 0, 0);
     ctx.restore();
-  }, [advertisers, clusters, anisotropic, width, height, showStream]);
+  }, [advertisers, clusters, anisotropic, width, height, showStream, showRestrictions, restrictionZones, ghostPreview, breadcrumbs, reachCircle, activeAdvertiserId]);
 
   // Animation loop for impression stream
   useEffect(() => {
@@ -361,6 +470,7 @@ export default function AuctionCanvas({
       running = false;
       cancelAnimationFrame(animFrameRef.current);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showStream, advertisers, clusters, anisotropic, width, height, render]);
 
   // Static render when stream is off

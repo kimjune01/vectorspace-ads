@@ -1,8 +1,9 @@
-import { useState, useCallback } from "react";
-import type { Advertiser, AuctionMetrics } from "./types";
-import { DEFAULT_ADVERTISERS, DEFAULT_CLUSTERS } from "./data";
+import { useState, useCallback, useMemo } from "react";
+import type { Advertiser, AuctionMetrics, TargetingState } from "./types";
+import { DEFAULT_ADVERTISERS, DEFAULT_CLUSTERS, DEFAULT_RESTRICTION_ZONES } from "./data";
 import AuctionCanvas from "./AuctionCanvas";
 import ControlPanel from "./ControlPanel";
+import TargetingWizard from "./TargetingWizard";
 
 const CANVAS_SIZE = 600;
 
@@ -18,8 +19,12 @@ function App() {
   const [advertisers, setAdvertisers] = useState<Advertiser[]>(makeInitialAdvertisers);
   const [anisotropic, setAnisotropic] = useState(false);
   const [showStream, setShowStream] = useState(false);
+  const [showRestrictions, setShowRestrictions] = useState(false);
   const [metrics, setMetrics] = useState<AuctionMetrics | null>(null);
   const [draggingId, setDraggingId] = useState<string | null>(null);
+  const [targetingAdvertiserId, setTargetingAdvertiserId] = useState<string | null>(null);
+  const [targetingState, setTargetingState] = useState<TargetingState | null>(null);
+  const [ghostPreview, setGhostPreview] = useState<[number, number] | null>(null);
 
   const handleDragStart = useCallback((id: string) => {
     setDraggingId(id);
@@ -51,11 +56,54 @@ function App() {
     setShowStream((prev) => !prev);
   }, []);
 
+  const handleRestrictionsToggle = useCallback(() => {
+    setShowRestrictions((prev) => !prev);
+  }, []);
+
   const handleReset = useCallback(() => {
     setAdvertisers(makeInitialAdvertisers());
     setAnisotropic(false);
     setShowStream(false);
+    setTargetingAdvertiserId(null);
+    setTargetingState(null);
+    setGhostPreview(null);
   }, []);
+
+  const handleRefineTargeting = useCallback((id: string) => {
+    const adv = advertisers.find((a) => a.id === id);
+    if (!adv) return;
+    setTargetingAdvertiserId(id);
+    setTargetingState({
+      phase: "initial",
+      locus: adv.center,
+      breadcrumbs: [],
+      reach: adv.sigma,
+      refinementCount: 0,
+    });
+  }, [advertisers]);
+
+  const handleCloseWizard = useCallback(() => {
+    setTargetingAdvertiserId(null);
+    setTargetingState(null);
+    setGhostPreview(null);
+  }, []);
+
+  const targetingAdvertiser = useMemo(
+    () => advertisers.find((a) => a.id === targetingAdvertiserId) ?? null,
+    [advertisers, targetingAdvertiserId],
+  );
+
+  // Reach circle for the canvas overlay
+  const reachCircle = useMemo(() => {
+    if (!targetingState || !targetingAdvertiser) return null;
+    if (targetingState.phase === "initial") return null;
+    return {
+      center: targetingState.locus,
+      radius: targetingState.reach,
+    };
+  }, [targetingState, targetingAdvertiser]);
+
+  const showWizard = targetingAdvertiserId !== null && targetingState !== null && targetingAdvertiser !== null;
 
   return (
     <div
@@ -92,17 +140,40 @@ function App() {
             onDragMove={handleDragMove}
             onDragEnd={handleDragEnd}
             onMetricsUpdate={setMetrics}
+            restrictionZones={DEFAULT_RESTRICTION_ZONES}
+            showRestrictions={showRestrictions}
+            ghostPreview={ghostPreview}
+            breadcrumbs={targetingState?.breadcrumbs}
+            reachCircle={reachCircle}
+            activeAdvertiserId={targetingAdvertiserId}
           />
-          <ControlPanel
-            advertisers={advertisers}
-            metrics={metrics}
-            anisotropic={anisotropic}
-            showStream={showStream}
-            onAnisotropicToggle={handleAnisotropicToggle}
-            onStreamToggle={handleStreamToggle}
-            onReset={handleReset}
-            onAdvertiserUpdate={handleAdvertiserUpdate}
-          />
+          {showWizard ? (
+            <TargetingWizard
+              advertiser={targetingAdvertiser}
+              advertisers={advertisers}
+              clusters={DEFAULT_CLUSTERS}
+              anisotropic={anisotropic}
+              targetingState={targetingState}
+              onStateChange={setTargetingState}
+              onAdvertiserUpdate={handleAdvertiserUpdate}
+              onGhostPreview={setGhostPreview}
+              onClose={handleCloseWizard}
+            />
+          ) : (
+            <ControlPanel
+              advertisers={advertisers}
+              metrics={metrics}
+              anisotropic={anisotropic}
+              showStream={showStream}
+              showRestrictions={showRestrictions}
+              onAnisotropicToggle={handleAnisotropicToggle}
+              onStreamToggle={handleStreamToggle}
+              onRestrictionsToggle={handleRestrictionsToggle}
+              onReset={handleReset}
+              onAdvertiserUpdate={handleAdvertiserUpdate}
+              onRefineTargeting={handleRefineTargeting}
+            />
+          )}
         </div>
 
         {/* Footer explanation */}

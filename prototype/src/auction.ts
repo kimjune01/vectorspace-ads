@@ -1,4 +1,8 @@
-import type { Advertiser, ImpressionCluster, AuctionMetrics } from "./types";
+import type { Advertiser, ImpressionCluster, AuctionMetrics, RestrictionZone } from "./types";
+import { isRestricted } from "./restrictions";
+
+// Sentinel value for restricted pixels (no advertiser owns index 255)
+export const RESTRICTED_SENTINEL = 255;
 
 /**
  * Compute the power diagram allocation and metrics on a grid.
@@ -14,6 +18,7 @@ export function computeAuction(
   clusters: ImpressionCluster[],
   resolution: number,
   anisotropic: boolean,
+  restrictionZones?: RestrictionZone[],
 ): {
   allocation: Uint8Array;
   density: Float32Array;
@@ -76,6 +81,13 @@ export function computeAuction(
       const x = (px + 0.5) / resolution;
       const idx = py * resolution + px;
 
+      // Check restriction zones
+      if (restrictionZones && isRestricted(x, y, restrictionZones)) {
+        allocation[idx] = RESTRICTED_SENTINEL;
+        density[idx] = 0;
+        continue;
+      }
+
       // Find winner
       let bestScore = -Infinity;
       let bestIdx = 0;
@@ -128,4 +140,68 @@ export function hexToRgb(hex: string): [number, number, number] {
     parseInt(h.substring(2, 4), 16),
     parseInt(h.substring(4, 6), 16),
   ];
+}
+
+/**
+ * Estimate CPM at a given position based on competitive pressure and local density.
+ *
+ * Uses second-price auction logic: the price is driven by the second-best bid
+ * at that location, scaled by the local impression density relative to average.
+ */
+export function estimateCPM(
+  position: [number, number],
+  advertisers: Advertiser[],
+  clusters: ImpressionCluster[],
+  anisotropic: boolean,
+): number {
+  const [x, y] = position;
+
+  // Compute scores at this position
+  const scores: number[] = [];
+  for (const adv of advertisers) {
+    const dx = x - adv.center[0];
+    const dy = y - adv.center[1];
+    const sx = anisotropic && adv.sigmaX != null ? adv.sigmaX : adv.sigma;
+    const sy = anisotropic && adv.sigmaY != null ? adv.sigmaY : adv.sigma;
+    const score = Math.log(adv.bid) - (dx * dx) / (sx * sx) - (dy * dy) / (sy * sy);
+    scores.push(score);
+  }
+
+  // Second-best bid: sort scores descending, take the second
+  const sorted = [...scores].sort((a, b) => b - a);
+  // The "second price" is derived from the difference between first and second score
+  // Convert back to bid space: exp(score) gives relative bid strength
+  const secondBestBid = sorted.length > 1 ? Math.exp(sorted[1]) : Math.exp(sorted[0]);
+  const bestBid = Math.exp(sorted[0]);
+
+  // Local density at this point
+  let localDensity = 0;
+  for (const cl of clusters) {
+    const ddx = x - cl.center[0];
+    const ddy = y - cl.center[1];
+    localDensity += cl.weight * Math.exp(-(ddx * ddx + ddy * ddy) / (2 * cl.sigma * cl.sigma));
+  }
+
+  // Average density (approximate across a few sample points)
+  let avgDensity = 0;
+  const samplePoints = 9;
+  for (let sy = 0; sy < 3; sy++) {
+    for (let sx = 0; sx < 3; sx++) {
+      const px = (sx + 0.5) / 3;
+      const py = (sy + 0.5) / 3;
+      for (const cl of clusters) {
+        const ddx = px - cl.center[0];
+        const ddy = py - cl.center[1];
+        avgDensity += cl.weight * Math.exp(-(ddx * ddx + ddy * ddy) / (2 * cl.sigma * cl.sigma));
+      }
+    }
+  }
+  avgDensity /= samplePoints;
+
+  // CPM formula: second-best bid ratio * density factor, scaled to reasonable range
+  const competitiveRatio = bestBid > 0 ? secondBestBid / bestBid : 0.5;
+  const densityFactor = avgDensity > 0 ? localDensity / avgDensity : 1;
+  // Base CPM around $2-6 range, modulated by competition and density
+  const baseCPM = 3.0;
+  return Math.max(0.5, baseCPM * competitiveRatio * densityFactor);
 }

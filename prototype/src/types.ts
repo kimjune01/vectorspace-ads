@@ -28,3 +28,31 @@ export interface AuctionMetrics {
   platformRevenue: number;
   socialWelfare: number;
 }
+
+export interface RestrictionZone {
+  id: string;
+  label: string;
+  x0: number;
+  y0: number;
+  x1: number;
+  y1: number;
+}
+
+export type TargetingPhase = "initial" | "refining" | "volume" | "locked";
+
+export interface CandidateDirection {
+  label: string;
+  gloss: string;
+  examples: string[];
+  position: [number, number];
+  distance: "nearby" | "distant";
+  estimatedCPM: number;
+}
+
+export interface TargetingState {
+  phase: TargetingPhase;
+  locus: [number, number];
+  breadcrumbs: [number, number][];
+  reach: number; // sigma for the targeting circle
+  refinementCount: number;
+}

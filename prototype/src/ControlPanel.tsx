@@ -6,10 +6,13 @@ interface Props {
   metrics: AuctionMetrics | null;
   anisotropic: boolean;
   showStream: boolean;
+  showRestrictions: boolean;
   onAnisotropicToggle: () => void;
   onStreamToggle: () => void;
+  onRestrictionsToggle: () => void;
   onReset: () => void;
   onAdvertiserUpdate: (id: string, updates: Partial<Advertiser>) => void;
+  onRefineTargeting: (id: string) => void;
 }
 
 function Toggle({
@@ -71,10 +74,13 @@ export default function ControlPanel({
   metrics,
   anisotropic,
   showStream,
+  showRestrictions,
   onAnisotropicToggle,
   onStreamToggle,
+  onRestrictionsToggle,
   onReset,
   onAdvertiserUpdate,
+  onRefineTargeting,
 }: Props) {
   const [showFormula, setShowFormula] = useState(false);
 
@@ -142,6 +148,12 @@ export default function ControlPanel({
         label={`Impression Stream ${showStream ? "ON" : "OFF"}`}
         activeColor="#4CAF50"
         onClick={onStreamToggle}
+      />
+      <Toggle
+        checked={showRestrictions}
+        label={`Restriction Zones ${showRestrictions ? "ON" : "OFF"}`}
+        activeColor="#F44336"
+        onClick={onRestrictionsToggle}
       />
 
       {/* Advertiser Controls */}
@@ -262,6 +274,28 @@ export default function ControlPanel({
                 <span>Spend: ${m.spend.toFixed(3)}</span>
               </div>
             )}
+
+            {/* Refine Targeting button */}
+            <button
+              onClick={() => onRefineTargeting(adv.id)}
+              style={{
+                marginTop: 6,
+                width: "100%",
+                padding: "5px 8px",
+                background: "#f8f9fa",
+                border: `1px solid ${adv.color}40`,
+                borderRadius: 6,
+                cursor: "pointer",
+                fontSize: 11,
+                fontWeight: 500,
+                color: adv.color,
+                transition: "background 0.15s",
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.background = `${adv.color}15`; }}
+              onMouseLeave={(e) => { e.currentTarget.style.background = "#f8f9fa"; }}
+            >
+              Refine Targeting
+            </button>
           </div>
         );
       })}

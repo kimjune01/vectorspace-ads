@@ -1,4 +1,5 @@
 import type { Advertiser, ImpressionCluster } from "./types";
+export { DEFAULT_RESTRICTION_ZONES } from "./restrictions";
 
 export const DEFAULT_ADVERTISERS: Advertiser[] = [
   { id: "nike", name: "Nike", center: [0.6, 0.3], bid: 5.0, sigma: 0.3, color: "#FF6B35" },
