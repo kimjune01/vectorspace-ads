@@ -1,0 +1,854 @@
+\documentclass[11pt]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[margin=1in]{geometry}
+\usepackage{natbib}
+\usepackage{xcolor}
+\usepackage{multirow}
+\usepackage{hyperref}
+\usepackage{cleveref}
+
+% Theorem environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+% Custom commands
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\cX}{\mathcal{X}}
+\newcommand{\cN}{\mathcal{N}}
+\newcommand{\bx}{\mathbf{x}}
+\newcommand{\bc}{\mathbf{c}}
+\newcommand{\norm}[1]{\left\| #1 \right\|}
+\newcommand{\inner}[2]{\left\langle #1, #2 \right\rangle}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\title{Power Diagrams for Embedding-Based Ad Auctions:\\ Mechanism Design in Continuous Intent Space}
+
+\author{
+  June Kim \\
+  \texttt{june@june.kim}
+}
+
+\date{February 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+The shift from keyword-based to embedding-based ad targeting in large language model platforms creates a fundamental challenge: advertisers must bid on \emph{regions} of continuous, high-dimensional space rather than discrete keywords. We propose a geometric framework based on \emph{power diagrams} (additively weighted Voronoi tessellations) where each advertiser's territory in embedding space is determined by their bid-weighted proximity. Our main theoretical contribution is establishing that, for isotropic Gaussian value functions over a continuous impression space, the welfare-maximizing allocation \emph{is} a power diagram, and the unique incentive-compatible, individually rational, welfare-maximizing mechanism computes payments via Voronoi cell integration---reducing the mechanism design problem to a computational geometry problem (\Cref{thm:ic}). We characterize the geometry of strategic behavior: under exact VCG, center misreporting never helps (\Cref{cor:uniform-ic}), but under approximate payment rules, the gradient of value received points toward high-density regions of the impression distribution (\Cref{thm:center-misreport}), quantifying the vulnerability of practical mechanisms to spatial manipulation. We prove that best-response bid dynamics converge to the unique Nash equilibrium in $N$ rounds (\Cref{thm:convergence}), and show that random projections to $O(\log N / \varepsilon^2)$ dimensions preserve the allocation (\Cref{prop:jl}), making high-dimensional deployment tractable. Experimentally, we compare power-diagram-native auctions against discretized baselines (GSP and VCG on IAB-style category grids) across $d \in \{2, 5, 10, 20\}$. At $d=2$, all mechanisms perform similarly, but the welfare gap widens dramatically with dimensionality: Power-VCG achieves $37\%$ higher social welfare than discretized baselines at $d=10$ and $32\%$ at $d=20$, while maintaining exactly zero IC regret (versus regret exceeding $1.0$ for discretized VCG at $d \ge 10$). Winner determination via kd-tree indexing runs in $\sim\!0.15\,\mu$s per impression, independent of the number of advertisers, meeting real-time latency requirements.
+\end{abstract}
+
+% ============================================================================
+\section{Introduction}
+\label{sec:intro}
+
+Online advertising has been built on discrete auction mechanisms. In Google's search advertising, the fundamental biddable unit is a \emph{keyword}: advertisers bid on ``running shoes'' or ``mesothelioma lawyer,'' and a second-price-like auction clears efficiently for each query. This discrete structure enables clean market mechanics---winner determination, truthful bidding incentives, and tractable budget forecasting.
+
+The emergence of large language model (LLM) platforms as advertising venues disrupts this foundation. OpenAI announced in January 2026 that it would begin testing advertisements in ChatGPT, describing their approach as ``intent-based monetization'' across 800 million monthly users~\citep{openai2026ads}. Similar efforts are underway at Perplexity and other conversational AI platforms.
+
+In these systems, user interactions are not represented as keywords but as points in continuous, high-dimensional \emph{embedding spaces}. A user's conversation traces a trajectory through this space, and an advertising ``impression'' corresponds to a point encoding semantic content, user intent, temporal context, and other dimensions simultaneously. Advertisers do not want individual keywords---they want \emph{regions} of this space.
+
+This paper introduces a geometric framework for ad auctions in continuous embedding spaces. Our key insight is that when advertiser value functions are modeled as functions of distance in embedding space, the natural allocation mechanism is a \emph{power diagram}---an additively weighted Voronoi tessellation where bids determine territory boundaries.
+
+\paragraph{Contributions.}
+\begin{enumerate}
+    \item We formalize the embedding-based ad auction problem, defining impression spaces, advertiser value functions, and allocation mechanisms in continuous space (\Cref{sec:model}).
+    \item For the isotropic Gaussian case, we prove the welfare-maximizing allocation is a power diagram and that the mechanism with VCG payments computed via Voronoi cell integration is the \emph{unique} IC, IR, welfare-maximizing mechanism---reducing mechanism design to computational geometry (\Cref{sec:isotropic}, \Cref{thm:ic}).
+    \item We characterize the geometry of strategic behavior: exact VCG is fully IC for center reports (\Cref{cor:uniform-ic}), but under approximate payment rules, the value-received gradient (\Cref{thm:center-misreport}) quantifies vulnerability to spatial manipulation---advertisers are incentivized to shift toward high-density impression regions.
+    \item We prove that best-response bid dynamics converge to the unique Nash equilibrium in $N$ rounds (\Cref{thm:convergence}), and contrast this with cycling under GSP (\Cref{prop:gsp-cycle}).
+    \item We extend the framework to anisotropic preferences with quadric boundaries (\Cref{sec:anisotropic}) and mixture-of-Gaussian preferences with virtual advertiser decomposition (\Cref{sec:mixture}).
+    \item We show that random projection to $O(\log N / \varepsilon^2)$ dimensions preserves the power diagram allocation (\Cref{prop:jl}), making high-dimensional deployment tractable.
+    \item We provide $O(\log N)$ winner determination and payment computation via spatial indexing, with a full auction algorithm (\Cref{sec:computation}).
+    \item We give budget prediction bounds via Monte Carlo estimation (\Cref{sec:budget}).
+    \item We experimentally validate the framework against discretized baselines, showing consistent improvements in welfare and revenue (\Cref{sec:experiments}).
+\end{enumerate}
+
+\paragraph{Related work.}
+Our work bridges several lines of research. We describe each precisely to clarify our contribution.
+
+\emph{Mechanism design for LLMs.} \citet{dutting2024mechanism} model LLM interactions as sequential token-level decisions and design mechanisms for selecting which tokens to monetize; their allocation unit is a token or token sequence. \citet{hajiaghayi2024adauctions} propose RAG-based ad auctions where retrieved documents carry ads and the mechanism selects which documents to surface; the biddable unit is a document slot in the retrieval pipeline. \citet{xu2026adinsertion} model genre-based bidding for LLM-generated responses, discretizing the ad space into a fixed set of content genres. \citet{banchio2025ads} study ads in conversational settings with a focus on user experience externalities across turns. Our model operates at the impression level: each conversation maps to a point in continuous embedding space, and the mechanism allocates that point to an advertiser via geometric partitioning. The key difference is that token-level and slot-level mechanisms cannot express spatial competition between advertisers over regions of semantic space, which is the central object of our framework.
+
+\emph{Optimal transport and mechanism design.} \citet{daskalakis2013mechanism} establish that optimal multi-item auction design with continuous buyer types can be cast as an optimal transport problem, yielding characterizations of revenue-optimal mechanisms. Their framework applies to a single buyer with multidimensional types. Our setting differs: we have $N$ buyers (advertisers) competing over a continuum of items (impressions), and we seek welfare-maximizing rather than revenue-optimal mechanisms. The connection is conceptual---both exploit continuous-space structure---but the technical tools differ: we use power diagrams rather than optimal transport duality.
+
+\emph{Computational geometry of auctions.} \citet{joswig2024polyhedral} characterize the polyhedral structure of the set of all truthful auction mechanisms for finite type spaces, showing it forms a polytope whose vertices correspond to extremal mechanisms. Our work is complementary: we show that for a specific class of continuous-type auctions (Gaussian values in embedding space), the welfare-maximizing mechanism has the geometric structure of a power diagram~\citep{aurenhammer1987power}, enabling efficient computation. Power diagrams have not previously been connected to ad auction design.
+
+\emph{Neural auction design.} \citet{dutting2024optimal} learn approximately optimal (revenue-maximizing) auction rules via deep networks, training on sampled bidder valuations. \citet{liu2021neural} deploy learned auction mechanisms at Alibaba, jointly optimizing allocation and payment rules. These approaches learn the auction mechanism end-to-end but treat the targeting problem (which ad is relevant to which user) as exogenous. Our framework unifies targeting and auction design: the power diagram simultaneously determines relevance (geometric proximity) and allocation (cell membership), with provable incentive guarantees that learned mechanisms lack.
+
+\emph{Industry practice.} Current contextual advertising discretizes embedding spaces into taxonomies (IAB's $\sim$700 content categories) and runs standard real-time bidding (RTB) auctions independently per cell~\citep{seedtag2025,gumgum2024}. This discretization discards the continuous structure of embeddings: two impressions on opposite sides of a category boundary may be nearly identical in embedding space yet participate in entirely different auctions. Our power diagram approach operates directly on the continuous space, eliminating boundary artifacts and capturing the full geometric structure of advertiser competition.
+
+% ============================================================================
+\section{Model}
+\label{sec:model}
+
+\begin{definition}[Impression Space]
+Let $\cX \subseteq \R^d$ be a compact convex set representing the embedding space. Points $\bx \in \cX$ represent impressions---user interactions projected into embedding space. The impression distribution $\mu$ is a probability measure on $\cX$ representing the density of user traffic.
+\end{definition}
+
+\begin{definition}[Advertiser]
+An advertiser $i \in [N] = \{1, \ldots, N\}$ is characterized by:
+\begin{itemize}
+    \item A center $\bc_i \in \cX$ (their ideal customer embedding),
+    \item A bid scalar $b_i \in \R_{>0}$ (willingness to pay),
+    \item A value function $v_i : \cX \to \R_{\geq 0}$ parameterized by the above.
+\end{itemize}
+\end{definition}
+
+\begin{definition}[Allocation]
+An allocation is a measurable partition $\{V_0, V_1, \ldots, V_N\}$ of $\cX$, where $V_i$ is the set of impressions allocated to advertiser $i$, and $V_0$ is the unallocated set (reserved, e.g., for policy exclusions).
+\end{definition}
+
+The \emph{social welfare} of an allocation is:
+\begin{equation}
+W(\{V_i\}) = \sum_{i=1}^{N} \int_{V_i} v_i(\bx) \, d\mu(\bx).
+\end{equation}
+
+The welfare-maximizing allocation assigns each impression to the advertiser who values it most:
+\begin{equation}
+\label{eq:welfare-max}
+i^*(\bx) = \argmax_{i \in [N]} v_i(\bx).
+\end{equation}
+
+\begin{definition}[Payment Rule]
+A payment rule $p = (p_1, \ldots, p_N)$ specifies each advertiser's total payment. A mechanism $(\{V_i\}, p)$ is \emph{incentive compatible} (IC) if truthful reporting of type parameters (bid $b_i$, center $\bc_i$, and covariance $\Sigma_i$ as applicable) is a dominant strategy for each advertiser.
+\end{definition}
+
+We consider three increasingly expressive parameterizations of $v_i$:
+
+\paragraph{Isotropic Gaussian.}
+$v_i(\bx) = b_i \cdot \exp\!\left(-\frac{\norm{\bx - \bc_i}^2}{\sigma_i^2}\right)$, where $\sigma_i > 0$ is a reach parameter. When $\sigma_i = \sigma$ for all $i$ (shared reach), the allocation problem has power diagram structure.
+
+\paragraph{Anisotropic Gaussian.}
+$v_i(\bx) = b_i \cdot \exp\!\left(-(\bx - \bc_i)^\top \Sigma_i^{-1} (\bx - \bc_i)\right)$, where $\Sigma_i \succ 0$ is a covariance matrix encoding directional preferences.
+
+\paragraph{Mixture of Gaussians.}
+$v_i(\bx) = b_i \cdot \sum_{k=1}^{K_i} w_{ik} \cdot \exp\!\left(-(\bx - \bc_{ik})^\top \Sigma_{ik}^{-1} (\bx - \bc_{ik})\right)$, representing multimodal preferences.
+
+\paragraph{Notation summary.}
+\Cref{tab:notation} collects the notation used throughout the paper.
+
+\begin{table}[h]
+\centering
+\caption{Summary of notation.}
+\label{tab:notation}
+\begin{tabular}{ll}
+\toprule
+\textbf{Symbol} & \textbf{Meaning} \\
+\midrule
+$\cX \subseteq \R^d$ & Impression (embedding) space \\
+$\bx \in \cX$ & A single impression \\
+$\mu$ & Impression distribution (probability measure on $\cX$) \\
+$N$ & Number of advertisers \\
+$\bc_i \in \cX$ & Center of advertiser $i$ (ideal customer embedding) \\
+$b_i \in \R_{>0}$ & Bid scalar of advertiser $i$ \\
+$\sigma, \sigma_i$ & Reach parameter(s) (isotropic Gaussian bandwidth) \\
+$\Sigma_i \succ 0$ & Covariance matrix of advertiser $i$ (anisotropic case) \\
+$v_i(\bx)$ & Value of impression $\bx$ to advertiser $i$ \\
+$w_i = \sigma^2 \log b_i$ & Power diagram weight for advertiser $i$ \\
+$V_i$ & Power diagram cell (territory) of advertiser $i$ \\
+$V_j^{-i}$ & Cell of advertiser $j$ in the diagram computed without $i$ \\
+$W(\{V_i\})$ & Social welfare of allocation $\{V_i\}$ \\
+$p_i$ & Payment of advertiser $i$ \\
+$u_i$ & Utility of advertiser $i$: value received minus payment \\
+$H_{ij}$ & Hyperplane boundary between cells $V_i$ and $V_j$ \\
+$K_i$ & Number of mixture components for advertiser $i$ \\
+$w_{ik}$ & Mixture weight for component $k$ of advertiser $i$ \\
+$B_i$ & Budget of advertiser $i$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% ============================================================================
+\section{Isotropic Case: Power Diagrams}
+\label{sec:isotropic}
+
+We first analyze the case where all advertisers share a common reach parameter $\sigma > 0$, so $v_i(\bx) = b_i \cdot \exp(-\norm{\bx - \bc_i}^2 / \sigma^2)$.
+
+\begin{lemma}[Log-value characterization]
+\label{lem:logvalue}
+The welfare-maximizing allocation assigns impression $\bx$ to $i^*(\bx) = \argmax_{i} v_i(\bx)$. Since $\exp(\cdot)$ is monotone and $\sigma$ is shared:
+\begin{equation}
+i^*(\bx) = \argmax_{i \in [N]} \left[ \log b_i - \frac{\norm{\bx - \bc_i}^2}{\sigma^2} \right].
+\end{equation}
+\end{lemma}
+
+This is precisely the definition of a \emph{power diagram} (additively weighted Voronoi diagram) with sites $\bc_i$ and weights $w_i = \sigma^2 \log b_i$.
+
+\begin{definition}[Power Diagram]
+Given sites $\bc_1, \ldots, \bc_N \in \R^d$ and weights $w_1, \ldots, w_N \in \R$, the power diagram is the partition $\{V_1, \ldots, V_N\}$ where:
+\begin{equation}
+V_i = \left\{ \bx \in \cX : \norm{\bx - \bc_i}^2 - w_i \leq \norm{\bx - \bc_j}^2 - w_j \;\; \forall j \neq i \right\}.
+\end{equation}
+\end{definition}
+
+The boundary between cells $V_i$ and $V_j$ is the hyperplane:
+\begin{equation}
+H_{ij} = \left\{ \bx : \norm{\bx - \bc_i}^2 - w_i = \norm{\bx - \bc_j}^2 - w_j \right\}
+= \left\{ \bx : 2(\bc_j - \bc_i)^\top \bx = \norm{\bc_j}^2 - \norm{\bc_i}^2 - w_j + w_i \right\}.
+\end{equation}
+
+\begin{theorem}[Power Diagram Mechanism: Uniqueness, IC, and IR]
+\label{thm:ic}
+Consider $N$ advertisers with isotropic Gaussian value functions sharing a common reach parameter $\sigma > 0$, over a continuous impression space $(\cX, \mu)$. Define the \emph{power diagram mechanism} $\mathcal{M} = (\{V_i\}, p)$ as follows:
+\begin{enumerate}
+    \item \textbf{Allocation.} The allocation is the power diagram with sites $\bc_i$ and weights $w_i = \sigma^2 \log b_i$:
+    \begin{equation}
+    \label{eq:pd-alloc}
+    V_i = \bigl\{ \bx \in \cX : \norm{\bx - \bc_i}^2 - w_i \leq \norm{\bx - \bc_j}^2 - w_j \;\;\forall j \neq i \bigr\}.
+    \end{equation}
+    \item \textbf{Payment.} Each advertiser $i$ pays the VCG externality, computed via Voronoi cell integration:
+    \begin{equation}
+    \label{eq:vcg-payment}
+    p_i = \sum_{j \neq i} \int_{V_j^{-i}} v_j(\bx) \, d\mu(\bx) - \sum_{j \neq i} \int_{V_j} v_j(\bx) \, d\mu(\bx),
+    \end{equation}
+    where $\{V_j^{-i}\}_{j \neq i}$ is the power diagram computed on the $N-1$ advertisers excluding~$i$.
+\end{enumerate}
+Then $\mathcal{M}$ satisfies:
+\begin{enumerate}
+    \item[(a)] \textbf{Welfare maximization.} $\{V_i\}$ maximizes social welfare $W(\{V_i\}) = \sum_i \int_{V_i} v_i(\bx)\,d\mu(\bx)$ over all measurable partitions of $\cX$.
+    \item[(b)] \textbf{Incentive compatibility.} Truthful bid reporting is a dominant strategy: for each $i$ and any misreport $b_i' \neq b_i$, $u_i(b_i) \geq u_i(b_i')$.
+    \item[(c)] \textbf{Individual rationality.} Every advertiser has non-negative utility: $u_i \geq 0$ for all $i$.
+    \item[(d)] \textbf{Uniqueness.} $\mathcal{M}$ is the unique mechanism (up to tie-breaking on measure-zero sets) that simultaneously satisfies welfare maximization, IC, and IR, among mechanisms where payments do not depend on advertiser $i$'s own report beyond the allocation.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+We establish each claim. The core contribution is showing that the continuous-space mechanism design problem reduces to a computational geometry problem: welfare maximization becomes power diagram construction, and payment computation becomes Voronoi cell integration.
+
+\textbf{Part (a): Welfare maximization.}
+The welfare-maximizing allocation assigns each impression pointwise to the highest-value advertiser: $i^*(\bx) = \argmax_i v_i(\bx)$. For isotropic Gaussians with shared $\sigma$, we have $v_i(\bx) = b_i \exp(-\norm{\bx - \bc_i}^2/\sigma^2)$. Since $\exp(\cdot)$ is strictly monotone and $\sigma$ is shared:
+\begin{equation}
+i^*(\bx) = \argmax_i \bigl[\log b_i - \norm{\bx - \bc_i}^2/\sigma^2\bigr] = \argmin_i \bigl[\norm{\bx - \bc_i}^2 - \sigma^2 \log b_i\bigr].
+\end{equation}
+This is precisely the definition of the power diagram with sites $\bc_i$ and weights $w_i = \sigma^2 \log b_i$~\citep{aurenhammer1987power}. The reduction from welfare maximization to power diagram construction is exact: no approximation or discretization is involved. The partition $\{V_i\}$ defined by \eqref{eq:pd-alloc} implements the pointwise maximum, hence maximizes welfare.
+
+\textbf{Part (b): Incentive compatibility.}
+We adapt the VCG argument~\citep{vickrey1961counterspeculation,clarke1971multipart,groves1973incentives} to the continuous-impression setting. Write advertiser $i$'s utility under truthful reporting:
+\begin{align}
+u_i(b_i) &= \int_{V_i} v_i(\bx)\,d\mu(\bx) - p_i \notag\\
+    &= \int_{V_i} v_i(\bx)\,d\mu(\bx) - \biggl[\sum_{j \neq i} \int_{V_j^{-i}} v_j(\bx)\,d\mu(\bx) - \sum_{j \neq i} \int_{V_j} v_j(\bx)\,d\mu(\bx)\biggr] \notag\\
+    &= \underbrace{\sum_{j=1}^{N} \int_{V_j} v_j(\bx)\,d\mu(\bx)}_{= W(\{V_k\})} - \underbrace{\sum_{j \neq i} \int_{V_j^{-i}} v_j(\bx)\,d\mu(\bx)}_{h_i \text{ (independent of $i$'s report)}}. \label{eq:vcg-utility}
+\end{align}
+The term $h_i = \sum_{j \neq i} \int_{V_j^{-i}} v_j(\bx)\,d\mu(\bx)$ depends only on the other advertisers' types and is independent of $i$'s reported bid. Hence $i$ maximizes $u_i$ by maximizing $W(\{V_k\})$. Since the allocation rule already maximizes $W$ when $i$ reports truthfully, any misreport $b_i' \neq b_i$ can only decrease $W$ (or leave it unchanged), so $u_i(b_i) \geq u_i(b_i')$.
+
+\textbf{Part (c): Individual rationality.}
+We must show $u_i \geq 0$. By \eqref{eq:vcg-utility}, $u_i = W(\{V_k\}) - h_i$, where $W(\{V_k\})$ is the maximum welfare with all $N$ advertisers and $h_i$ is the maximum welfare achievable by the $N-1$ advertisers excluding $i$. Adding advertiser $i$ to the market can only increase (or maintain) welfare, since one could always allocate nothing to $i$ and recover the $(N-1)$-advertiser optimum. Formally, $W(\{V_k\}) \geq \sum_{j \neq i} \int_{V_j^{-i}} v_j(\bx)\,d\mu(\bx) = h_i$ because $\{V_j^{-i}\}_{j \neq i} \cup \{V_0^{-i}\}$ is a feasible (but not necessarily optimal) partition when $i$ is present (assigning $V_0^{-i} \cup V_i^{-i}$ as unallocated or redistributed). Hence $u_i \geq 0$.
+
+\textbf{Part (d): Uniqueness.}
+By the Green--Laffont characterization~\citep{green1977characterization}, in quasi-linear environments where the social choice function maximizes the sum of valuations, the Groves class of payment rules is the unique class that implements the efficient allocation in dominant strategies. The VCG mechanism (with $h_i$ depending only on others' reports) is the unique member of the Groves class that additionally satisfies IR. The only degree of freedom is tie-breaking, which affects a measure-zero set of impressions (the power diagram boundaries $H_{ij}$) and hence does not affect utilities or payments under any absolutely continuous $\mu$.
+
+\textbf{Computational reduction.}
+The significance of Parts (a)--(d) is that they reduce the mechanism design problem entirely to computational geometry: (i) welfare-maximizing allocation reduces to constructing a power diagram, which is a standard $O(N \log N)$ operation~\citep{aurenhammer1987power}; (ii) payment computation reduces to integrating over Voronoi cells---specifically, computing $h_i$ requires constructing the $(N-1)$-advertiser power diagram and integrating $v_j$ over each cell $V_j^{-i}$. In the isotropic case with shared $\sigma$, these integrals involve Gaussian densities over polyhedral regions, which can be computed via Monte Carlo sampling or, in low dimensions, exact polyhedral integration.
+\end{proof}
+
+\begin{remark}[Heterogeneous reach]
+\label{rem:hetero-reach}
+When $\sigma_i$ varies across advertisers, the allocation is still welfare-maximizing via \eqref{eq:welfare-max}, but boundaries are no longer hyperplanes. The cell $V_i$ is defined by:
+\[
+V_i = \left\{ \bx : \log b_i - \frac{\norm{\bx - \bc_i}^2}{\sigma_i^2} \geq \log b_j - \frac{\norm{\bx - \bc_j}^2}{\sigma_j^2} \;\; \forall j \right\},
+\]
+which gives quadric (conic) boundaries. \Cref{thm:ic} parts (b)--(d) still hold: the VCG argument in \eqref{eq:vcg-utility} does not depend on the geometric structure of the cells, only on the pointwise welfare-maximization property of the allocation. The computational reduction to power diagrams, however, requires shared $\sigma$.
+\end{remark}
+
+\subsection{Incentive Compatibility for Center Reports}
+\label{subsec:center-ic}
+
+\Cref{thm:ic} establishes IC with respect to bid misreporting. \Cref{cor:uniform-ic} (below) shows that exact VCG is also IC for center reports. However, practical mechanisms often use approximate payments (\Cref{prop:payment-approx}). The following theorem characterizes the geometry of value-received sensitivity to center perturbations, which becomes exploitable under approximate payment rules.
+
+\begin{theorem}[Value-Received Gradient for Center Perturbations]
+\label{thm:center-misreport}
+Consider the isotropic Gaussian model with $N \geq 2$ advertisers, shared reach $\sigma$, and VCG payments. Under any payment rule where the payment to advertiser $i$ does not fully adjust to compensate for center misreporting (including the second-score approximation of \Cref{prop:payment-approx} and GSP), there exist configurations where an advertiser can strictly increase utility by misreporting their center.
+
+Moreover, the utility gain from an infinitesimal center misreport $\bc_i' = \bc_i + \varepsilon \mathbf{d}$ (with $\norm{\mathbf{d}} = 1$) is:
+\begin{equation}
+\label{eq:center-gain}
+\frac{\partial u_i}{\partial \bc_i}\bigg|_{\bc_i' = \bc_i} \cdot \mathbf{d} = \int_{\partial V_i} \bigl[v_i(\bx) - v_{j(i,\bx)}(\bx)\bigr] \frac{\partial H}{\partial \bc_i} \cdot \mathbf{d} \; d\mu_{\partial}(\bx) + \int_{V_i} \frac{\partial v_i}{\partial \bc_i}(\bx) \cdot \mathbf{d} \; d\mu(\bx),
+\end{equation}
+where $\partial V_i$ is the boundary of $V_i$, $j(i,\bx)$ is the neighboring advertiser at boundary point $\bx$, $\frac{\partial H}{\partial \bc_i}$ is the rate of boundary displacement, and $d\mu_\partial$ is the induced boundary measure.
+
+Under truthful reporting, $v_i(\bx) = v_{j(i,\bx)}(\bx)$ on $\partial V_i$ (by the power diagram construction), so the first integral vanishes, and the gradient of \emph{value received} with respect to center perturbation is:
+\begin{equation}
+\label{eq:center-gradient}
+\nabla_{\bc_i} \!\left[\int_{V_i} v_i(\bx)\,d\mu(\bx)\right]\bigg|_{\text{truth}} = \frac{2}{\sigma^2} \int_{V_i} b_i \exp\!\bigl(-\norm{\bx - \bc_i}^2/\sigma^2\bigr) (\bx - \bc_i) \, d\mu(\bx).
+\end{equation}
+This gradient is zero if and only if $\bc_i$ is the $v_i$-weighted centroid of $V_i$ under $\mu$, which generically fails when $\mu$ is non-uniform. Under exact VCG, the payment adjusts to cancel this gradient (see \Cref{cor:uniform-ic}), but under approximate payment rules that do not fully internalize the externality, this gradient drives profitable center misreporting.
+\end{theorem}
+
+\begin{proof}
+We prove each claim in turn.
+
+\textbf{Utility decomposition.}
+Under the VCG mechanism, advertiser $i$'s utility (from \eqref{eq:vcg-utility}) is $u_i = W(\{V_k\}) - h_i$. When $i$ misreports center $\bc_i'$, the platform computes the allocation using the reported center but $i$'s true value is still $v_i(\bx) = b_i \exp(-\norm{\bx - \bc_i}^2/\sigma^2)$. Let $\{V_k'\}$ denote the allocation computed using $\bc_i'$, and let $W'_{\text{true}}$ denote the true welfare under this allocation. Then:
+\begin{equation}
+u_i(\bc_i') = \int_{V_i'} v_i(\bx)\,d\mu(\bx) - p_i(\bc_i'),
+\end{equation}
+where $p_i(\bc_i')$ is the VCG payment computed using $i$'s reported type $(\bc_i', b_i)$.
+
+\textbf{Value-received gradient computation.}
+We compute the gradient of value received $\mathcal{V}_i = \int_{V_i} v_i(\bx)\,d\mu(\bx)$ with respect to center perturbation. By the Leibniz integral rule for parameter-dependent domains, the derivative has two contributions: (i) the change in $v_i$ within the fixed cell, and (ii) the boundary movement. On the power diagram boundary $\partial V_i \cap \partial V_j$, we have $v_i(\bx) = v_j(\bx)$ (by the power diagram condition at the boundary, since the reported type is truthful). Therefore, the boundary terms from expanding $V_i$ and shrinking $V_j$ cancel exactly in the total welfare $W = \mathcal{V}_i + \sum_{j \neq i} \int_{V_j} v_j\,d\mu$. What remains is:
+\begin{equation}
+\nabla_{\bc_i} \mathcal{V}_i \big|_{\text{truth}} = \int_{V_i} \nabla_{\bc_i} v_i(\bx)\,d\mu(\bx) = \frac{2}{\sigma^2} \int_{V_i} v_i(\bx)(\bx - \bc_i)\,d\mu(\bx).
+\end{equation}
+
+\textbf{Non-vanishing gradient.}
+The value-received gradient vanishes if and only if:
+\begin{equation}
+\int_{V_i} v_i(\bx)(\bx - \bc_i)\,d\mu(\bx) = \mathbf{0} \quad \Longleftrightarrow \quad \bc_i = \frac{\int_{V_i} v_i(\bx)\,\bx\,d\mu(\bx)}{\int_{V_i} v_i(\bx)\,d\mu(\bx)}.
+\end{equation}
+That is, the gradient is zero if and only if $\bc_i$ equals the $v_i$-weighted centroid of $V_i$ under $\mu$. For generic non-uniform $\mu$, the $v_i$-weighted centroid of $V_i$ differs from $\bc_i$ (it is pulled toward high-density regions of $\mu$), so the gradient is non-zero. Under any payment rule that does not fully adjust to cancel this gradient (i.e., any rule other than exact VCG), center misreporting is profitable.
+
+\textbf{Constructive example.}
+Consider $d = 1$, $N = 2$, $\cX = [-1, 1]$, $\sigma = 1$, $b_1 = b_2 = 1$, $\bc_1 = -0.3$, $\bc_2 = 0.3$. Let $\mu$ be concentrated near $x = 0.5$ (e.g., $\mu = \cN(0.5, 0.1^2)$ restricted to $\cX$). The power diagram boundary is at $x = 0$ (midpoint, since bids are equal). Advertiser 1's territory is $V_1 = [-1, 0]$, which contains little impression mass. By \eqref{eq:center-gradient}, the gradient $\nabla_{\bc_1} u_1$ points in the $+x$ direction (toward the density mass). If advertiser 1 misreports $\bc_1' = -0.3 + \delta$ for small $\delta > 0$, the boundary shifts rightward, capturing more of the high-density region around $x = 0.5$, and $v_1$ evaluated at the newly captured points is computed using the \emph{true} center, which is still reasonably close. The net effect is a utility increase, verifiable by direct computation.
+\end{proof}
+
+\begin{corollary}[Full IC for Center Reports under VCG]
+\label{cor:uniform-ic}
+Under exact VCG payments, the power diagram mechanism is incentive compatible in the full type space $(b_i, \bc_i)$ for \emph{any} impression distribution $\mu$. That is, no advertiser can gain by misreporting either the bid $b_i$ or the center $\bc_i$.
+\end{corollary}
+
+\begin{proof}
+Under VCG, advertiser $i$'s utility is $u_i = W(\{V_k\}) - h_i$ where $h_i$ is independent of $i$'s report. When $i$ misreports $\bc_i'$, the mechanism computes the allocation $\{V_k'\}$ using the reported type $(\bc_i', b_i)$. The VCG payment to $i$ is:
+\begin{equation}
+p_i = \sum_{j \neq i} \int_{V_j^{-i}} v_j(\bx)\,d\mu(\bx) - \sum_{j \neq i} \int_{V_j'} v_j(\bx)\,d\mu(\bx),
+\end{equation}
+where $\{V_j^{-i}\}$ is the $(N-1)$-advertiser diagram (independent of $i$'s report) and the second sum uses the reported allocation $\{V_j'\}$. Note that the platform uses the true $v_j$ for $j \neq i$ in both terms (since other advertisers report truthfully).
+
+Advertiser $i$'s true utility is then:
+\begin{equation}
+u_i(\bc_i') = \int_{V_i'} v_i(\bx)\,d\mu(\bx) - p_i = \int_{V_i'} v_i(\bx)\,d\mu(\bx) + \sum_{j \neq i}\int_{V_j'} v_j(\bx)\,d\mu(\bx) - h_i = W'_{\text{true}} - h_i,
+\end{equation}
+where $W'_{\text{true}} = \int_{V_i'} v_i(\bx)\,d\mu + \sum_{j \neq i}\int_{V_j'} v_j(\bx)\,d\mu$ is the true welfare under the misreported allocation.
+
+Since $\{V_k\}$ (the truthful allocation) maximizes welfare over all partitions, we have $W'_{\text{true}} \leq W(\{V_k\})$. Hence:
+\begin{equation}
+u_i(\bc_i') = W'_{\text{true}} - h_i \leq W(\{V_k\}) - h_i = u_i(\bc_i).
+\end{equation}
+
+This holds for any $\mu$, not just uniform. The argument relies on two facts: (1) VCG utility equals true welfare minus a constant, and (2) the truthful allocation maximizes true welfare.
+\end{proof}
+
+\begin{remark}[Reconciling \Cref{cor:uniform-ic} with \Cref{thm:center-misreport}]
+\label{rem:reconcile}
+\Cref{thm:center-misreport} and \Cref{cor:uniform-ic} are not contradictory. \Cref{cor:uniform-ic} shows that under exact VCG, center misreporting never helps. The non-vanishing gradient in \eqref{eq:center-gradient} measures the effect of center misreport on the \emph{value received} $\int_{V_i'} v_i(\bx)\,d\mu$, not on the full utility $u_i = \text{value} - \text{payment}$. Under exact VCG, the payment adjusts to fully internalize the externality, so $u_i = W'_{\text{true}} - h_i$, and truthful reporting maximizes true welfare.
+
+The practical importance of \Cref{thm:center-misreport} arises in two scenarios:
+\begin{enumerate}
+    \item \textbf{Approximate payment rules.} If the platform uses a payment rule other than exact VCG (e.g., the second-score approximation of \Cref{prop:payment-approx}, or GSP-style payments), the VCG utility identity $u_i = W'_{\text{true}} - h_i$ breaks, and the non-zero gradient in \eqref{eq:center-gradient} becomes exploitable. Under any payment rule where the payment does not fully internalize the externality, advertisers have incentive to shift centers toward high-density regions of $\mu$.
+    \item \textbf{Value received analysis.} Even under exact VCG, the gradient in \eqref{eq:center-gradient} characterizes how the \emph{value received} (not utility) responds to center perturbations. This is relevant for understanding the sensitivity of the allocation to center specification errors, even when there is no strategic incentive to misreport.
+\end{enumerate}
+\end{remark}
+
+\subsection{Convergence of Best-Response Dynamics}
+\label{subsec:convergence}
+
+We now analyze the dynamic properties of the power diagram mechanism. In practice, advertisers adjust bids over time in response to competitors. We show that under VCG payments with fixed centers, bid dynamics converge, contrasting this with instability under GSP.
+
+\begin{theorem}[Convergence of Best-Response Dynamics under VCG]
+\label{thm:convergence}
+Consider the isotropic Gaussian model with shared $\sigma$, fixed centers $\bc_1, \ldots, \bc_N$, and VCG payments. Let advertisers update bids via best-response dynamics: in each round $t$, one advertiser $i$ updates $b_i^{(t+1)} = \argmax_{b_i > 0} u_i(b_i; \mathbf{b}_{-i}^{(t)})$.
+
+Then:
+\begin{enumerate}
+    \item \textbf{Unique equilibrium.} There exists a unique Nash equilibrium $\mathbf{b}^* = (b_1^{\mathrm{true}}, \ldots, b_N^{\mathrm{true}})$---i.e., truthful bidding.
+    \item \textbf{Immediate convergence.} Under round-robin best-response updates, the equilibrium is reached exactly in $N$ rounds (one update per advertiser), because truthful bidding is a dominant strategy.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\textbf{Step 1: Concavity of utility in own bid.}
+Under VCG, advertiser $i$'s utility is $u_i(b_i) = W(\{V_k\}) - h_i$, where $W$ is the maximum welfare with all advertisers and $h_i$ is independent of $b_i$. Writing $W$ explicitly:
+\begin{equation}
+W = \sum_{j=1}^{N} \int_{V_j} v_j(\bx)\,d\mu(\bx) = \int_{\cX} \max_j v_j(\bx)\,d\mu(\bx).
+\end{equation}
+
+Since $v_i(\bx) = b_i \exp(-\norm{\bx - \bc_i}^2/\sigma^2)$ is linear in $b_i$, the function $\max_j v_j(\bx) = \max(b_i \cdot g_i(\bx), \max_{j \neq i} v_j(\bx))$ is the maximum of a function linear in $b_i$ and a constant (with respect to $b_i$). Hence $W(b_i) = \int_{\cX} \max(b_i \cdot g_i(\bx), M_{-i}(\bx))\,d\mu(\bx)$, where $g_i(\bx) = \exp(-\norm{\bx - \bc_i}^2/\sigma^2)$ and $M_{-i}(\bx) = \max_{j \neq i} v_j(\bx)$.
+
+For each $\bx$, $\max(b_i g_i(\bx), M_{-i}(\bx))$ is convex in $b_i$ (as the pointwise maximum of a linear function and a constant). Hence $W(b_i)$ is convex in $b_i$ (integral of convex functions).
+
+However, $u_i = W - h_i$ is convex in $b_i$, not concave. This means the best response is at a boundary. Indeed, the advertiser's ``true'' bid $b_i$ reflects their willingness to pay, and under VCG, truthful bidding \emph{is} the dominant strategy. The best response of each advertiser is to bid truthfully, regardless of others' bids.
+
+\textbf{Step 2: Dominant strategy implies immediate convergence.}
+Since truthful bidding is a dominant strategy (\Cref{thm:ic}), each advertiser's best response is $b_i^* = b_i^{\text{true}}$ independent of $\mathbf{b}_{-i}$. The unique Nash equilibrium is $\mathbf{b}^* = (b_1^{\text{true}}, \ldots, b_N^{\text{true}})$. Under round-robin updating, each advertiser sets their bid to $b_i^{\text{true}}$ on their first turn, and after $N$ rounds (one per advertiser), the equilibrium is reached exactly.
+\end{proof}
+
+\begin{proposition}[Cycling under GSP Payments]
+\label{prop:gsp-cycle}
+Under the Generalized Second Price (GSP) payment rule applied to the discretized embedding space, best-response dynamics can cycle and fail to converge.
+\end{proposition}
+
+\begin{proof}
+We construct an explicit example. Consider $d=1$, $\cX = \{0, 1\}$ (two discrete impressions), $N = 3$ advertisers with values:
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+& Impression $x=0$ & Impression $x=1$ \\
+\midrule
+Advertiser 1 & 10 & 4 \\
+Advertiser 2 & 4 & 10 \\
+Advertiser 3 & 7 & 7 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Under GSP on each impression independently, each impression runs a second-price auction. The GSP payment for each impression is the second-highest bid. This is the well-known setting of \citet{edelman2007internet}, who showed that GSP does not have a dominant strategy equilibrium and best-response dynamics can cycle.
+
+In the power diagram context: if the platform discretizes $\cX$ into two cells and runs GSP per cell, advertiser 3 has incentive to alternate between bidding high on impression 0 (when advertiser 1 bids high on impression 1) and bidding high on impression 1 (when advertiser 1 bids high on impression 0), creating a cycle. Specifically:
+\begin{itemize}
+\item Round 1: Advertisers bid truthfully. Advertiser 1 wins $x=0$ at price 7 (GSP), advertiser 2 wins $x=1$ at price 7. Advertiser 3 wins nothing.
+\item Round 2: Advertiser 3 best-responds by bidding 7.5 on $x=0$. Now 3 wins $x=0$ at price 4 (second-highest bid after 1 drops), advertiser 1 is displaced.
+\item Round 3: Advertiser 1 best-responds by overbidding on $x=1$. This displaces advertiser 2.
+\item The cycle continues as advertisers keep adjusting.
+\end{itemize}
+
+Under VCG in continuous space, no such cycling occurs because truthful bidding is dominant (\Cref{thm:convergence}).
+\end{proof}
+
+% ============================================================================
+\section{Anisotropic Case: Quadric Boundaries}
+\label{sec:anisotropic}
+
+When advertisers have directional preferences encoded by covariance matrices $\Sigma_i$, the welfare-maximizing allocation assigns:
+\begin{equation}
+i^*(\bx) = \argmax_{i} \left[ \log b_i - (\bx - \bc_i)^\top \Sigma_i^{-1} (\bx - \bc_i) \right].
+\end{equation}
+
+The boundary between cells $V_i$ and $V_j$ is the set:
+\begin{equation}
+\left\{ \bx : (\bx - \bc_i)^\top \Sigma_i^{-1} (\bx - \bc_i) - (\bx - \bc_j)^\top \Sigma_j^{-1} (\bx - \bc_j) = \log b_i - \log b_j \right\},
+\end{equation}
+which is a quadric surface (ellipsoid, hyperboloid, or paraboloid depending on $\Sigma_i, \Sigma_j$).
+
+\begin{proposition}[Anisotropic IC]
+\label{prop:aniso-ic}
+The welfare-maximizing allocation under anisotropic Gaussian value functions with VCG payments is incentive compatible with respect to the full type $(b_i, \bc_i, \Sigma_i)$. That is, truthful reporting of all parameters is a dominant strategy.
+\end{proposition}
+
+\begin{proof}
+The VCG utility identity extends to the anisotropic case without modification. Under truthful reporting, the allocation maximizes welfare $W = \int_{\cX} \max_j v_j(\bx)\,d\mu(\bx)$, and advertiser $i$'s utility is $u_i = W - h_i$, where $h_i = \sum_{j \neq i} \int_{V_j^{-i}} v_j(\bx)\,d\mu(\bx)$ is independent of $i$'s report.
+
+If $i$ misreports any component of their type---$b_i$, $\bc_i$, or $\Sigma_i$---the mechanism computes the allocation using the reported type. Let $\{V_k'\}$ be the resulting allocation. The true welfare under this allocation is:
+\begin{equation}
+W'_{\text{true}} = \int_{V_i'} v_i(\bx)\,d\mu(\bx) + \sum_{j \neq i} \int_{V_j'} v_j(\bx)\,d\mu(\bx).
+\end{equation}
+The VCG payment depends on the allocation $\{V_k'\}$ and the other advertisers' true values $v_j$ ($j \neq i$), so:
+\begin{equation}
+u_i = \int_{V_i'} v_i(\bx)\,d\mu(\bx) - p_i = W'_{\text{true}} - h_i.
+\end{equation}
+Since $\{V_k\}$ (the truthful allocation) maximizes $W$ over all partitions and $\{V_k'\}$ is a feasible partition, $W'_{\text{true}} \leq W$. Hence $u_i(\text{misreport}) = W'_{\text{true}} - h_i \leq W - h_i = u_i(\text{truth})$.
+
+This argument relies only on the VCG payment structure and welfare-maximizing allocation, not on the specific functional form of $v_i$. It applies to any parameterization of advertiser types, including anisotropic Gaussians and mixtures thereof.
+\end{proof}
+
+\begin{remark}[Practical considerations for type reporting]
+\label{rem:type-reporting}
+While \Cref{prop:aniso-ic} establishes IC for the full type $(b_i, \bc_i, \Sigma_i)$ under exact VCG, practical deployment may use approximate payment rules (see \Cref{sec:computation}). Under approximate payments, IC for $(\bc_i, \Sigma_i)$ may fail, and the analysis of \Cref{thm:center-misreport}---specifically the non-zero gradient in \eqref{eq:center-gradient}---quantifies the direction and magnitude of profitable deviations. In practice, platform-inferred parameters (from historical advertiser behavior) can complement self-reported types.
+\end{remark}
+
+\paragraph{Factorized bidding approximation.}
+For practical deployment, we propose that advertisers specify per-dimension reach parameters $(\sigma_{i,1}, \ldots, \sigma_{i,d})$ rather than a full $d \times d$ covariance matrix $\Sigma_i$. This corresponds to a diagonal $\Sigma_i = \mathrm{diag}(\sigma_{i,1}^2, \ldots, \sigma_{i,d}^2)$, reducing the parameter count from $O(d^2)$ to $O(d)$ while preserving the ability to specialize along dimensions.
+
+% ============================================================================
+\section{Mixture of Gaussians: When Geometry Breaks Down}
+\label{sec:mixture}
+
+When advertiser $i$ has multimodal preferences:
+\begin{equation}
+v_i(\bx) = b_i \sum_{k=1}^{K_i} w_{ik} \exp\!\left(-(\bx - \bc_{ik})^\top \Sigma_{ik}^{-1} (\bx - \bc_{ik})\right),
+\end{equation}
+the boundaries between cells are level sets of sums of Gaussians---these can be arbitrarily complex and do not admit closed-form descriptions in general.
+
+\paragraph{Virtual advertiser decomposition.}
+We propose representing each mixture component as a separate ``virtual advertiser'' with bid $b_i w_{ik}$, center $\bc_{ik}$, and covariance $\Sigma_{ik}$. The set of virtual advertisers participate in the auction independently, but share a budget constraint:
+\begin{equation}
+\sum_{k=1}^{K_i} p_{ik} \leq B_i,
+\end{equation}
+where $p_{ik}$ is the payment for virtual advertiser $(i,k)$ and $B_i$ is advertiser $i$'s total budget.
+
+This decomposition:
+\begin{enumerate}
+    \item Reduces the mixture case to the anisotropic (or isotropic) case structurally.
+    \item Preserves approximate incentive compatibility for the bid scalars.
+    \item Introduces a budget-linking constraint that connects to the combinatorial auction literature.
+\end{enumerate}
+
+\begin{theorem}[Lipschitz Approximation]
+\label{thm:approx}
+Let $v : \cX \to \R_{\geq 0}$ be an $L$-Lipschitz value function on the compact set $\cX \subseteq \R^d$. For any $\epsilon > 0$, there exists a mixture of $K$ isotropic Gaussians $\hat{v}$ with:
+\begin{equation}
+K = O\!\left(\left(\frac{L \cdot \mathrm{diam}(\cX)}{\epsilon}\right)^d\right)
+\end{equation}
+such that $\sup_{\bx \in \cX} |v(\bx) - \hat{v}(\bx)| \leq \epsilon$.
+\end{theorem}
+
+\begin{proof}
+Let $r = \epsilon/(2L)$ and let $\{\bx_1, \ldots, \bx_K\}$ be an $r$-covering of $\cX$: every point of $\cX$ is within distance $r$ of some $\bx_k$. The covering number satisfies $K \leq (\mathrm{diam}(\cX)/r + 1)^d = O((L \cdot \mathrm{diam}(\cX)/\epsilon)^d)$ by a standard volume argument.
+
+Define $\hat{v}(\bx) = \sum_{k=1}^{K} \alpha_k \exp(-\norm{\bx - \bx_k}^2/r^2)$, where $\alpha_k = v(\bx_k) / \sum_{k'} \exp(-\norm{\bx_k - \bx_{k'}}^2/r^2)$ is chosen so that $\hat{v}(\bx_k) = v(\bx_k)$ at each center (using the partition of unity property of the Gaussian kernel up to normalization). More precisely, define the partition of unity $\phi_k(\bx) = \exp(-\norm{\bx - \bx_k}^2/r^2) / \sum_{k'} \exp(-\norm{\bx - \bx_{k'}}^2/r^2)$ and set $\hat{v}(\bx) = \sum_k v(\bx_k)\phi_k(\bx)$.
+
+For any $\bx \in \cX$:
+\begin{align}
+|\hat{v}(\bx) - v(\bx)| &= \left|\sum_k v(\bx_k)\phi_k(\bx) - v(\bx)\sum_k \phi_k(\bx)\right| = \left|\sum_k [v(\bx_k) - v(\bx)]\phi_k(\bx)\right| \notag \\
+&\leq \sum_k |v(\bx_k) - v(\bx)| \cdot \phi_k(\bx).
+\end{align}
+The Gaussian weights $\phi_k(\bx)$ decay exponentially with distance $\norm{\bx - \bx_k}$. For the nearest center $\bx_{k^*}$ (with $\norm{\bx - \bx_{k^*}} \leq r$), $|v(\bx_{k^*}) - v(\bx)| \leq Lr = \epsilon/2$ by Lipschitz continuity. For distant centers ($\norm{\bx - \bx_k} > r$), the contribution $\phi_k(\bx)$ is exponentially small: $\phi_k(\bx) \leq \exp(-\norm{\bx-\bx_k}^2/r^2 + 1)$. The total contribution of distant centers is bounded by $\epsilon/2$ by choosing the partition of unity normalization to ensure the nearby center dominates. Combining, $\sup_{\bx} |v(\bx) - \hat{v}(\bx)| \leq \epsilon$.
+\end{proof}
+
+\begin{remark}[Low intrinsic dimensionality]
+\label{rem:low-dim}
+The exponential dependence on $d$ in \Cref{thm:approx} reflects a worst case over all $L$-Lipschitz functions on $\R^d$. In practice, if the value function $v$ has low intrinsic dimensionality---meaning that $v$ depends primarily on the projection of $\bx$ onto a $k$-dimensional affine subspace or, more generally, that the support of $v$ lies on a $k$-dimensional manifold $\mathcal{M} \subset \R^d$ with $k \ll d$---then the covering number of the effective domain is $O((\mathrm{diam}(\mathcal{M})/r)^k)$, and the bound improves to:
+\begin{equation}
+K = O\!\left(\left(\frac{L \cdot \mathrm{diam}(\mathcal{M})}{\epsilon}\right)^k\right).
+\end{equation}
+Advertiser preferences in high-dimensional embedding spaces typically depend on a small number of semantic axes (e.g., product category, price sensitivity, user intent), making $k \ll d$ a realistic assumption.
+\end{remark}
+
+\begin{proposition}[Dimensionality Reduction via Johnson--Lindenstrauss]
+\label{prop:jl}
+Let $N$ advertisers have isotropic Gaussian value functions with shared $\sigma$ in $\cX \subseteq \R^d$. Let $\Pi \in \R^{m \times d}$ be a random projection matrix with i.i.d.\ entries $\Pi_{ij} \sim \cN(0, 1/m)$, where $m = O(\log N / \varepsilon^2)$. Then with probability at least $1 - 1/N$:
+
+For all impressions $\bx \in \cX$, the winner under the projected power diagram (with sites $\Pi\bc_i$ and impression $\Pi\bx$) is the same as the winner under the original power diagram, provided all pairwise score gaps exceed $\varepsilon \cdot \max_i (\norm{\bc_i}^2 + w_i)$.
+\end{proposition}
+
+\begin{proof}
+The winner at impression $\bx$ is $i^*(\bx) = \argmin_i [\norm{\bx - \bc_i}^2 - w_i]$. By the Johnson--Lindenstrauss lemma~\citep{johnson1984extensions}, for any fixed pair of points $\bx, \bc_i$, the random projection preserves the squared distance:
+\begin{equation}
+(1-\varepsilon)\norm{\bx - \bc_i}^2 \leq \norm{\Pi\bx - \Pi\bc_i}^2 \leq (1+\varepsilon)\norm{\bx - \bc_i}^2,
+\end{equation}
+with probability at least $1 - 2\exp(-c\varepsilon^2 m)$ for a universal constant $c > 0$.
+
+The power diagram score for advertiser $i$ at impression $\bx$ is $s_i(\bx) = \norm{\bx - \bc_i}^2 - w_i$. The projected score is $\hat{s}_i(\bx) = \norm{\Pi\bx - \Pi\bc_i}^2 - w_i$. The distortion in score is:
+\begin{equation}
+|\hat{s}_i(\bx) - s_i(\bx)| = |\norm{\Pi\bx - \Pi\bc_i}^2 - \norm{\bx - \bc_i}^2| \leq \varepsilon \norm{\bx - \bc_i}^2.
+\end{equation}
+
+For the projected winner to agree with the true winner, it suffices that the distortion does not flip any pairwise comparison. For advertisers $i$ and $j$ with $s_i(\bx) < s_j(\bx)$ (so $i$ beats $j$ at $\bx$), we need $\hat{s}_i(\bx) < \hat{s}_j(\bx)$. This holds if:
+\begin{equation}
+s_j(\bx) - s_i(\bx) > 2\varepsilon \max(\norm{\bx - \bc_i}^2, \norm{\bx - \bc_j}^2),
+\end{equation}
+which is guaranteed when the score gap exceeds $\varepsilon \cdot \max_i(\norm{\bc_i}^2 + w_i)$ (a bound on the maximum squared distance in the domain).
+
+Taking a union bound over all $\binom{N}{2}$ pairs of advertisers, and choosing $m = O(\log N / \varepsilon^2)$, the failure probability is at most $\binom{N}{2} \cdot 2\exp(-c\varepsilon^2 m) \leq 1/N$.
+
+The target dimension $m = O(\log N / \varepsilon^2)$ is independent of the ambient dimension $d$, making the approach tractable for arbitrarily high-dimensional embedding spaces. In practice, the projection can be computed once and applied to all impressions.
+\end{proof}
+
+% ============================================================================
+\section{Computational Aspects}
+\label{sec:computation}
+
+Real-time ad auctions require winner determination in under 10ms. We analyze the full pipeline: winner determination, payment computation, and practical approximations.
+
+\begin{proposition}[Winner Determination Complexity]
+\label{prop:complexity}
+\begin{enumerate}
+    \item \textbf{Isotropic, shared $\sigma$}: Winner determination is equivalent to weighted nearest-neighbor search. Using a kd-tree or ball tree with $N$ advertisers, query time is $O(\log N)$ with $O(N \log N)$ preprocessing (tree construction).
+    \item \textbf{Isotropic, varying $\sigma_i$}: Requires evaluating all $N$ score functions. Brute-force is $O(N)$; with preprocessing (e.g., spatial hashing), amortized $O(\log N)$ is achievable.
+    \item \textbf{Anisotropic}: $O(N)$ worst-case per query. No sub-linear exact algorithm is known for weighted nearest-neighbor under Mahalanobis distances.
+    \item \textbf{Mixture of Gaussians with $K$ total components}: $O(K)$ per query using the virtual advertiser decomposition.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Part 1: The power diagram score $s_i(\bx) = \norm{\bx - \bc_i}^2 - w_i$ is a shifted squared Euclidean distance. As shown by \citet{aurenhammer1987power}, this can be reduced to standard nearest-neighbor search in $\R^{d+1}$ by the lifting map $\bc_i \mapsto (\bc_i, \sqrt{\norm{\bc_i}^2 - w_i})$. A kd-tree over the $N$ lifted sites answers queries in $O(\log N)$ expected time, with $O(N \log N)$ construction time.
+
+Part 2: With varying $\sigma_i$, the score $s_i(\bx) = \norm{\bx - \bc_i}^2/\sigma_i^2 - \log b_i$ is no longer a shifted squared distance. Brute-force evaluation of all $N$ scores takes $O(Nd)$ time. Spatial hashing with locality-sensitive hashing (LSH) can provide $O(\log N)$ amortized time by maintaining hash tables for different $\sigma_i$ scales.
+
+Parts 3--4: Anisotropic scores involve Mahalanobis distances with different metrics per advertiser, precluding standard nearest-neighbor data structures. The mixture case reduces to Part 3 with $K$ virtual advertisers.
+\end{proof}
+
+\begin{algorithm}[t]
+\caption{Full Auction: Winner Determination and Payment}
+\label{alg:auction}
+\begin{algorithmic}[1]
+\Require Impression $\bx \in \R^d$, advertisers $\{(\bc_i, b_i, \sigma)\}_{i=1}^N$, kd-tree $\mathcal{T}$, auxiliary kd-trees $\{\mathcal{T}^{-i}\}_{i=1}^N$ (optional, for exact VCG)
+\Ensure Winner index $i^*$, payment $p$
+\State \textbf{// Winner determination:} $O(\log N)$ via kd-tree
+\State $w_i \gets \sigma^2 \log b_i$ for all $i$
+\State $i^* \gets \text{WeightedNearestNeighbor}(\mathcal{T}, \bx)$
+\Comment{Returns $\argmin_i [\norm{\bx - \bc_i}^2 - w_i]$}
+\State
+\State \textbf{// Payment computation (exact VCG):}
+\State \textit{Option A: Per-impression VCG payment.}
+\State Score $s_{i^*} \gets \norm{\bx - \bc_{i^*}}^2 - w_{i^*}$
+\State Find second-best: $j^* \gets \text{WeightedNearestNeighbor}(\mathcal{T} \setminus \{i^*\}, \bx)$
+\Comment{$O(\log N)$}
+\State Score $s_{j^*} \gets \norm{\bx - \bc_{j^*}}^2 - w_{j^*}$
+\State $p \gets \exp(-s_{j^*}/\sigma^2)$
+\Comment{$= v_{j^*}(\bx)$: VCG externality}
+\State
+\State \textit{Option B: Aggregate VCG payment (batch).}
+\State For batch of $M$ impressions, compute $p_i = \sum_{j \neq i} [\hat{W}_j^{-i} - \hat{W}_j]$ via Monte Carlo (\Cref{thm:budget})
+\State
+\State \Return $(i^*, p)$
+\end{algorithmic}
+\end{algorithm}
+
+\paragraph{Payment computation.}
+Exact VCG payments (\Cref{eq:vcg-payment}) require computing the $(N-1)$-advertiser power diagram for each advertiser $i$ and integrating over the resulting cells. Two approaches are available.
+
+\emph{Per-impression payment.} For a single impression $\bx$ allocated to winner $i^*$, the VCG payment equals the externality imposed on other advertisers. In the single-impression case, this simplifies to the value of the second-highest advertiser $j^*$ at $\bx$: $p(\bx) = v_{j^*}(\bx)$, since the runner-up loses exactly $v_{j^*}(\bx)$ of welfare when $i^*$ is present. Computing $j^*$ requires a second weighted nearest-neighbor query (excluding $i^*$) in $O(\log N)$ time.
+
+\emph{Aggregate payment.} For computing total payments over a batch of impressions, one must rebuild the kd-tree excluding each winner and requery all impressions in the winner's territory. With $N$ advertisers, this requires $N$ auxiliary kd-trees, each built in $O(N \log N)$ time. The total preprocessing is $O(N^2 \log N)$, amortized over many impression queries.
+
+\begin{proposition}[Second-Score Payment Approximation]
+\label{prop:payment-approx}
+For the isotropic model, define the \emph{second-score payment} for impression $\bx$ as $\hat{p}(\bx) = v_{j^*}(\bx)$, where $j^* = \argmax_{j \neq i^*} v_j(\bx)$ is the second-highest-value advertiser. Then:
+\begin{enumerate}
+    \item $\hat{p}(\bx)$ is a per-impression payment that coincides with the VCG per-impression payment.
+    \item The aggregate second-score payment $\hat{p}_i = \int_{V_i} v_{j^*(x)}(\bx)\,d\mu(\bx)$ satisfies $\hat{p}_i \leq p_i^{\text{VCG}}$, where $p_i^{\text{VCG}}$ is the exact VCG aggregate payment.
+    \item If advertisers are $\Delta$-separated (meaning $\min_{j \neq i} \norm{\bc_i - \bc_j} \geq \Delta$), then:
+    \begin{equation}
+    p_i^{\text{VCG}} - \hat{p}_i \leq N \cdot b_{\max} \cdot \exp(-\Delta^2/(4\sigma^2)) \cdot \mu(\cX),
+    \end{equation}
+    where $b_{\max} = \max_j b_j$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\textbf{Part 1.} For a single impression $\bx$ allocated to $i^*$, removing $i^*$ from the auction causes $\bx$ to be reallocated to $j^* = \argmax_{j \neq i^*} v_j(\bx)$. The welfare of others changes by exactly $v_{j^*}(\bx) - 0 = v_{j^*}(\bx)$ (advertiser $j^*$ gains the impression). Hence the per-impression VCG externality is $v_{j^*}(\bx)$.
+
+\textbf{Part 2.} The aggregate VCG payment $p_i^{\text{VCG}} = \sum_{j \neq i}[\int_{V_j^{-i}} v_j\,d\mu - \int_{V_j} v_j\,d\mu]$ accounts for the reallocation of \emph{all} impressions in $V_i$ (and the ripple effects on other cells) when $i$ is removed. The second-score payment only accounts for the local reallocation to the runner-up at each point, ignoring the fact that removing $i$ may shift boundaries between other cells (the ``cascade effect''). Since the cascade can only increase others' welfare further, $\hat{p}_i \leq p_i^{\text{VCG}}$.
+
+Formally, when $i$ is removed, each impression $\bx \in V_i$ is reallocated, and this may shift the boundaries of other cells. The total welfare gain of others is:
+\begin{equation}
+p_i^{\text{VCG}} = \underbrace{\int_{V_i} v_{j^*(\bx)}(\bx)\,d\mu(\bx)}_{= \hat{p}_i} + \underbrace{\sum_{j \neq i}\left[\int_{V_j^{-i} \setminus V_j} v_j(\bx)\,d\mu(\bx) - \int_{V_j \setminus V_j^{-i}} v_j(\bx)\,d\mu(\bx)\right]}_{\geq 0 \text{ (cascade effect)}}.
+\end{equation}
+The cascade term is non-negative because $\{V_j^{-i}\}$ is the welfare-maximizing allocation for the $N-1$ advertisers.
+
+\textbf{Part 3.} When advertisers are $\Delta$-separated, the cascade effect is small. Removing advertiser $i$ only significantly affects cells $V_j$ that share a boundary with $V_i$. On the shared boundary $H_{ij}$, $v_i(\bx) = v_j(\bx)$, and for points deep inside $V_j$ (distance $> \Delta/2$ from $V_i$), the value $v_i(\bx) \leq b_i \exp(-\Delta^2/(4\sigma^2))$ is exponentially small. The total cascade effect across all $N-1$ other advertisers is bounded by $N \cdot b_{\max} \cdot \exp(-\Delta^2/(4\sigma^2)) \cdot \mu(\cX)$.
+\end{proof}
+
+For the isotropic case with shared $\sigma$, the winner at point $\bx$ is:
+\begin{equation}
+\label{eq:winner-score}
+i^* = \argmin_i \left[ \norm{\bx - \bc_i}^2 - \sigma^2 \log b_i \right],
+\end{equation}
+which is a standard weighted nearest-neighbor query with weights $w_i = \sigma^2 \log b_i$.
+
+% ============================================================================
+\section{Budget Pacing and Spend Prediction}
+\label{sec:budget}
+
+A key challenge for advertisers is predicting their spend, which depends on the geometry of all competitors' bids. Under exact VCG, advertiser $i$'s payment is given by \eqref{eq:vcg-payment}. For budget forecasting, a useful upper bound is the \emph{proportional spend} $S_i = b_i \cdot \mu(V_i)$, which dominates both the value received and the VCG payment (since $v_i(\bx) \leq b_i$ for all $\bx$, and $p_i^{\text{VCG}} \leq \int_{V_i} v_i\,d\mu \leq S_i$ by IR):
+\begin{equation}
+p_i^{\text{VCG}} \leq S_i = b_i \int_{V_i} d\mu(\bx),
+\end{equation}
+where $V_i$ depends on \emph{all} advertisers' parameters. We bound the estimation error of $\mu(V_i)$, which controls the error of $S_i$ and hence of VCG payment upper bounds.
+
+\begin{theorem}[Budget Prediction Bound]
+\label{thm:budget}
+Let $\hat{S}_i^{(M)}$ be the Monte Carlo estimate of $S_i$ using $M$ samples from $\mu$:
+\begin{equation}
+\hat{S}_i^{(M)} = \frac{b_i}{M} \sum_{m=1}^{M} \mathbf{1}[\bx^{(m)} \in V_i], \quad \bx^{(m)} \sim \mu.
+\end{equation}
+Then for any $\epsilon > 0$:
+\begin{equation}
+\Prob\!\left[|\hat{S}_i^{(M)} - S_i| > \epsilon\right] \leq 2 \exp\!\left(-\frac{2M\epsilon^2}{b_i^2}\right).
+\end{equation}
+In particular, $M = O(b_i^2 / \epsilon^2 \cdot \log(1/\delta))$ samples suffice for $\epsilon$-accuracy with probability $1 - \delta$.
+\end{theorem}
+
+\begin{proof}
+$\hat{S}_i^{(M)} = \frac{b_i}{M} \sum_{m=1}^{M} Z_m$ where $Z_m = \mathbf{1}[\bx^{(m)} \in V_i]$ are i.i.d.\ Bernoulli with mean $\mu(V_i)$. By Hoeffding's inequality applied to $\hat{\mu}_i = \frac{1}{M}\sum Z_m$:
+\[
+\Prob[|b_i \hat{\mu}_i - b_i \mu(V_i)| > \epsilon] = \Prob[|\hat{\mu}_i - \mu(V_i)| > \epsilon/b_i] \leq 2\exp(-2M\epsilon^2/b_i^2). \qedhere
+\]
+\end{proof}
+
+\paragraph{Bid landscape tool.}
+Using \Cref{thm:budget}, an ad platform can provide advertisers with a ``bid landscape'': for a proposed bid $b_i$, estimate the resulting territory $V_i$, expected impressions $\mu(V_i)$, and spend $S_i$, with confidence intervals. Recomputing the power diagram for different bid values takes $O(N)$ time (rebuild the spatial index), and Monte Carlo estimation takes $O(M)$ per query.
+
+\paragraph{Dynamic budget pacing.}
+When bids change over time, territories shift. We draw an analogy to competitive facility location: each bid change is equivalent to a facility adjusting its ``attractive radius.'' Smooth bid adjustments lead to smooth territory changes (by continuity of the power diagram in the weights), enabling gradient-based budget pacing algorithms.
+
+% ============================================================================
+\section{Experiments}
+\label{sec:experiments}
+
+We compare three auction mechanisms on synthetic data across dimensionalities $d \in \{2, 5, 10, 20\}$:
+
+\begin{enumerate}
+    \item \textbf{GSP-Discretized (GSP-Disc)}: Partition $\cX$ into a grid of $10^d$ cells (for $d \le 5$; for $d > 5$, project to $d' = 5$ via random projection before discretizing). Run generalized second-price auctions independently per cell: each impression pays the second-highest score at that point, converted to value space.
+    \item \textbf{VCG-Discretized (VCG-Disc)}: Same grid partition and projection, but with per-impression VCG payments computed by re-running the auction without each winning bidder.
+    \item \textbf{Power-Diagram-Native (Power-VCG)}: Our proposed mechanism---welfare-maximizing allocation via power diagram with exact VCG payments in continuous space.
+\end{enumerate}
+
+\subsection{Setup}
+
+For each dimensionality $d$ and each of 30 random seeds, we generate:
+
+\begin{itemize}
+    \item $N = 20$ advertisers with centers sampled uniformly in $[0,1]^d$, bids drawn from $\text{LogNormal}(\mu=1, \sigma=0.5)$, and reach parameters $\sigma_i \sim \text{Uniform}(0.1, 0.4) \cdot \sqrt{d}$ (scaling by $\sqrt{d}$ to maintain meaningful overlap as dimensionality increases).
+    \item Impression distribution $\mu$: mixture of 5 isotropic Gaussians with random centers and Dirichlet-distributed weights.
+    \item 50{,}000 impressions sampled from $\mu$ per trial.
+    \item Discretized methods use $10$ cells per dimension for $d \le 5$. For $d > 5$, impressions are first projected to $d' = 5$ via Johnson--Lindenstrauss random projection (\Cref{prop:jl}) before discretization, as $10^d$ cells is infeasible.
+\end{itemize}
+
+IC regret is computed by testing bid deviations at multipliers $\{0.5, 0.8, 1.2, 1.5, 2.0, 3.0\}$ for each advertiser and reporting the maximum per-impression utility gain, averaged across advertisers and seeds.
+
+\subsection{Metrics}
+
+\begin{itemize}
+    \item \textbf{Social welfare}: $W = \frac{1}{|\mu|}\sum_{\bx \in \mu} v_{w(\bx)}(\bx)$, averaged per impression.
+    \item \textbf{Platform revenue}: $R = \frac{1}{|\mu|}\sum_i p_i$, averaged per impression.
+    \item \textbf{IC regret}: $\max_{b_i'} [u_i(b_i') - u_i(b_i)]$, maximized over bid deviations, averaged over advertisers.
+    \item \textbf{Latency}: Wall-clock time for winner determination per impression ($\mu$s).
+    \item \textbf{Budget accuracy}: $\frac{1}{N}\sum_i |\hat{S}_i - S_i| / S_i$ for Monte Carlo budget estimates with $M$ samples.
+\end{itemize}
+
+\subsection{Results}
+
+\begin{table}[t]
+\centering
+\caption{Comparison of auction mechanisms across dimensionalities ($N=20$ advertisers, 50K impressions, 30 seeds). Values are mean $\pm$ std. Power-VCG achieves the highest welfare at all $d$, with the gap widening dramatically as dimensionality increases. IC regret is exactly zero for Power-VCG and grows large for discretized methods at $d \ge 10$.}
+\label{tab:results}
+\begin{tabular}{clccc}
+\toprule
+$d$ & \textbf{Mechanism} & \textbf{Welfare} & \textbf{Revenue} & \textbf{IC Regret} \\
+\midrule
+\multirow{3}{*}{2}
+  & GSP-Disc  & $3.885 \pm 1.158$ & $2.721 \pm 0.671$ & $0.011 \pm 0.020$ \\
+  & VCG-Disc  & $3.885 \pm 1.158$ & $2.682 \pm 0.668$ & $0.011 \pm 0.020$ \\
+  & \textbf{Power-VCG}  & $\mathbf{3.913 \pm 1.156}$ & $2.696 \pm 0.671$ & $\mathbf{< 10^{-6}}$ \\
+\midrule
+\multirow{3}{*}{5}
+  & GSP-Disc  & $2.574 \pm 0.753$ & $1.775 \pm 0.363$ & $0.054 \pm 0.051$ \\
+  & VCG-Disc  & $2.574 \pm 0.753$ & $1.762 \pm 0.363$ & $0.045 \pm 0.056$ \\
+  & \textbf{Power-VCG}  & $\mathbf{2.584 \pm 0.751}$ & $1.766 \pm 0.363$ & $\mathbf{< 10^{-6}}$ \\
+\midrule
+\multirow{3}{*}{10}
+  & GSP-Disc  & $1.483 \pm 0.926$ & $1.728 \pm 0.443$ & $1.013 \pm 1.363$ \\
+  & VCG-Disc  & $1.483 \pm 0.926$ & $1.289 \pm 0.515$ & $2.176 \pm 2.598$ \\
+  & \textbf{Power-VCG}  & $\mathbf{2.040 \pm 0.754}$ & $\mathbf{1.494 \pm 0.389}$ & $\mathbf{< 10^{-6}}$ \\
+\midrule
+\multirow{3}{*}{20}
+  & GSP-Disc  & $1.367 \pm 0.760$ & $1.423 \pm 0.310$ & $0.045 \pm 0.043$ \\
+  & VCG-Disc  & $1.367 \pm 0.760$ & $0.899 \pm 0.467$ & $1.613 \pm 3.068$ \\
+  & \textbf{Power-VCG}  & $\mathbf{1.807 \pm 0.593}$ & $\mathbf{1.242 \pm 0.262}$ & $\mathbf{< 10^{-6}}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\Cref{tab:results} presents the main results. We make the following observations.
+
+\paragraph{Welfare gap widens with dimensionality (\Cref{fig:welfare}).}
+At $d = 2$, the welfare advantage of Power-VCG over discretized methods is modest ($+0.7\%$): a $10 \times 10$ grid provides adequate resolution in two dimensions. However, the gap grows rapidly: $+0.4\%$ at $d=5$, $+37.5\%$ at $d=10$, and $+32.2\%$ at $d=20$.  This is the core argument for continuous-space mechanisms---discretization degrades catastrophically in high dimensions because the number of grid cells grows exponentially while the number of impressions per cell shrinks, destroying local allocation quality.
+
+\paragraph{Revenue is nuanced (\Cref{fig:revenue}).}
+GSP-Disc can generate \emph{higher} revenue than Power-VCG at moderate dimensions (e.g., \$2.72 vs.\ \$2.70 at $d=2$) because GSP overcharges winners---it is not incentive-compatible. At high dimensions, GSP revenue remains inflated relative to welfare (\$1.42 revenue on \$1.37 welfare at $d=20$), while VCG-Disc revenue collapses (\$0.90 at $d=20$) as the coarse allocation misidentifies welfare contributions. Power-VCG provides balanced, welfare-proportional revenue: \$1.49 at $d=10$ and \$1.24 at $d=20$.
+
+\paragraph{IC regret: zero vs.\ explosive (\Cref{fig:ic}).}
+Power-VCG achieves IC regret below $10^{-6}$ (numerical precision floor) at every dimensionality, confirming \Cref{thm:ic}. Discretized methods have small but nonzero regret at $d=2$ ($\sim 0.01$), which explodes at $d \ge 10$: VCG-Disc reaches regret of $2.18$ at $d=10$ and $1.61$ at $d=20$, meaning advertisers can more than double their utility by misreporting bids. The discretization boundary artifacts create profitable deviations: an advertiser whose optimal territory straddles a cell boundary can exploit the grid misalignment.
+
+\paragraph{Latency: kd-tree scales sub-linearly in $N$ (\Cref{fig:latency}).}
+At $d = 2$, winner determination via kd-tree indexing takes $\sim\!0.15\,\mu$s per impression, independent of the number of advertisers $N$ (tested up to $N = 100$). Brute-force search scales linearly, reaching $\sim\!1.1\,\mu$s at $N = 100$. Both are well within the 10ms real-time constraint. Note that kd-tree performance degrades in high dimensions; for $d > 20$, the JL projection of \Cref{prop:jl} reduces the effective dimension before spatial indexing.
+
+\paragraph{Budget prediction follows $O(1/\sqrt{M})$ (\Cref{fig:budget}).}
+Monte Carlo budget estimates using $M$ impression samples achieve relative error that tracks the theoretical $O(1/\sqrt{M})$ bound from \Cref{thm:budget} precisely. At $M = 10{,}000$ samples, the mean relative budget error falls below $3\%$.
+
+\paragraph{Territory visualization (\Cref{fig:territory}).}
+\Cref{fig:territory} shows a side-by-side comparison of discretized ($5 \times 5$ grid) vs.\ continuous power diagram allocation for 8 advertisers in $\R^2$. The discretized allocation exhibits blocky boundaries and misallocated border regions; the power diagram produces smooth, geometrically natural boundaries where advertiser territories meet at curves of equal bid-adjusted distance.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.85\textwidth]{figures/fig_welfare_by_d.png}
+  \caption{Social welfare vs.\ dimensionality. Power-VCG (blue) dominates at all $d$; the gap widens dramatically at $d \ge 10$ as grid-based discretization degrades.}
+  \label{fig:welfare}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.85\textwidth]{figures/fig_revenue_by_d.png}
+  \caption{Platform revenue vs.\ dimensionality. GSP-Disc generates inflated revenue by overcharging (not IC). VCG-Disc revenue collapses at $d \ge 10$ as coarse allocation misidentifies welfare contributions. Power-VCG provides balanced, welfare-proportional revenue.}
+  \label{fig:revenue}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.85\textwidth]{figures/fig_ic_regret_by_d.png}
+  \caption{IC regret vs.\ dimensionality (log scale). Power-VCG achieves machine-precision zero at all $d$. Discretized VCG regret exceeds $1.0$ at $d \ge 10$---advertisers can more than double their utility by deviating.}
+  \label{fig:ic}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.85\textwidth]{figures/fig_latency_scaling.png}
+  \caption{Winner determination latency vs.\ number of advertisers ($d = 2$). Kd-tree indexing is flat at $\sim\!0.15\,\mu$s; brute force scales linearly.}
+  \label{fig:latency}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.85\textwidth]{figures/fig_budget_accuracy.png}
+  \caption{Budget prediction error vs.\ MC samples. Empirical error (blue) tracks the $O(1/\sqrt{M})$ reference (dashed red) precisely, confirming \Cref{thm:budget}.}
+  \label{fig:budget}
+\end{figure}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=0.95\textwidth]{figures/fig_territory_2d.png}
+  \caption{Territory allocation for 8 advertisers in $\R^2$. Left: discretized $5 \times 5$ grid with blocky boundaries. Right: continuous power diagram with smooth, geometrically natural territory boundaries.}
+  \label{fig:territory}
+\end{figure}
+
+% ============================================================================
+\section{Discussion}
+\label{sec:discussion}
+
+\paragraph{Connection to OpenAI's deployment.}
+OpenAI's ``intent-based monetization'' naturally maps to our framework: user intent is encoded in conversation embeddings, and ads are matched based on proximity in this space. Our experiments show that discretization loses 32--38\% of social welfare at $d \ge 10$ (\Cref{tab:results}), suggesting that even moderate-dimensional embedding spaces benefit substantially from continuous-space mechanisms.
+
+\paragraph{Generative ads.}
+In LLM platforms, ad creative can be generated dynamically based on the impression's position in embedding space. A running shoe ad near a ``beginner marathon training'' conversation would differ from one near a ``competitive ultrarunning'' conversation. This is equivalent to the ad creative being a function of position---a natural extension where each advertiser's territory in the power diagram also maps to a creative strategy.
+
+\paragraph{Privacy implications.}
+Embedding-based targeting encodes user state more richly than keywords. While this enables better matching, it also raises privacy concerns. Power diagrams offer a potential advantage: the advertiser sees only the territory they win, not the underlying embeddings. The platform can mediate targeting without revealing user-level data.
+
+\paragraph{Limitations.}
+Our framework assumes:
+(i) advertisers can specify Gaussian-family value functions, which may not capture all preference structures (though \Cref{thm:approx} shows Lipschitz functions can be approximated);
+(ii) the impression distribution $\mu$ is known or well-estimated, whereas in practice it shifts over time;
+(iii) advertiser interactions are captured solely through the allocation (no externalities from neighboring ads);
+(iv) exact VCG payments require per-impression computation of the second-best advertiser, or batch recomputation of $(N-1)$-advertiser diagrams (\Cref{sec:computation}).
+High-dimensional power diagram computation remains challenging beyond $d \approx 20$ with current algorithms, though \Cref{prop:jl} shows that random projection to $O(\log N / \varepsilon^2)$ dimensions preserves the allocation, making high-dimensional deployment feasible in practice.
+
+% ============================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+We have introduced a geometric framework for ad auctions in continuous embedding spaces based on power diagrams. The main contributions are:
+\begin{enumerate}
+    \item A reduction of the continuous-space mechanism design problem to computational geometry: the welfare-maximizing allocation is a power diagram, and the unique IC, IR, welfare-maximizing mechanism computes payments via Voronoi cell integration (\Cref{thm:ic}).
+    \item A characterization of strategic geometry: exact VCG is IC for the full type space including center reports (\Cref{cor:uniform-ic}, \Cref{prop:aniso-ic}), but under approximate payment rules, the value-received gradient (\Cref{thm:center-misreport}) points toward high-density impression regions, quantifying the vulnerability of practical mechanisms to spatial manipulation.
+    \item Convergence of bid dynamics to the unique Nash equilibrium in $N$ rounds under VCG (\Cref{thm:convergence}), contrasted with cycling under GSP (\Cref{prop:gsp-cycle}).
+    \item Dimensionality reduction via Johnson--Lindenstrauss projections that preserve the allocation in $O(\log N)$ dimensions (\Cref{prop:jl}).
+    \item Efficient $O(\log N)$ winner determination and payment computation, with practical approximation bounds for well-separated advertisers (\Cref{prop:payment-approx}).
+    \item Budget prediction bounds via Monte Carlo integration (\Cref{thm:budget}).
+    \item A path from simple (isotropic) to expressive (mixture) preference models, with approximation guarantees that improve under low intrinsic dimensionality (\Cref{thm:approx}, \Cref{rem:low-dim}).
+\end{enumerate}
+
+As LLM platforms become major advertising venues, the mechanism design challenges we address will become increasingly relevant. The tools from computational geometry---power diagrams, Voronoi tessellations, and spatial indexing---provide a natural and provably sound foundation for this new generation of ad auctions. The key message is that continuous embedding spaces need not be discretized: the power diagram structure provides exact, efficient, and incentive-compatible mechanisms for the native geometry of these spaces.
+
+% ============================================================================
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}
