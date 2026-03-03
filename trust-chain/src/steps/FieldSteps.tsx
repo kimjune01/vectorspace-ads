@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import type { StepData } from '../ScrollySection';
+import { Cite } from '../components/Cite';
 
 function StepText({ children }: { children: ReactNode }) {
   return (
@@ -57,7 +58,7 @@ export const FieldSteps = {
             There's one problem.
           </h2>
           <p style={{ color: '#bbb' }}>
-            Today's ad protocol can't carry this. OpenRTB — the standard behind every real-time bid request — has fields for keywords and category codes. No field for a vector.
+            Today's ad protocol can't carry this. OpenRTB<Cite href="https://iabtechlab.com/standards/openrtb/" n={8} /> — the standard behind every real-time bid request — has fields for keywords and category codes. No field for a vector.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
             The full meaning would die at the protocol boundary. The fix is one new field:{' '}

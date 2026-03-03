@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import type { StepData } from '../ScrollySection';
+import { Cite } from '../components/Cite';
 
 function StepText({ children }: { children: ReactNode }) {
   return (
@@ -22,7 +23,7 @@ export const ChainSteps = {
             Every conversation carries an embedding. Every question is intent in vector form. ChatGPT, Claude, Perplexity — they have the richest signal any ad system has ever seen, and no way to connect it to advertisers.
           </p>
           <p style={{ color: '#888', marginTop: 12 }}>
-            Perplexity tried ads. Users revolted. Anthropic promised no ads at all. Billions of high-intent queries, every day, with full semantic resolution. Thrown away — because there's no protocol, no auction, and no trust layer to carry it.
+            Perplexity tried ads. Users revolted<Cite href="https://futurism.com/artificial-intelligence/openai-perplexity-admits-ai-adverts-mistake" n={9} />. Anthropic promised no ads at all<Cite href="https://www.anthropic.com/news/claude-is-a-space-to-think" n={10} />. Billions of high-intent queries, every day, with full semantic resolution. Thrown away — because there's no protocol, no auction, and no trust layer to carry it.
           </p>
         </StepText>
       ),
@@ -35,7 +36,7 @@ export const ChainSteps = {
             The ad industry is building the wrong thing.
           </h2>
           <p style={{ color: '#bbb' }}>
-            Google won't build it — an embedding auction would cannibalize the keyword monopoly. Every improvement to matching quality is a threat to a $250 billion business.
+            Google won't build it — an embedding auction would cannibalize the keyword monopoly. Every improvement to matching quality is a threat to a $265 billion business<Cite href="https://www.visualcapitalist.com/alphabets-revenue-breakdown-in-2024/" n={11} />.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
             SSPs and DSPs are reaching for the wrong piece — bolting embeddings onto the old infrastructure. Embed the page content, score it with cosine similarity, run the same auction. It's a better keyword, not a new system.
