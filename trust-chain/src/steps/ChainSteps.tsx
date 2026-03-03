@@ -98,6 +98,25 @@ export const ChainSteps = {
       ),
     },
     {
+      id: 'zoom-independence',
+      content: (
+        <StepText>
+          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+            Without revenue, chatbots become subsidiaries.
+          </h2>
+          <p style={{ color: '#bbb' }}>
+            OpenAI, Anthropic, Perplexity — none of them are profitable. They burn billions on compute and survive on venture capital. VC money has an expiration date.
+          </p>
+          <p style={{ color: '#bbb', marginTop: 12 }}>
+            When it runs out, the exits are acquisition or subsidy. Microsoft absorbs OpenAI. Google absorbs Gemini's costs because it owns the ad engine. Independent AI companies without a revenue model become features inside megacorps — or instruments of governments that fund them.
+          </p>
+          <p style={{ color: '#888', marginTop: 12 }}>
+            An honest ad layer isn't just about better ads. It's the difference between an open AI ecosystem and one where every model is a loss leader for someone else's business.
+          </p>
+        </StepText>
+      ),
+    },
+    {
       id: 'zoom-businesses',
       content: (
         <StepText>

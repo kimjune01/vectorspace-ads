@@ -147,6 +147,7 @@ export const SURPLUS_BAR_CONFIG: Record<string, SurplusSegment[] | null> = {
   'the-chain': null,
   'the-surface': null,
   'zoom-surveillance': null,
+  'zoom-independence': null,
   'zoom-businesses': null,
 };
 
@@ -201,6 +202,7 @@ export const STEP_VISUAL_MAP: Record<string, VisualState> = {
   'the-chain': 'chain-links',
   'the-surface': 'chain-links',
   'zoom-surveillance': 'chain-links',
+  'zoom-independence': 'chain-links',
   'zoom-businesses': 'chain-links',
 };
 

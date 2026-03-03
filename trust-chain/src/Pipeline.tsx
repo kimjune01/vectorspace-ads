@@ -58,7 +58,7 @@ export function Pipeline({ stepId }: Props) {
         {visualState === 'enclave' && <EnclaveVisual stepId={stepId} />}
         {visualState === 'who-builds' && <WhoBuilds stepId={stepId} />}
         {visualState === 'chain-links' && (
-          <ChainLinks links={CHAIN_LINKS} revealCount={5} showLinks={stepId === 'the-surface' || stepId === 'zoom-surveillance' || stepId === 'zoom-businesses'} />
+          <ChainLinks links={CHAIN_LINKS} revealCount={5} showLinks={stepId === 'the-surface' || stepId === 'zoom-surveillance' || stepId === 'zoom-independence' || stepId === 'zoom-businesses'} />
         )}
       </div>
 
