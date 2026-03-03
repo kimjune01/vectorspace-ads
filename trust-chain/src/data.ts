@@ -197,7 +197,7 @@ export const STEP_VISUAL_MAP: Record<string, VisualState> = {
   'resolution-keywords': 'resolution-keywords',
   'resolution-embeddings': 'resolution-embeddings',
   'gate-opens': 'embedding-field',
-  'protocol-gap': 'protocol-form',
+  'protocol-gap': 'embedding-field',
   'sigma-intro': 'embedding-field',
   'sigma-incentives': 'embedding-field',
   'keywords-tiny-circles': 'embedding-field',
