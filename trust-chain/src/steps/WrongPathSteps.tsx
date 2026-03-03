@@ -55,5 +55,31 @@ export const WrongPathSteps = {
         </StepText>
       ),
     },
+    {
+      id: 'resolution-keywords',
+      content: (
+        <StepText>
+          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+            This is what keywords see.
+          </h2>
+          <p style={{ color: '#bbb' }}>
+            Three words. Three blocks of color. Everything else — the downhill, the asymmetry, the biomechanics — thrown away. The ad system is matching you at the lowest resolution possible.
+          </p>
+        </StepText>
+      ),
+    },
+    {
+      id: 'resolution-embeddings',
+      content: (
+        <StepText>
+          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+            This is what an embedding sees.
+          </h2>
+          <p style={{ color: '#bbb' }}>
+            The same query. Every word preserved. Hundreds of semantic dimensions — anatomy, biomechanics, activity, condition — all encoded as a single coordinate. The detail was always there. Keywords just couldn't carry it.
+          </p>
+        </StepText>
+      ),
+    },
   ] satisfies StepData[],
 };

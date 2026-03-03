@@ -115,6 +115,8 @@ export const SURPLUS_BAR_CONFIG: Record<string, SurplusSegment[] | null> = {
     { label: 'Google', color: '#FF4444', width: 0.70 },
     { label: 'Advertiser', color: '#4CAF50', width: 0.15 },
   ],
+  'resolution-keywords': null,
+  'resolution-embeddings': null,
   // Field section: bar stays ghosted — let the embedding field do the talking
   'gate-opens': null,
   'protocol-gap': null,
@@ -170,6 +172,8 @@ export type VisualState =
   | 'chain-links'
   | 'protocol-form'
   | 'enclave'
+  | 'resolution-keywords'
+  | 'resolution-embeddings'
   | 'surveillance-compare'
   | 'absorption'
   | 'populated-field';
@@ -190,6 +194,8 @@ export const STEP_VISUAL_MAP: Record<string, VisualState> = {
   'wrong-path-bins': 'keyword-bin',
   'wrong-path-auction': 'bid-paddles',
   'wrong-path-receipt': 'receipt-google',
+  'resolution-keywords': 'resolution-keywords',
+  'resolution-embeddings': 'resolution-embeddings',
   'gate-opens': 'embedding-field',
   'protocol-gap': 'embedding-field',
   'sigma-intro': 'embedding-field',

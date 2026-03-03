@@ -12,6 +12,7 @@ import { ChatMockup } from './components/ChatMockup';
 import { WhoBuilds } from './components/WhoBuilds';
 import { EnclaveVisual } from './components/EnclaveVisual';
 import { SurveillanceCompare, AbsorptionVisual, PopulatedField } from './components/ZoomVisuals';
+import { ResolutionCompare } from './components/ResolutionCompare';
 import { KEYWORDS, DISCARDED_WORDS, GOOGLE_RECEIPT, CHAIN_LINKS } from './data';
 
 interface Props {
@@ -61,6 +62,8 @@ export function Pipeline({ stepId }: Props) {
         {visualState === 'chain-links' && (
           <ChainLinks links={CHAIN_LINKS} revealCount={5} showLinks={stepId === 'the-surface'} />
         )}
+        {visualState === 'resolution-keywords' && <ResolutionCompare mode="keywords" />}
+        {visualState === 'resolution-embeddings' && <ResolutionCompare mode="embeddings" />}
         {visualState === 'surveillance-compare' && <SurveillanceCompare />}
         {visualState === 'absorption' && <AbsorptionVisual />}
         {visualState === 'populated-field' && <PopulatedField />}
