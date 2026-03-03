@@ -148,7 +148,11 @@ export const SURPLUS_BAR_CONFIG: Record<string, SurplusSegment[] | null> = {
   'the-surface': null,
   'zoom-surveillance': null,
   'zoom-independence': null,
-  'zoom-businesses': null,
+  'zoom-businesses': [
+    { label: 'Publisher', color: '#2196F3', width: 0.20 },
+    { label: 'Exchange', color: '#673AB7', width: 0.10 },
+    { label: 'Advertiser', color: '#4CAF50', width: 0.70 },
+  ],
 };
 
 // Pipeline step configuration — maps stepId to visual state
@@ -165,7 +169,10 @@ export type VisualState =
   | 'who-builds'
   | 'chain-links'
   | 'protocol-form'
-  | 'enclave';
+  | 'enclave'
+  | 'surveillance-compare'
+  | 'absorption'
+  | 'populated-field';
 
 export const STEP_VISUAL_MAP: Record<string, VisualState> = {
   'intro-1999': 'query-banner',
@@ -201,9 +208,9 @@ export const STEP_VISUAL_MAP: Record<string, VisualState> = {
   'incumbents-wrong': 'who-builds',
   'the-chain': 'chain-links',
   'the-surface': 'chain-links',
-  'zoom-surveillance': 'chain-links',
-  'zoom-independence': 'chain-links',
-  'zoom-businesses': 'chain-links',
+  'zoom-surveillance': 'surveillance-compare',
+  'zoom-independence': 'absorption',
+  'zoom-businesses': 'populated-field',
 };
 
 // Chat messages for ChatMockup

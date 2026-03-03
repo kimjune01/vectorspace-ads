@@ -11,6 +11,7 @@ import { EmbeddingField } from './components/EmbeddingField';
 import { ChatMockup } from './components/ChatMockup';
 import { WhoBuilds } from './components/WhoBuilds';
 import { EnclaveVisual } from './components/EnclaveVisual';
+import { SurveillanceCompare, AbsorptionVisual, PopulatedField } from './components/ZoomVisuals';
 import { KEYWORDS, DISCARDED_WORDS, GOOGLE_RECEIPT, CHAIN_LINKS } from './data';
 
 interface Props {
@@ -58,8 +59,11 @@ export function Pipeline({ stepId }: Props) {
         {visualState === 'enclave' && <EnclaveVisual stepId={stepId} />}
         {visualState === 'who-builds' && <WhoBuilds stepId={stepId} />}
         {visualState === 'chain-links' && (
-          <ChainLinks links={CHAIN_LINKS} revealCount={5} showLinks={stepId === 'the-surface' || stepId === 'zoom-surveillance' || stepId === 'zoom-independence' || stepId === 'zoom-businesses'} />
+          <ChainLinks links={CHAIN_LINKS} revealCount={5} showLinks={stepId === 'the-surface'} />
         )}
+        {visualState === 'surveillance-compare' && <SurveillanceCompare />}
+        {visualState === 'absorption' && <AbsorptionVisual />}
+        {visualState === 'populated-field' && <PopulatedField />}
       </div>
 
       <style>{`
