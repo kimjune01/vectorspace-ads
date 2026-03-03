@@ -78,5 +78,43 @@ export const ChainSteps = {
         </StepText>
       ),
     },
+    {
+      id: 'zoom-surveillance',
+      content: (
+        <StepText>
+          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+            Keyword ads needed surveillance to work. Embedding ads don't.
+          </h2>
+          <p style={{ color: '#bbb' }}>
+            The entire behavioral targeting industry — cookies, fingerprinting, cross-site tracking, data brokers — exists because keywords couldn't capture intent. So the industry tracked <em>people</em> instead.
+          </p>
+          <p style={{ color: '#bbb', marginTop: 12 }}>
+            An embedding auction matches on what you <em>said</em>, not what you <em>did</em>. The vector comes from the conversation. No tracking pixel. No profile. No third party sees it. The sealed enclave runs the auction and forgets.
+          </p>
+          <p style={{ color: '#888', marginTop: 12 }}>
+            The ad system that made the internet hostile to privacy was never the only option. It was just the first one that worked.
+          </p>
+        </StepText>
+      ),
+    },
+    {
+      id: 'zoom-businesses',
+      content: (
+        <StepText>
+          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+            Dr. Chen is one specialist. There are millions.
+          </h2>
+          <p style={{ color: '#bbb' }}>
+            The immigration lawyer who speaks Tagalog. The HVAC tech who specializes in century homes. The tutor who teaches calculus to kids with ADHD. Every one of them is invisible to keyword ads — too niche to win a bid, too specific to fit a category.
+          </p>
+          <p style={{ color: '#bbb', marginTop: 12 }}>
+            An embedding auction makes them discoverable for the first time — matched to the people who actually need them, at a price they can afford. Not because someone tracked a user across the internet, but because the user described exactly what they needed.
+          </p>
+          <p style={{ color: '#888', marginTop: 12 }}>
+            That's not an optimization. That's a different economy.
+          </p>
+        </StepText>
+      ),
+    },
   ] satisfies StepData[],
 };

@@ -146,6 +146,8 @@ export const SURPLUS_BAR_CONFIG: Record<string, SurplusSegment[] | null> = {
   'incumbents-wrong': null,
   'the-chain': null,
   'the-surface': null,
+  'zoom-surveillance': null,
+  'zoom-businesses': null,
 };
 
 // Pipeline step configuration — maps stepId to visual state
@@ -198,6 +200,8 @@ export const STEP_VISUAL_MAP: Record<string, VisualState> = {
   'incumbents-wrong': 'who-builds',
   'the-chain': 'chain-links',
   'the-surface': 'chain-links',
+  'zoom-surveillance': 'chain-links',
+  'zoom-businesses': 'chain-links',
 };
 
 // Chat messages for ChatMockup
