@@ -10,13 +10,6 @@ function StepText({ children }: { children: ReactNode }) {
   );
 }
 
-function Label({ children }: { children: ReactNode }) {
-  return (
-    <p style={{ color: '#888', marginBottom: 12, fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-      {children}
-    </p>
-  );
-}
 
 export const FieldSteps = {
   steps: [
@@ -24,7 +17,7 @@ export const FieldSteps = {
       id: 'gate-opens',
       content: (
         <StepText>
-          <Label>What if</Label>
+
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
             What if the bin wasn't a bin?
           </h2>
@@ -53,7 +46,7 @@ export const FieldSteps = {
       id: 'protocol-gap',
       content: (
         <StepText>
-          <Label>The problem</Label>
+
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
             There's one problem.
           </h2>
@@ -61,11 +54,7 @@ export const FieldSteps = {
             Today's ad protocol can't carry this. OpenRTB<Cite href="https://iabtechlab.com/standards/openrtb/" n={8} /> — the standard behind every real-time bid request — has fields for keywords and category codes. No field for a vector.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            The full meaning would die at the protocol boundary. The fix is one new field:{' '}
-            <span style={{ fontFamily: "'JetBrains Mono', monospace", color: '#2196F3' }}>
-              embedding: [0.70, 0.68, ...]
-            </span>
-            . That's the bottleneck.
+            The full meaning dies at the protocol boundary. The fix is three optional fields. That's the bottleneck.
           </p>
           <p style={{ color: '#888', marginTop: 12 }}>
             But assume it exists. Here's what the field looks like.
@@ -77,15 +66,18 @@ export const FieldSteps = {
       id: 'sigma-intro',
       content: (
         <StepText>
-          <Label>So</Label>
+
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
-            Each advertiser claims a spot.
+            Each advertiser claims a spot — and a radius.
           </h2>
           <p style={{ color: '#bbb' }}>
-            Dr. Chen treats runners with eccentric loading injuries — your exact problem. She sets a narrow sigma. A small, bright circle: <em>"I'm excellent at this one thing."</em>
+            In the field, every advertiser declares two things: <em>where</em> they stand (their embedding) and <em>how far</em> they reach (their sigma — σ). Sigma is their self-declared circle of competence.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            Metro Orthopedic treats everything knee-related. Wide sigma. Big, dim circle: <em>"I can handle most knee problems, none of them exceptionally."</em>
+            Dr. Chen treats runners with eccentric loading injuries — your exact problem. Narrow σ. Small, bright circle: <em>"I'm excellent at this one thing."</em>
+          </p>
+          <p style={{ color: '#bbb', marginTop: 12 }}>
+            Metro Orthopedic treats everything knee-related. Wide σ. Big, dim circle: <em>"I can handle most knee problems, none of them exceptionally."</em>
           </p>
         </StepText>
       ),
@@ -94,7 +86,7 @@ export const FieldSteps = {
       id: 'sigma-incentives',
       content: (
         <StepText>
-          <Label>The question</Label>
+
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
             What stops Metro from claiming to be a specialist too?
           </h2>
@@ -130,7 +122,7 @@ export const FieldSteps = {
       id: 'hotelling',
       content: (
         <StepText>
-          <Label>The risk</Label>
+
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
             If everyone can move freely, everyone moves to the center.
           </h2>
@@ -150,7 +142,7 @@ export const FieldSteps = {
       id: 'relocation-fee',
       content: (
         <StepText>
-          <Label>The fix</Label>
+
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
             It costs money to move.
           </h2>
@@ -170,7 +162,7 @@ export const FieldSteps = {
       id: 'everyone-wins',
       content: (
         <StepText>
-          <Label>The result</Label>
+
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
             Greed aligns.
           </h2>
@@ -190,7 +182,7 @@ export const FieldSteps = {
       id: 'exchange-trust',
       content: (
         <StepText>
-          <Label>One problem remains</Label>
+
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
             What keeps the exchange honest?
           </h2>

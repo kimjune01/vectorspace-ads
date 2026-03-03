@@ -72,6 +72,8 @@ export function ProtocolForm({ stepId: _stepId }: Props) {
             background: line.highlight ? 'rgba(137, 180, 250, 0.08)' : 'transparent',
             borderLeft: line.highlight ? '3px solid #89b4fa' : '3px solid transparent',
             padding: '0 12px 0 0',
+            opacity: 0,
+            animation: `protoLineIn 0.3s ease ${line.lineNum * 0.08}s forwards`,
           }}>
             {/* Line number */}
             <span style={{
@@ -139,6 +141,12 @@ export function ProtocolForm({ stepId: _stepId }: Props) {
           JSON · UTF-8
         </span>
       </div>
+      <style>{`
+        @keyframes protoLineIn {
+          from { opacity: 0; transform: translateX(-8px); }
+          to { opacity: 1; transform: translateX(0); }
+        }
+      `}</style>
     </div>
   );
 }

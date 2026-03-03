@@ -10,13 +10,6 @@ function StepText({ children }: { children: ReactNode }) {
   );
 }
 
-function Label({ children }: { children: ReactNode }) {
-  return (
-    <p style={{ color: '#888', marginBottom: 12, fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-      {children}
-    </p>
-  );
-}
 
 export const HistorySteps = {
   steps: [
@@ -24,7 +17,7 @@ export const HistorySteps = {
       id: 'history-overture',
       content: (
         <StepText>
-          <Label>And then</Label>
+
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
             Someone connects ads to intent.
           </h2>
@@ -41,7 +34,7 @@ export const HistorySteps = {
       id: 'history-quality-score',
       content: (
         <StepText>
-          <Label>The catch</Label>
+
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
             The highest bidder always wins.
           </h2>
@@ -77,7 +70,7 @@ export const HistorySteps = {
       id: 'history-consolidation',
       content: (
         <StepText>
-          <Label>Meanwhile</Label>
+
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
             One company buys all three layers.
           </h2>
@@ -94,7 +87,7 @@ export const HistorySteps = {
       id: 'history-degradation',
       content: (
         <StepText>
-          <Label>And so</Label>
+
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
             Then Google starts making the matching worse on purpose.
           </h2>
@@ -133,7 +126,7 @@ export const HistorySteps = {
       id: 'history-chat',
       content: (
         <StepText>
-          <Label>However</Label>
+
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
             Google can't be forced to change. But it can be routed around.
           </h2>
@@ -162,7 +155,7 @@ export const HistorySteps = {
       id: 'history-closing',
       content: (
         <StepText>
-          <Label>Except</Label>
+
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
             Google is already absorbing the new surface.
           </h2>
