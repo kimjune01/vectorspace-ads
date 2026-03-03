@@ -129,6 +129,9 @@ export const ChainSteps = {
           <p style={{ color: '#bbb', marginTop: 12 }}>
             An embedding auction makes them discoverable for the first time — matched to the people who actually need them, at a price they can afford. Not because someone tracked a user across the internet, but because the user described exactly what they needed.
           </p>
+          <p style={{ color: '#bbb', marginTop: 12 }}>
+            AI is replacing tasks. These are the people who do what AI can't — hands-on, local, specialized work that requires showing up. Connecting them to the people who need them isn't charity. It's the other half of the AI economy: the part where humans still matter.
+          </p>
           <p style={{ color: '#888', marginTop: 12 }}>
             That's not an optimization. That's a different economy.
           </p>
