@@ -61,6 +61,12 @@ export function ChatMockup({ stepId }: Props) {
     <div style={{
       width: '100%',
       maxWidth: 440,
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 16,
+    }}>
+    <div style={{
+      width: '100%',
       background: colors.chat.bg,
       borderRadius: 12,
       border: '1px solid #2a2a4a',
@@ -293,17 +299,6 @@ export function ChatMockup({ stepId }: Props) {
           </div>
         )}
 
-        {/* Receipt */}
-        {showReceipt && (
-          <div style={{
-            transform: 'scale(0.85)',
-            transformOrigin: 'top center',
-            opacity: 0,
-            animation: 'msgSlideIn 0.5s ease 0.5s forwards',
-          }}>
-            <Receipt data={EMBEDDING_RECEIPT} variant="embedding" visible={true} />
-          </div>
-        )}
       </div>
 
       {/* Input field at bottom */}
@@ -365,6 +360,19 @@ export function ChatMockup({ stepId }: Props) {
           30% { transform: translateY(-4px); opacity: 1; }
         }
       `}</style>
+    </div>
+
+      {/* Receipt — below the chat box */}
+      {showReceipt && (
+        <div style={{
+          transform: 'scale(0.85)',
+          transformOrigin: 'top center',
+          opacity: 0,
+          animation: 'msgSlideIn 0.5s ease 0.5s forwards',
+        }}>
+          <Receipt data={EMBEDDING_RECEIPT} variant="embedding" visible={true} />
+        </div>
+      )}
     </div>
   );
 }

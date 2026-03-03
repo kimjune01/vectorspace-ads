@@ -86,6 +86,7 @@ export function CTA() {
           <a href="mailto:june@june.kim" style={{ color: '#666', textDecoration: 'none', borderBottom: '1px solid #444' }}>
             june@june.kim
           </a>
+          {' '}· currently looking for work
         </p>
         <p style={{ marginTop: 8 }}>
           Written with{' '}
