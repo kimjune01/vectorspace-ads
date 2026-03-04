@@ -22,7 +22,7 @@ export const HistorySteps = {
             Someone connects ads to intent.
           </h2>
           <p style={{ color: '#bbb' }}>
-            1998. A company called <a href="https://en.wikipedia.org/wiki/Pay-per-click" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>GoTo.com</a> lets businesses bid on search keywords. You search "knee pain." A physio ad appears. You click, they pay. No click, no charge.
+            A company called <a href="https://en.wikipedia.org/wiki/Pay-per-click" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>GoTo.com</a> lets businesses bid on search keywords. You search "knee pain." A physio ad appears. You click, they pay. No click, no charge.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
             For the first time, the ad <em>is the answer to your question</em>.
@@ -76,7 +76,7 @@ export const HistorySteps = {
             Then the matching gets worse. On purpose.
           </h2>
           <p style={{ color: '#bbb' }}>
-            Google <a href="https://searchengineland.com/google-enhanced-campaigns-now-includes-close-variants-mandatory-200068" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>forced</a> close variants, <a href="https://searchengineland.com/google-ads-close-variants-reordered-words-added-removed-function-words-303145" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>reordered</a> your keywords, <a href="https://searchengineland.com/googles-exact-match-close-variants-expand-again-now-include-same-meaning-variations-305056" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>redefined</a> exact match, <a href="https://searchengineland.com/google-ads-to-limit-search-terms-reporting-citing-privacy-340137" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>hid</a> your search terms, <a href="https://searchengineland.com/google-expands-phrase-match-to-include-broad-match-modifier-traffic-345874" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>killed</a> broad match modifier, and <a href="https://searchengineland.com/google-ads-broad-match-default-new-search-campaigns-444003" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>defaulted</a> every new campaign to broad match.
+            Google <a href="https://searchengineland.com/google-enhanced-campaigns-now-includes-close-variants-mandatory-200068" target="_blank" rel="noopener noreferrer" style={{ color: '#cc6666', fontWeight: 600, textDecoration: 'underline', textDecorationColor: '#994444' }}>forced</a> close variants, <a href="https://searchengineland.com/google-ads-close-variants-reordered-words-added-removed-function-words-303145" target="_blank" rel="noopener noreferrer" style={{ color: '#cc6666', fontWeight: 600, textDecoration: 'underline', textDecorationColor: '#994444' }}>reordered</a> your keywords, <a href="https://searchengineland.com/googles-exact-match-close-variants-expand-again-now-include-same-meaning-variations-305056" target="_blank" rel="noopener noreferrer" style={{ color: '#cc6666', fontWeight: 600, textDecoration: 'underline', textDecorationColor: '#994444' }}>redefined</a> exact match, <a href="https://searchengineland.com/google-ads-to-limit-search-terms-reporting-citing-privacy-340137" target="_blank" rel="noopener noreferrer" style={{ color: '#cc6666', fontWeight: 600, textDecoration: 'underline', textDecorationColor: '#994444' }}>hid</a> your search terms, <a href="https://searchengineland.com/google-expands-phrase-match-to-include-broad-match-modifier-traffic-345874" target="_blank" rel="noopener noreferrer" style={{ color: '#cc6666', fontWeight: 600, textDecoration: 'underline', textDecorationColor: '#994444' }}>killed</a> broad match modifier, and <a href="https://searchengineland.com/google-ads-broad-match-default-new-search-campaigns-444003" target="_blank" rel="noopener noreferrer" style={{ color: '#cc6666', fontWeight: 600, textDecoration: 'underline', textDecorationColor: '#994444' }}>defaulted</a> every new campaign to broad match.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
             Each change made the matching vaguer and the auction more crowded. More advertisers per query means higher bids. <strong style={{ color: '#fff' }}>Google makes more money when the matching is vague.</strong>
@@ -109,10 +109,10 @@ export const HistorySteps = {
         <StepText>
 
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
-            Google can't be forced to change. But it can be routed around.
+            It's 2026. Your knee still hurts.
           </h2>
           <p style={{ color: '#bbb' }}>
-            It's 2026. Your knee still hurts. And millions of people are asking chatbots the questions they used to type into Google. You open a chat:
+            Google can't be forced to change. But it can be routed around. Millions of people are asking chatbots the questions they used to type into Google. You open a chat:
           </p>
           <p style={{
             fontFamily: "'JetBrains Mono', monospace",

@@ -71,7 +71,7 @@ export const ChainSteps = {
       content: (
         <StepText>
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
-            Nobody owns the chat surface. Yet.
+            The chat surface still serves you. For now.
           </h2>
           <p style={{ color: '#bbb' }}>
             ChatGPT, Claude, Perplexity, Gemini, open-source models. They all produce embeddings. The distribution is fragmented, which means it's <em>available</em>. No single company controls it.

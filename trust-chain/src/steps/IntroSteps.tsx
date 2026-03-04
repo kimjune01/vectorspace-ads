@@ -44,7 +44,7 @@ export const IntroSteps = {
             It's 1999. Your knee hurts.
           </h2>
           <p style={{ color: '#bbb' }}>
-            You just started running. Something's wrong when you go downhill. You don't know what to call it.
+            You just started running. Something's wrong when you go downhill. You try to look for it on the internet, but it's clumsy.
           </p>
         </StepText>
       ),

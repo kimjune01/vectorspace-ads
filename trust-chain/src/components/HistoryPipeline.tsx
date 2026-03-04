@@ -92,7 +92,37 @@ export function HistoryPipeline({ stepId }: Props) {
       gap: 0,
       width: '100%',
       maxWidth: 440,
+      position: 'relative',
+      overflow: 'hidden',
     }}>
+      {/* Emoji explosion — bursts when Google buys competitors */}
+      {isFirstAppearance && ['💰','💵','🤑','💸','💰','💵','💸','🤑','💰','💵','💸','💰'].map((emoji, i) => {
+        const angle = (i / 12) * 360;
+        const rad = angle * Math.PI / 180;
+        const dist = 120 + (i % 3) * 40;
+        const tx = Math.cos(rad) * dist;
+        const ty = Math.sin(rad) * dist;
+        return (
+          <div
+            key={`emoji-${i}`}
+            style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              fontSize: ['3rem', '3.9rem', '2.7rem'][i % 3],
+              opacity: 0,
+              animation: `emojiExplode 2s ease-out 1.8s forwards`,
+              zIndex: 10,
+              pointerEvents: 'none',
+              // @ts-ignore
+              '--tx': `${tx}px`,
+              '--ty': `${ty}px`,
+            } as any}
+          >
+            {emoji}
+          </div>
+        );
+      })}
       {/* Top row: old pipeline (+ new pipeline when dimmed) */}
       <div style={{
         display: 'flex',
@@ -454,6 +484,11 @@ export function HistoryPipeline({ stepId }: Props) {
         @keyframes consolidateOverlay {
           from { opacity: 0; }
           to { opacity: 1; }
+        }
+        @keyframes emojiExplode {
+          0% { opacity: 1; transform: translate(-50%, -50%) scale(0); }
+          30% { opacity: 1; transform: translate(calc(-50% + var(--tx) * 0.6), calc(-50% + var(--ty) * 0.6)) scale(1.2); }
+          100% { opacity: 0; transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(0.5); }
         }
       `}</style>
     </div>

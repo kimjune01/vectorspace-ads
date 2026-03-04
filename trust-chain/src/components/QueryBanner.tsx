@@ -6,49 +6,175 @@ interface Props {
 
 export function QueryBanner({ stepId }: Props) {
   const isTitle = stepId === 'intro-title';
-  const isBareText = stepId === 'intro-1999' || isTitle;
-  const showBox = !isBareText;
+  const is1999 = stepId === 'intro-1999';
+  const isBare = isTitle || is1999;
+  const showGoogle = !isBare;
+  const showBox = !isBare;
+  const showImac = stepId === 'intro-1999';
   const showResults = stepId === 'intro-results' || stepId === 'intro-ads';
   const showBanner = stepId === 'intro-ads';
   const showSponsoredAd = stepId === 'history-overture';
+  const isEarlyGoogle = stepId === 'intro-search' || stepId === 'intro-results' || stepId === 'intro-ads' || stepId === 'history-overture';
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
-      {/* Google logo text */}
-      {showBox && (
-        <div style={{
-          fontSize: '1.6rem',
-          fontWeight: 700,
-          letterSpacing: '-0.02em',
-          opacity: 0,
-          animation: 'fadeSlideUp 0.3s ease forwards',
-        }}>
-          <span style={{ color: '#4285F4' }}>G</span>
-          <span style={{ color: '#EA4335' }}>o</span>
-          <span style={{ color: '#FBBC05' }}>o</span>
-          <span style={{ color: '#4285F4' }}>g</span>
-          <span style={{ color: '#34A853' }}>l</span>
-          <span style={{ color: '#EA4335' }}>e</span>
-        </div>
-      )}
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20, position: 'relative' }}>
 
-      {/* Search box */}
-      <div style={{
-        fontFamily: fonts.body,
-        fontSize: '0.95rem',
-        color: showBox ? '#222' : isTitle ? '#333' : '#fff',
-        padding: showBox ? '8px 16px' : '8px 0',
-        background: showBox ? '#fff' : 'transparent',
-        borderRadius: showBox ? 24 : 0,
-        border: showBox ? '1px solid #dfe1e5' : '1px solid transparent',
-        boxShadow: showBox ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
-        textAlign: 'center',
-        transition: 'padding 0.5s, background 0.5s, border-color 0.5s',
-        animation: 'fadeSlideUp 0.4s ease forwards',
-        minWidth: showBox ? 280 : undefined,
-      }}>
-        knee pain running downhill
+      {/* Google logo — fades in from intro-search onward */}
+      <img
+        src={`${import.meta.env.BASE_URL}google-1999.png`}
+        alt="Google"
+        style={{
+          width: 180,
+          opacity: showGoogle ? 1 : 0,
+          transform: showGoogle ? 'translateY(0)' : 'translateY(12px)',
+          transition: 'opacity 0.4s ease, transform 0.4s ease',
+          zIndex: 3,
+          position: 'relative',
+        }}
+      />
+
+      {/* Search box + iMac wrapper — iMac sits behind the search bar */}
+      <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        {/* iMac behind the search bar — fades in/out */}
+        <img
+          src={`${import.meta.env.BASE_URL}imac.png`}
+          alt="iMac G3"
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -45%)',
+            width: 420,
+            zIndex: 1,
+            pointerEvents: 'none',
+            opacity: showImac ? 1 : 0,
+            transition: 'opacity 0.6s ease',
+          }}
+        />
+
+        {/* Yahoo + Ask logos — inside the iMac, above the search text */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 12,
+          zIndex: 2,
+          position: 'relative',
+          opacity: showImac ? 1 : 0,
+          height: showImac ? undefined : 0,
+          overflow: 'hidden',
+          transition: 'opacity 0.5s ease',
+          marginBottom: showImac ? 6 : 0,
+        }}>
+          <img src={`${import.meta.env.BASE_URL}yahoo.png`} alt="Yahoo" style={{ height: 24, imageRendering: 'pixelated' as any }} />
+          <img src={`${import.meta.env.BASE_URL}ask.png`} alt="Ask" style={{ height: 24, imageRendering: 'pixelated' as any }} />
+          <img src={`${import.meta.env.BASE_URL}aol.png`} alt="AOL" style={{ height: 24, imageRendering: 'pixelated' as any }} />
+          <img src={`${import.meta.env.BASE_URL}netscape.webp`} alt="Netscape" style={{ height: 24, imageRendering: 'pixelated' as any }} />
+        </div>
+
+        {/* Search box — ALWAYS visible, the constant anchor */}
+        <div style={{
+          fontFamily: is1999 ? '"Press Start 2P", "Courier New", monospace' : isEarlyGoogle ? '"Times New Roman", Georgia, serif' : fonts.body,
+          fontSize: is1999 ? '0.6rem' : showBox ? '0.95rem' : '1.1rem',
+          color: showBox ? '#222' : '#fff',
+          padding: showBox ? '8px 16px' : '0',
+          background: showBox ? '#fff' : 'transparent',
+          borderRadius: showBox ? (isEarlyGoogle ? 2 : 24) : 0,
+          border: showBox ? (isEarlyGoogle ? '2px solid #999' : '1px solid #dfe1e5') : 'none',
+          boxShadow: showBox ? (isEarlyGoogle ? 'inset 1px 1px 3px rgba(0,0,0,0.2)' : '0 1px 3px rgba(0,0,0,0.1)') : 'none',
+          textAlign: 'center',
+          minWidth: showBox ? 280 : undefined,
+          zIndex: 2,
+          position: 'relative',
+          transition: 'all 0.5s ease',
+          textShadow: is1999 ? '0 0 6px rgba(255, 255, 255, 0.3)' : 'none',
+          imageRendering: is1999 ? 'pixelated' as any : undefined,
+        }}>
+          knee pain running downhill
+        </div>
+
+        {/* "I'm Feeling Lucky" button — early Google era */}
+        <div style={{
+          display: 'flex',
+          gap: 8,
+          zIndex: 2,
+          position: 'relative',
+          opacity: isEarlyGoogle ? 1 : 0,
+          height: isEarlyGoogle ? undefined : 0,
+          overflow: 'hidden',
+          transition: 'opacity 0.4s ease',
+          marginTop: isEarlyGoogle ? 8 : 0,
+        }}>
+          {['Google Search', "I'm Feeling Lucky"].map((label) => (
+            <button
+              key={label}
+              className="retro-btn"
+              onClick={(e) => {
+                const btn = e.currentTarget;
+                btn.style.borderStyle = 'inset';
+                btn.style.paddingTop = '5px';
+                btn.style.paddingLeft = '13px';
+                btn.style.paddingBottom = '3px';
+                btn.style.paddingRight = '11px';
+                setTimeout(() => {
+                  btn.style.borderStyle = 'outset';
+                  btn.style.paddingTop = '4px';
+                  btn.style.paddingLeft = '12px';
+                  btn.style.paddingBottom = '4px';
+                  btn.style.paddingRight = '12px';
+                  const next = document.querySelector('[data-step-id="intro-results"]');
+                  if (next) next.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 150);
+              }}
+              style={{
+                fontFamily: '"Times New Roman", Georgia, serif',
+                fontSize: '0.75rem',
+                padding: '4px 12px',
+                background: '#e0e0e0',
+                border: '2px outset #ccc',
+                borderRadius: 0,
+                cursor: 'pointer',
+                color: '#222',
+              }}>
+              {label}
+            </button>
+          ))}
+        </div>
       </div>
+
+      {/* 1999 props — off to the side, don't affect layout */}
+      <img
+        src={`${import.meta.env.BASE_URL}swingline.png`}
+        alt="Red Swingline stapler"
+        style={{
+          position: 'absolute',
+          right: -20,
+          bottom: 60,
+          width: 134,
+          zIndex: 3,
+          pointerEvents: 'none',
+          opacity: showImac ? 1 : 0,
+          transform: showImac ? 'rotate(-8deg)' : 'rotate(-8deg) translateY(12px)',
+          transition: 'opacity 0.6s ease 0.3s, transform 0.6s ease 0.3s',
+          filter: 'drop-shadow(0 4px 12px rgba(255,0,0,0.3))',
+        }}
+      />
+      <img
+        src={`${import.meta.env.BASE_URL}nbgray.avif`}
+        alt=""
+        style={{
+          position: 'absolute',
+          right: 50,
+          bottom: 30,
+          width: 240,
+          zIndex: 3,
+          pointerEvents: 'none',
+          opacity: showImac ? 1 : 0,
+          transform: showImac ? 'rotate(5deg)' : 'rotate(5deg) translateY(12px)',
+          transition: 'opacity 0.6s ease 0.4s, transform 0.6s ease 0.4s',
+          filter: 'drop-shadow(0 4px 12px rgba(100,100,100,0.4))',
+        }}
+      />
 
       {/* Ten blue links */}
       <div style={{
@@ -99,6 +225,7 @@ export function QueryBanner({ stepId }: Props) {
       </div>
 
       {/* Garish 468x60 banner ad — late-90s style */}
+      <a href="https://asdf.com" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', width: '100%', maxWidth: 320, display: 'block' }}>
       <div style={{
         width: '100%',
         maxWidth: 320,
@@ -140,7 +267,7 @@ export function QueryBanner({ stepId }: Props) {
           fontFamily: '"Comic Sans MS", "Arial Black", sans-serif',
           letterSpacing: '0.02em',
         }}>
-          ★ WIN A FREE iPOD!!! ★
+          ★ WIN A FREE WALKMAN!!! ★
         </div>
         <div style={{
           fontSize: '0.6rem',
@@ -151,6 +278,7 @@ export function QueryBanner({ stepId }: Props) {
           {'>>>'} CLICK HERE — You are the 1,000,000th visitor! {'<<<'}
         </div>
       </div>
+      </a>
 
       {/* Sponsored ad — Overture/early Google ad (history-overture) */}
       <div style={{
