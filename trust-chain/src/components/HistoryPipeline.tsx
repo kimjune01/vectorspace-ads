@@ -29,6 +29,7 @@ interface NodeData {
   isGoogle: boolean;
   isMiddleman: boolean;
   color?: string;
+  href?: string;
 }
 
 const MIDDLEMAN_COLORS: Record<string, string> = {
@@ -40,9 +41,9 @@ const MIDDLEMAN_COLORS: Record<string, string> = {
 function getNodes(subState: SubState): NodeData[] {
   const base: NodeData[] = [
     { label: 'Publisher', role: 'Seller', isGoogle: false, isMiddleman: false },
-    { label: 'SSP', role: 'Supply-side platform', isGoogle: false, isMiddleman: true },
-    { label: 'Exchange', role: 'Ad marketplace', isGoogle: false, isMiddleman: true },
-    { label: 'DSP', role: 'Demand-side platform', isGoogle: false, isMiddleman: true },
+    { label: 'SSP', role: 'Supply-side platform', isGoogle: false, isMiddleman: true, href: 'https://en.wikipedia.org/wiki/DoubleClick' },
+    { label: 'Exchange', role: 'Ad marketplace', isGoogle: false, isMiddleman: true, href: 'https://en.wikipedia.org/wiki/AdMob' },
+    { label: 'DSP', role: 'Demand-side platform', isGoogle: false, isMiddleman: true, href: 'https://en.wikipedia.org/wiki/Invite_Media' },
     { label: 'Advertiser', role: 'Buyer', isGoogle: false, isMiddleman: false },
   ];
 
@@ -67,6 +68,18 @@ function GoogleLogo({ size = '1.1rem' }: { size?: string }) {
       <span style={{ color: '#4285F4' }}>G</span>
     </span>
   );
+}
+
+/** Renders as <a> when href is provided, <div> otherwise */
+function NodeBox({ href, style, children }: { href?: string; style: React.CSSProperties; children: React.ReactNode }) {
+  if (href) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" style={{ ...style, textDecoration: 'none', cursor: 'pointer' }}>
+        {children}
+      </a>
+    );
+  }
+  return <div style={style}>{children}</div>;
 }
 
 export function HistoryPipeline({ stepId }: Props) {
@@ -182,24 +195,26 @@ export function HistoryPipeline({ stepId }: Props) {
                   </div>
                 )}
                 {/* Node */}
-                <div style={{
-                  width: nodeW,
-                  height: nodeH,
-                  borderRadius: 10,
-                  border: `2px solid ${nodeColor}`,
-                  background: bgColor,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: 8,
-                  position: 'relative',
-                  transition: 'border-color 0.5s, background 0.5s, width 0.5s, height 0.5s',
-                  opacity: isFirstAppearance && node.isMiddleman ? 0 : 1,
-                  animation: isFirstAppearance && node.isMiddleman
-                    ? `fadeSlideDown 0.4s ease ${staggerDelay} forwards`
-                    : 'none',
-                  boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
-                }}>
+                <NodeBox
+                  href={node.isGoogle ? node.href : undefined}
+                  style={{
+                    width: nodeW,
+                    height: nodeH,
+                    borderRadius: 10,
+                    border: `2px solid ${nodeColor}`,
+                    background: bgColor,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 8,
+                    position: 'relative',
+                    transition: 'border-color 0.5s, background 0.5s, width 0.5s, height 0.5s',
+                    opacity: isFirstAppearance && node.isMiddleman ? 0 : 1,
+                    animation: isFirstAppearance && node.isMiddleman
+                      ? `fadeSlideDown 0.4s ease ${staggerDelay} forwards`
+                      : 'none',
+                    boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
+                  }}>
                   {/* Google overlay — fades in at 1.8s for consolidation */}
                   {showGoogleTransition && (
                     <div style={{
@@ -248,7 +263,7 @@ export function HistoryPipeline({ stepId }: Props) {
                       {node.role}
                     </div>
                   </div>
-                </div>
+                </NodeBox>
               </div>
             );
           })}

@@ -319,6 +319,7 @@ export function QueryBanner({ stepId }: Props) {
               </div>
 
               {/* Banner ad — paints second */}
+              <a href="https://asdf.com" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', display: 'block', pointerEvents: 'auto' }}>
               <div style={{
                 width: '100%',
                 background: 'linear-gradient(180deg, #FFFF00, #FFD700)',
@@ -330,6 +331,7 @@ export function QueryBanner({ stepId }: Props) {
                 overflow: 'hidden',
                 opacity: showWebsite ? 1 : 0,
                 transition: 'opacity 0.1s ease 0.3s',
+                cursor: 'pointer',
               }}>
                 <div style={{
                   position: 'absolute',
@@ -366,6 +368,7 @@ export function QueryBanner({ stepId }: Props) {
                   {'>>>'} CLICK HERE — You are the 1,000,000th visitor! {'<<<'}
                 </div>
               </div>
+              </a>
 
               {/* Article heading — paints third */}
               <h2 style={{
