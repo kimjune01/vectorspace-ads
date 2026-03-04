@@ -7,11 +7,11 @@ export function Cite({ href, n }: { href: string; n: number }) {
         target="_blank"
         rel="noopener noreferrer"
         style={{
-          color: '#666',
+          color: '#ccc',
           fontSize: '0.6em',
           textDecoration: 'none',
           marginLeft: 1,
-          borderBottom: '1px dotted #555',
+          borderBottom: '1px dotted #999',
         }}
       >
         {n}

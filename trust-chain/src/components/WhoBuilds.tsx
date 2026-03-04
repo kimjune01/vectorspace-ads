@@ -1,4 +1,6 @@
 import { colors, fonts } from '../theme';
+import { GOOGLE_BIDDERS } from '../data';
+import { BidPaddle } from './BidPaddle';
 
 interface Props {
   stepId: string;
@@ -123,143 +125,188 @@ function ChatbotsStuck() {
   );
 }
 
-function GoogleG() {
-  return (
-    <span style={{ fontWeight: 800, fontSize: '1.5rem', letterSpacing: '-0.02em' }}>
-      <span style={{ color: '#4285F4' }}>G</span>
-    </span>
-  );
-}
-
 function IncumbentsWrong() {
+  // Rich embedding bar colors — vibrant semantic dimensions
+  const embeddingColors = [
+    '#4CAF50', '#2196F3', '#FF9800', '#E91E63', '#9C27B0',
+    '#00BCD4', '#FF5722', '#8BC34A', '#3F51B5', '#FFEB3B',
+    '#009688', '#F44336', '#03A9F4', '#CDDC39', '#673AB7',
+    '#FFC107', '#00E5FF', '#76FF03', '#FF4081', '#7C4DFF',
+  ];
+
+  // Dull keyword chips
+  const keywords = ['knee', 'pain', 'running'];
+
   return (
     <div style={{
       display: 'flex',
-      gap: 16,
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: 0,
       width: '100%',
-      maxWidth: 440,
+      maxWidth: 380,
     }}>
-      {/* Google side */}
+      {/* Top: rich embedding — wide colorful bar */}
       <div style={{
-        flex: 1,
-        padding: '16px 12px',
-        border: `1px solid ${colors.googleRed}44`,
-        borderRadius: 8,
-        background: 'rgba(255, 68, 68, 0.04)',
-        textAlign: 'center',
         opacity: 0,
-        animation: 'fadeSlideLeft 0.4s ease 0s forwards',
+        animation: 'incFadeIn 0.5s ease 0s forwards',
+        width: '100%',
+        textAlign: 'center',
       }}>
-        <GoogleG />
         <div style={{
           fontFamily: fonts.mono,
           fontSize: '0.65rem',
           color: '#888',
-          marginTop: 4,
-          marginBottom: 8,
+          marginBottom: 6,
         }}>
-          keyword pipeline
+          embedding — 384 dimensions
         </div>
         <div style={{
           display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: 4,
+          width: '100%',
+          height: 32,
+          borderRadius: 6,
+          overflow: 'hidden',
+          boxShadow: '0 0 20px rgba(33, 150, 243, 0.15)',
         }}>
-          <span style={{
-            fontFamily: fonts.mono,
-            fontSize: '0.6rem',
-            color: colors.embedBlue,
-            opacity: 0.5,
-          }}>
-            [vec]
-          </span>
-          {/* CSS X icon */}
-          <div style={{
-            width: 16,
-            height: 16,
-            borderRadius: '50%',
-            background: 'rgba(255,68,68,0.15)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
-            <span style={{ color: colors.googleRed, fontSize: '0.65rem', fontWeight: 700, lineHeight: 1 }}>✕</span>
-          </div>
+          {embeddingColors.map((c, i) => (
+            <div key={i} style={{
+              flex: 1,
+              background: c,
+              opacity: 0.5 + Math.random() * 0.5,
+            }} />
+          ))}
         </div>
         <div style={{
-          fontSize: '0.6rem',
-          color: '#555',
-          marginTop: 6,
           fontFamily: fonts.mono,
+          fontSize: '0.55rem',
+          color: '#666',
+          marginTop: 4,
         }}>
-          won't build it
+          "my knee hurts when I run downhill but not uphill"
         </div>
       </div>
 
-      {/* Ad Networks side */}
+      {/* Funnel: narrowing trapezoid */}
       <div style={{
-        flex: 1,
-        padding: '16px 12px',
-        border: '1px solid #44444488',
-        borderRadius: 8,
-        background: 'rgba(255, 255, 255, 0.02)',
-        textAlign: 'center',
+        width: '100%',
+        height: 48,
+        display: 'flex',
+        justifyContent: 'center',
         opacity: 0,
-        animation: 'fadeSlideRight 0.4s ease 0.2s forwards',
+        animation: 'incFadeIn 0.4s ease 0.3s forwards',
+      }}>
+        <svg width="100%" height="48" viewBox="0 0 380 48" preserveAspectRatio="none" aria-hidden="true">
+          <path
+            d="M 0 0 L 380 0 L 220 48 L 160 48 Z"
+            fill="none"
+            stroke="#333"
+            strokeWidth="1"
+            strokeDasharray="4 3"
+          />
+          <path
+            d="M 190 24 L 190 48"
+            stroke="#555"
+            strokeWidth="1"
+          />
+        </svg>
+      </div>
+
+      {/* Bottom: dull keyword chips — narrow */}
+      <div style={{
+        opacity: 0,
+        animation: 'incFadeIn 0.5s ease 0.5s forwards',
+        textAlign: 'center',
       }}>
         <div style={{
-          fontSize: '0.85rem',
-          color: '#888',
-          marginBottom: 4,
-          fontWeight: 600,
+          display: 'flex',
+          gap: 8,
+          justifyContent: 'center',
         }}>
-          Ad Networks
+          {keywords.map(kw => (
+            <div key={kw} style={{
+              fontFamily: fonts.mono,
+              fontSize: '0.75rem',
+              color: '#666',
+              padding: '4px 12px',
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid #333',
+              borderRadius: 4,
+            }}>
+              {kw}
+            </div>
+          ))}
         </div>
         <div style={{
           fontFamily: fonts.mono,
           fontSize: '0.65rem',
-          color: '#888',
-          marginBottom: 8,
+          color: '#555',
+          marginTop: 6,
         }}>
-          old pipeline
+          keywords — 3 bins
         </div>
+      </div>
+
+      {/* Bid auction table — desaturated to show it's the broken outcome */}
+      <div style={{
+        marginTop: 16,
+        width: '100%',
+        background: 'rgba(255,255,255,0.02)',
+        borderRadius: 8,
+        border: '1px solid #2a2a2a',
+        overflow: 'hidden',
+        opacity: 0,
+        animation: 'incFadeIn 0.4s ease 0.7s forwards',
+        filter: 'saturate(0.3)',
+      }}>
         <div style={{
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center',
-          gap: 4,
+          padding: '8px 12px',
+          borderBottom: '1px solid #333',
+          background: 'rgba(255,255,255,0.03)',
         }}>
-          <span style={{
+          <div style={{ width: 28 }} />
+          <div style={{
+            flex: 1,
+            fontSize: '0.6rem',
+            color: '#666',
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em',
             fontFamily: fonts.mono,
-            fontSize: '0.55rem',
-            color: colors.googleOrange,
-            padding: '2px 6px',
-            background: 'rgba(255, 136, 0, 0.1)',
-            borderRadius: 4,
-            border: `1px solid ${colors.googleOrange}44`,
           }}>
-            + "embedding"
-          </span>
+            Bidder
+          </div>
+          <div style={{
+            fontSize: '0.6rem',
+            color: '#666',
+            textTransform: 'uppercase',
+            letterSpacing: '0.08em',
+            fontFamily: fonts.mono,
+            minWidth: 40,
+            textAlign: 'right',
+          }}>
+            Bid
+          </div>
+          <div style={{ width: 40 }} />
         </div>
-        <div style={{
-          fontSize: '0.6rem',
-          color: '#555',
-          marginTop: 6,
-          fontFamily: fonts.mono,
-        }}>
-          patch, not redesign
-        </div>
+        {GOOGLE_BIDDERS.map((bidder, i) => (
+          <BidPaddle
+            key={bidder.name}
+            name={bidder.name}
+            bid={bidder.bid}
+            color={bidder.color}
+            isWinner={i === 0}
+            visible={true}
+            index={i}
+          />
+        ))}
       </div>
 
       <style>{`
-        @keyframes fadeSlideLeft {
-          from { opacity: 0; transform: translateX(-12px); }
-          to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes fadeSlideRight {
-          from { opacity: 0; transform: translateX(12px); }
-          to { opacity: 1; transform: translateX(0); }
+        @keyframes incFadeIn {
+          from { opacity: 0; transform: translateY(8px); }
+          to { opacity: 1; transform: translateY(0); }
         }
       `}</style>
     </div>

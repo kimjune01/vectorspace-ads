@@ -320,22 +320,23 @@ export function HistoryPipeline({ stepId }: Props) {
       {showKeywordBlur && (
         <div style={{
           display: 'flex',
+          flexDirection: 'column',
           alignItems: 'center',
-          gap: 12,
+          gap: 4,
           marginTop: 16,
           opacity: 0,
           animation: 'fadeIn 0.4s ease 0.2s forwards',
         }}>
-          <span style={{ fontFamily: fonts.mono, fontSize: '0.75rem', color: colors.googleOrange }}>
-            "running knee specialist"
+          <span style={{ fontFamily: fonts.mono, fontSize: '0.7rem', color: colors.googleOrange }}>
+            "knee pain running downhill"
           </span>
-          <span style={{ color: '#555' }}>→</span>
-          <span style={{ fontFamily: fonts.mono, fontSize: '0.8rem', color: colors.googleOrange }}>
+          <span style={{ color: '#555', fontSize: '0.7rem' }}>↓</span>
+          <span style={{ fontFamily: fonts.mono, fontSize: '0.7rem', color: colors.googleOrange }}>
+            "knee pain running"
+          </span>
+          <span style={{ color: '#555', fontSize: '0.7rem' }}>↓</span>
+          <span style={{ fontFamily: fonts.mono, fontSize: '0.7rem', color: colors.googleOrange }}>
             "knee pain"
-          </span>
-          <span style={{ color: '#555' }}>→</span>
-          <span style={{ fontFamily: fonts.mono, fontSize: '0.85rem', color: colors.googleOrange }}>
-            "knee"
           </span>
         </div>
       )}

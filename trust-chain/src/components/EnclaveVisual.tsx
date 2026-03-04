@@ -245,7 +245,7 @@ function OutputBox({ label, value, color, highlight, highlightColor }: {
 
 function LockIcon({ color = '#00BCD4' }: { color?: string }) {
   return (
-    <svg width="10" height="12" viewBox="0 0 10 12" fill="none">
+    <svg width="10" height="12" viewBox="0 0 10 12" fill="none" aria-hidden="true">
       <rect x="1" y="5" width="8" height="6" rx="1" fill="none" stroke={color} strokeWidth="1.2" />
       <path d="M3 5V3.5C3 2.12 3.9 1 5 1C6.1 1 7 2.12 7 3.5V5" stroke={color} strokeWidth="1.2" fill="none" />
       <circle cx="5" cy="8.5" r="0.8" fill={color} />

@@ -20,7 +20,7 @@ export function EmbeddingMap({ showQuery, showAdvertisers, showWinner }: Props) 
   const metro = EMBEDDING_MAP_POINTS.find(p => p.id === 'metro')!;
 
   return (
-    <svg viewBox={`0 0 ${w} ${h}`} style={{ width: '100%', maxWidth: w }}>
+    <svg viewBox={`0 0 ${w} ${h}`} role="img" aria-label="Embedding map showing user query position relative to advertisers" style={{ width: '100%', maxWidth: w }}>
       {/* Grid dots for background */}
       {Array.from({ length: 8 }, (_, i) =>
         Array.from({ length: 7 }, (_, j) => (

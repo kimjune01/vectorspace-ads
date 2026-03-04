@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import type { StepData } from '../ScrollySection';
-import { Cite } from '../components/Cite';
+
 
 function StepText({ children }: { children: ReactNode }) {
   return (
@@ -54,7 +54,7 @@ export const WrongPathSteps = {
             The old economics repeat.
           </h2>
           <p style={{ color: '#bbb' }}>
-            Google keeps 37 cents of every ad dollar<Cite href="https://digiday.com/media/the-rundown-u-s-v-google-ad-tech-antitrust-trial-by-numbers-so-far/" n={32} /> across three layers it controls. Internal documents show CPCs doubled between 2013 and 2020 through deliberate "tunings"<Cite href="https://searchengineland.com/doj-google-search-ad-price-manipulation-440207" n={33} /> — and advertisers can't even see 28% of the queries their money is spent on<Cite href="https://www.seerinteractive.com/insights/google-ads-removes-search-terms-for-28-percent-of-paid-search-budgets" n={34} />.
+            Google keeps <a href="https://digiday.com/media/the-rundown-u-s-v-google-ad-tech-antitrust-trial-by-numbers-so-far/" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>37 cents of every ad dollar</a> across three layers it controls. Internal documents show CPCs doubled between 2013 and 2020 through deliberate <a href="https://searchengineland.com/doj-google-search-ad-price-manipulation-440207" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>"tunings"</a> — and advertisers can't even see <a href="https://www.seerinteractive.com/insights/google-ads-removes-search-terms-for-28-percent-of-paid-search-budgets" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>28% of the queries</a> their money is spent on.
           </p>
           <p style={{ color: '#888', marginTop: 12 }}>
             But look at where the value was lost. It wasn't in the auction. It was in the signal — the moment your full question got crushed into three keywords.

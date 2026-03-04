@@ -65,7 +65,7 @@ export function EmbeddingField({ stepId }: Props) {
 
   return (
     <div style={{ width: '100%', maxWidth: w, position: 'relative' }}>
-      <svg viewBox={`0 0 ${w} ${h}`} style={{ width: '100%', background: bgGradient, borderRadius: 8 }}>
+      <svg viewBox={`0 0 ${w} ${h}`} role="img" aria-label="Embedding field visualization showing advertisers positioned by relevance to user query" style={{ width: '100%', background: bgGradient, borderRadius: 8 }}>
         {/* Grid dots */}
         {Array.from({ length: 8 }, (_, i) =>
           Array.from({ length: 7 }, (_, j) => (

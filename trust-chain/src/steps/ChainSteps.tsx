@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import type { StepData } from '../ScrollySection';
-import { Cite } from '../components/Cite';
+
 
 function StepText({ children }: { children: ReactNode }) {
   return (
@@ -23,7 +23,7 @@ export const ChainSteps = {
             Every conversation already produces an embedding — intent in vector form. ChatGPT, Claude, Perplexity all have it. None of them can connect it to advertisers.
           </p>
           <p style={{ color: '#888', marginTop: 12 }}>
-            Perplexity tried ads. Users revolted<Cite href="https://futurism.com/artificial-intelligence/openai-perplexity-admits-ai-adverts-mistake" n={9} />. Anthropic promised no ads at all<Cite href="https://www.anthropic.com/news/claude-is-a-space-to-think" n={10} />. The signal exists. There's just no pipe to carry it<Cite href="/the-last-signal/" n={31} />.
+            Perplexity tried ads. Users <a href="https://futurism.com/artificial-intelligence/openai-perplexity-admits-ai-adverts-mistake" target="_blank" rel="noopener noreferrer" style={{ color: '#888', textDecoration: 'underline', textDecorationColor: '#555' }}>revolted</a>. Anthropic <a href="https://www.anthropic.com/news/claude-is-a-space-to-think" target="_blank" rel="noopener noreferrer" style={{ color: '#888', textDecoration: 'underline', textDecorationColor: '#555' }}>promised no ads at all</a>. The signal exists. There's just <a href="/the-last-signal/" style={{ color: '#888', textDecoration: 'underline', textDecorationColor: '#555' }}>no pipe to carry it</a>.
           </p>
         </StepText>
       ),
@@ -36,10 +36,10 @@ export const ChainSteps = {
             The adtech industry is building around the wrong abstraction.
           </h2>
           <p style={{ color: '#bbb' }}>
-            Google's "AI Max" uses AI to broad-match your exact-match keywords<Cite href="https://www.seroundtable.com/google-ads-ai-max-broad-matchifies-40562.html" n={15} />. The Trade Desk's Kokai<Cite href="https://www.thetradedesk.com/press-room/the-trade-desk-launches-kokai-a-new-media-buying-platform-that-brings-the-full-power-of-ai-to-digital-marketing" n={23} /> optimizes bids within the same OpenRTB pipe. More AI, same primitives.
+            Google's "AI Max" uses AI to <a href="https://www.seroundtable.com/google-ads-ai-max-broad-matchifies-40562.html" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>broad-match your exact-match keywords</a>. The Trade Desk's <a href="https://www.thetradedesk.com/press-room/the-trade-desk-launches-kokai-a-new-media-buying-platform-that-brings-the-full-power-of-ai-to-digital-marketing" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>Kokai</a> optimizes bids within the same OpenRTB pipe. More AI, same primitives.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            Cognitiv<Cite href="https://www.globenewswire.com/news-release/2024/06/11/2896871/0/en/PubMatic-Is-The-First-SSP-To-Make-Cognitiv-ContextGPT-4-Available-To-Buyers.html" n={16} />, Seedtag<Cite href="https://www.seedtag.com/contextual-ai/" n={24} />, GumGum<Cite href="https://www.businesswire.com/news/home/20200115005272/en/GumGums-Groundbreaking-Contextual-Analysis-Solution-for-Digital-Publishers-Makes-Official-Debut" n={25} /> — they all use embeddings to <em>read</em> page content. But the output collapses to a deal ID or a segment code before it enters the bid stream. The vector never reaches the auction. OpenRTB 2.6 has fields for keywords and category codes. No field for a vector.
+            <a href="https://www.globenewswire.com/news-release/2024/06/11/2896871/0/en/PubMatic-Is-The-First-SSP-To-Make-Cognitiv-ContextGPT-4-Available-To-Buyers.html" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>Cognitiv</a>, <a href="https://www.seedtag.com/contextual-ai/" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>Seedtag</a>, <a href="https://www.businesswire.com/news/home/20200115005272/en/GumGums-Groundbreaking-Contextual-Analysis-Solution-for-Digital-Publishers-Makes-Official-Debut" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>GumGum</a> — they all use embeddings to <em>read</em> page content. But the output collapses to a deal ID or a segment code before it enters the bid stream. The vector never reaches the auction. OpenRTB 2.6 has fields for keywords and category codes. No field for a vector.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
             Google won't fix this. A precise signal means fewer competitors per query, lower bids, and transparent matching — all of which erode the margin that vague keywords protect. The better signal is the one they can't afford to carry.
@@ -112,7 +112,7 @@ export const ChainSteps = {
             Without revenue, chatbots become subsidiaries.
           </h2>
           <p style={{ color: '#bbb' }}>
-            OpenAI loses $5 billion a year<Cite href="https://fortune.com/2025/11/12/openai-cash-burn-rate-annual-losses-2028-profitable-2030-financial-documents/" n={12} />. Anthropic burns $3 billion<Cite href="https://cybernews.com/ai-news/openai-anthropic-profit-revenue-ai/" n={13} />. Perplexity spends more on compute than it earns<Cite href="https://sacra.com/c/perplexity/" n={14} />. None of them are profitable. They survive on venture capital, and VC money has an expiration date.
+            OpenAI loses <a href="https://fortune.com/2025/11/12/openai-cash-burn-rate-annual-losses-2028-profitable-2030-financial-documents/" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>$5 billion a year</a>. Anthropic burns <a href="https://cybernews.com/ai-news/openai-anthropic-profit-revenue-ai/" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>$3 billion</a>. Perplexity <a href="https://sacra.com/c/perplexity/" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>spends more on compute than it earns</a>. None of them are profitable. They survive on venture capital, and VC money has an expiration date.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
             When it runs out, the exits are acquisition or subsidy. Microsoft absorbs OpenAI. Google absorbs Gemini's costs because it owns the ad engine. Independent AI companies without a revenue model become features inside megacorps — or instruments of governments that fund them.

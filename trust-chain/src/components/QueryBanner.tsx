@@ -5,10 +5,12 @@ interface Props {
 }
 
 export function QueryBanner({ stepId }: Props) {
-  const isBareText = stepId === 'intro-1999';
+  const isTitle = stepId === 'intro-title';
+  const isBareText = stepId === 'intro-1999' || isTitle;
   const showBox = !isBareText;
   const showResults = stepId === 'intro-results' || stepId === 'intro-ads';
   const showBanner = stepId === 'intro-ads';
+  const showSponsoredAd = stepId === 'history-overture';
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
@@ -34,7 +36,7 @@ export function QueryBanner({ stepId }: Props) {
       <div style={{
         fontFamily: fonts.body,
         fontSize: '0.95rem',
-        color: showBox ? '#222' : '#fff',
+        color: showBox ? '#222' : isTitle ? '#333' : '#fff',
         padding: showBox ? '8px 16px' : '8px 0',
         background: showBox ? '#fff' : 'transparent',
         borderRadius: showBox ? 24 : 0,
@@ -55,9 +57,11 @@ export function QueryBanner({ stepId }: Props) {
         display: 'flex',
         flexDirection: 'column',
         gap: 4,
-        opacity: showResults ? 1 : 0,
-        transform: showResults ? 'translateY(0)' : 'translateY(12px)',
-        transition: 'opacity 0.5s, transform 0.5s',
+        opacity: showResults && !showSponsoredAd ? 1 : 0,
+        maxHeight: showSponsoredAd ? 0 : 400,
+        overflow: 'hidden',
+        transform: showResults && !showSponsoredAd ? 'translateY(0)' : 'translateY(12px)',
+        transition: 'opacity 0.4s, transform 0.4s, max-height 0.5s ease',
       }}>
         {[
           { title: 'Knee Pain Symptoms & Causes', url: 'www.webmd.com/knee-pain', desc: 'Common causes of knee pain when running. Learn about patellofemoral syndrome...' },
@@ -98,17 +102,17 @@ export function QueryBanner({ stepId }: Props) {
       <div style={{
         width: '100%',
         maxWidth: 320,
-        height: 56,
+        maxHeight: showSponsoredAd ? 0 : 56,
         background: 'linear-gradient(180deg, #FFFF00, #FFD700)',
-        border: '3px solid #FF0000',
+        border: showSponsoredAd ? 'none' : '3px solid #FF0000',
         textAlign: 'center',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        opacity: showBanner ? 1 : 0,
-        transform: showBanner ? 'translateY(0) scale(1)' : 'translateY(16px) scale(0.95)',
-        transition: 'opacity 0.5s 0.2s, transform 0.5s 0.2s',
+        opacity: showBanner && !showSponsoredAd ? 1 : 0,
+        transform: showBanner && !showSponsoredAd ? 'translateY(0) scale(1)' : 'translateY(16px) scale(0.95)',
+        transition: 'opacity 0.4s, transform 0.4s, max-height 0.5s ease, border 0.3s',
         position: 'relative',
         overflow: 'hidden',
       }}>
@@ -147,6 +151,88 @@ export function QueryBanner({ stepId }: Props) {
           {'>>>'} CLICK HERE — You are the 1,000,000th visitor! {'<<<'}
         </div>
       </div>
+
+      {/* Sponsored ad — Overture/early Google ad (history-overture) */}
+      <div style={{
+        width: '100%',
+        maxWidth: 340,
+        opacity: showSponsoredAd ? 1 : 0,
+        transform: showSponsoredAd ? 'translateY(0)' : 'translateY(12px)',
+        transition: 'opacity 0.5s 0.2s, transform 0.5s 0.2s',
+        display: showSponsoredAd ? 'block' : 'none',
+      }}>
+        <div style={{
+          fontSize: '0.65rem',
+          color: '#70757a',
+          marginBottom: 8,
+          fontFamily: fonts.body,
+        }}>
+          Sponsored
+        </div>
+        <div style={{ padding: '4px 0' }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 6,
+            marginBottom: 2,
+          }}>
+            <span style={{
+              fontSize: '0.6rem',
+              fontWeight: 700,
+              color: '#202124',
+              background: '#fff',
+              border: '1px solid #dadce0',
+              borderRadius: 3,
+              padding: '1px 5px',
+              lineHeight: 1.4,
+              fontFamily: fonts.body,
+            }}>
+              Ad
+            </span>
+            <span style={{
+              fontSize: '0.72rem',
+              color: '#202124',
+              fontFamily: fonts.body,
+            }}>
+              www.portlandsportspt.com
+            </span>
+          </div>
+          <div style={{
+            color: '#1a0dab',
+            fontSize: '0.95rem',
+            fontFamily: 'Georgia, "Times New Roman", serif',
+            marginBottom: 3,
+            cursor: 'pointer',
+            lineHeight: 1.3,
+          }}>
+            Portland Sports PT — Runner Knee Specialist
+          </div>
+          <div style={{
+            fontSize: '0.78rem',
+            color: '#4d5156',
+            lineHeight: 1.4,
+            fontFamily: fonts.body,
+          }}>
+            Specializing in eccentric loading injuries for runners. Free consultation. Book online today.
+          </div>
+        </div>
+      </div>
+
+      {/* Timeline marker */}
+      {showSponsoredAd && (
+        <div style={{
+          fontFamily: fonts.mono,
+          fontSize: '0.75rem',
+          color: '#555',
+          padding: '4px 12px',
+          border: '1px solid #333',
+          borderRadius: 12,
+          opacity: 0,
+          animation: 'fadeSlideUp 0.3s ease 0.6s forwards',
+        }}>
+          2000
+        </div>
+      )}
 
       <style>{`
         @keyframes fadeSlideUp {

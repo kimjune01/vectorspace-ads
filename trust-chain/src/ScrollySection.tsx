@@ -105,8 +105,8 @@ export function ScrollySection({ steps, onStepChange, graphic }: Props) {
   return (
     <>
       <style>{mobileCSS}</style>
-      <div className="scrolly-container" style={containerStyle}>
-        <div className="sticky-graphic" style={stickyStyle}>
+      <main id="scrolly-content" className="scrolly-container" style={containerStyle} aria-label="The Journey of Internet Ads">
+        <div className="sticky-graphic" style={stickyStyle} aria-hidden="true">
           {graphic}
         </div>
         <div className="text-steps" style={stepsContainerStyle}>
@@ -121,7 +121,7 @@ export function ScrollySection({ steps, onStepChange, graphic }: Props) {
             </div>
           ))}
         </div>
-      </div>
+      </main>
     </>
   );
 }

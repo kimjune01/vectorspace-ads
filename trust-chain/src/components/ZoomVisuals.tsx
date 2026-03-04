@@ -22,7 +22,7 @@ export function SurveillanceCompare() {
 
   return (
     <div style={{ width: '100%', maxWidth: 440 }}>
-      <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} style={{ width: '100%', height: 'auto' }}>
+      <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} role="img" aria-label="Comparison of keyword ads requiring surveillance versus embedding ads preserving privacy" style={{ width: '100%', height: 'auto' }}>
         {/* Top: keyword tracking web */}
         <text x={20} y={16} fill={colors.googleRed} fontSize="10" fontFamily={fonts.mono} style={{ textTransform: 'uppercase' as const, letterSpacing: '0.1em' }}>
           keyword ads
@@ -295,7 +295,7 @@ export function PopulatedField({ stepId }: { stepId: string }) {
 
   return (
     <div style={{ position: 'relative', width: '100%', maxWidth: 440 }}>
-      <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} style={{ width: '100%', height: 'auto' }}>
+      <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} role="img" aria-label="Populated embedding field with multiple advertisers positioned by specialty" style={{ width: '100%', height: 'auto' }}>
         <defs>
           <pattern id="popGrid" width="40" height="40" patternUnits="userSpaceOnUse">
             <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ffffff06" strokeWidth="0.5" />

@@ -52,8 +52,50 @@ export default function App() {
         rel="stylesheet"
       />
 
+      {/* Skip link for keyboard users */}
+      <a
+        href="#scrolly-content"
+        style={{
+          position: 'absolute',
+          left: '-9999px',
+          top: 'auto',
+          width: '1px',
+          height: '1px',
+          overflow: 'hidden',
+        }}
+        onFocus={(e) => {
+          e.currentTarget.style.position = 'fixed';
+          e.currentTarget.style.left = '16px';
+          e.currentTarget.style.top = '16px';
+          e.currentTarget.style.width = 'auto';
+          e.currentTarget.style.height = 'auto';
+          e.currentTarget.style.overflow = 'visible';
+          e.currentTarget.style.zIndex = '9999';
+          e.currentTarget.style.background = '#0a0a1a';
+          e.currentTarget.style.color = '#fff';
+          e.currentTarget.style.padding = '8px 16px';
+          e.currentTarget.style.borderRadius = '4px';
+          e.currentTarget.style.border = '1px solid #fff';
+        }}
+        onBlur={(e) => {
+          e.currentTarget.style.position = 'absolute';
+          e.currentTarget.style.left = '-9999px';
+          e.currentTarget.style.width = '1px';
+          e.currentTarget.style.height = '1px';
+          e.currentTarget.style.overflow = 'hidden';
+        }}
+      >
+        Skip to content
+      </a>
+
       {/* Progress bar */}
-      <div style={{
+      <div
+        role="progressbar"
+        aria-valuenow={Math.round(stepProgress * 100)}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label="Reading progress"
+        style={{
         position: 'fixed',
         top: 0,
         left: 0,
@@ -125,6 +167,14 @@ export default function App() {
         @keyframes scrollBounce {
           0%, 100% { transform: translateY(0); opacity: 0.5; }
           50% { transform: translateY(6px); opacity: 1; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .scroll-arrow { animation: none; }
+        }
+        a:focus-visible {
+          outline: 2px solid #4CAF50;
+          outline-offset: 2px;
+          border-radius: 2px;
         }
       `}</style>
     </div>

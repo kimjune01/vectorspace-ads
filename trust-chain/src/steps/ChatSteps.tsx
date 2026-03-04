@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import type { StepData } from '../ScrollySection';
-import { Cite } from '../components/Cite';
+
 
 function StepText({ children }: { children: ReactNode }) {
   return (
@@ -20,7 +20,7 @@ export const ChatSteps = {
             So what does the user actually see?
           </h2>
           <p style={{ color: '#bbb' }}>
-            All this mechanism — embeddings, sigma, relocation fees, sealed auctions — is invisible. The user never sees any of it. They see one thing: a dot<Cite href="/ask-first/" n={30} />.
+            All this mechanism — embeddings, sigma, relocation fees, sealed auctions — is invisible. The user never sees any of it. They see one thing: <a href="/ask-first/" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>a dot</a>.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
             You open a chat. You start typing. A small dot appears in the margin. Barely visible. Dim gray. It means: <em>there's expertise somewhere in this space, but it's far away. Your query is vague.</em>

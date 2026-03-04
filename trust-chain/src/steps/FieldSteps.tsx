@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import type { StepData } from '../ScrollySection';
-import { Cite } from '../components/Cite';
+
 
 function StepText({ children }: { children: ReactNode }) {
   return (
@@ -51,10 +51,10 @@ export const FieldSteps = {
             There's one problem.
           </h2>
           <p style={{ color: '#bbb' }}>
-            Today's ad protocol can't carry this. OpenRTB<Cite href="https://iabtechlab.com/standards/openrtb/" n={8} /> — the standard behind every real-time bid request — has fields for keywords and category codes. No field for a vector.
+            Today's ad protocol can't carry this. <a href="https://iabtechlab.com/standards/openrtb/" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>OpenRTB</a> — the standard behind every real-time bid request — has fields for keywords and category codes. No field for a vector.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            The full meaning gets dropped at the protocol boundary. The fix is three optional fields<Cite href="/embedding-gap/" n={26} />. That's the bottleneck.
+            The full meaning gets dropped at the protocol boundary. The fix is <a href="/embedding-gap/" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>three optional fields</a>. That's the bottleneck.
           </p>
           <p style={{ color: '#888', marginTop: 12 }}>
             But assume it exists. Here's what the field looks like.
@@ -71,7 +71,7 @@ export const FieldSteps = {
             Each advertiser claims a spot — and a radius.
           </h2>
           <p style={{ color: '#bbb' }}>
-            In the field, every advertiser declares two things: <em>where</em> they stand (their embedding) and <em>how far</em> they reach (their sigma — σ<Cite href="/the-price-of-relevance/" n={27} />). Sigma is their self-declared circle of competence.
+            In the field, every advertiser declares two things: <em>where</em> they stand (their embedding) and <em>how far</em> they reach (their sigma — <a href="/the-price-of-relevance/" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>σ</a>). Sigma is their self-declared circle of competence.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
             Dr. Chen treats runners with eccentric loading injuries — your exact problem. Narrow σ. Small, bright circle: <em>"I'm excellent at this one thing."</em>
@@ -110,7 +110,7 @@ export const FieldSteps = {
             Keywords still work. Nothing breaks.
           </h2>
           <p style={{ color: '#bbb' }}>
-            A keyword is just an embedding with sigma near zero<Cite href="/keywords-are-tiny-circles/" n={28} /> — the tightest possible circle. A single point in the same coordinate system. Every keyword campaign that works today works tomorrow, unchanged.
+            A keyword is just an embedding with <a href="/keywords-are-tiny-circles/" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>sigma near zero</a> — the tightest possible circle. A single point in the same coordinate system. Every keyword campaign that works today works tomorrow, unchanged.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
             The difference is that now sigma can grow. Advertisers who want precision keep their points. Advertisers who want reach expand their circles. Both live in the same field, competing in the same auction.
@@ -153,7 +153,7 @@ export const FieldSteps = {
             Dr. Chen runs the numbers. Staying where she is — "downhill running biomechanics" — costs nothing. Drifting to "general knee pain" would cost more than the extra impressions are worth. The honest position <em>is</em> the profitable position.
           </p>
           <p style={{ color: '#4CAF50', marginTop: 12, fontSize: '1rem' }}>
-            Simulations confirm it<Cite href="/relocation-fees/" n={22} />: with relocation fees, specialist surplus flips from negative to positive. Dr. Chen earns more per impression than Metro.
+            <a href="/relocation-fees/" style={{ color: '#4CAF50', textDecoration: 'underline', textDecorationColor: '#2E7D32' }}>Simulations confirm it</a>: with relocation fees, specialist surplus flips from negative to positive. Dr. Chen earns more per impression than Metro.
           </p>
         </StepText>
       ),
@@ -203,7 +203,7 @@ export const FieldSteps = {
             The auction runs inside sealed hardware.
           </h2>
           <p style={{ color: '#bbb' }}>
-            A TEE — trusted execution environment<Cite href="/the-last-ad-layer/" n={29} /> — is a chip-level enclave. The auction code runs inside it. The exchange can trigger the computation, but it can't read the inputs, alter the logic, or change the output. No middleman ever sees your embedding.
+            A TEE — <a href="/the-last-ad-layer/" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>trusted execution environment</a> — is a chip-level enclave. The auction code runs inside it. The exchange can trigger the computation, but it can't read the inputs, alter the logic, or change the output. No middleman ever sees your embedding.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
             The result comes out with a cryptographic signature — proof that the code ran exactly as published, unmodified. Not a promise. A receipt you can verify.

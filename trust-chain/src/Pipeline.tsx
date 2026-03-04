@@ -95,6 +95,9 @@ export function Pipeline({ stepId }: Props) {
           0%, 100% { box-shadow: 0 0 12px rgba(76, 175, 80, 0.3); }
           50% { box-shadow: 0 0 24px rgba(76, 175, 80, 0.6); }
         }
+        @media (prefers-reduced-motion: reduce) {
+          * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+        }
       `}</style>
     </div>
   );

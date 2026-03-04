@@ -1,7 +1,7 @@
 import { fonts } from '../theme';
 
 interface Props {
-  mode: 'keywords' | 'embeddings';
+  stepId: string;
 }
 
 // The same "scene" rendered at two resolutions:
@@ -40,7 +40,7 @@ const EMBEDDING_CELLS = [
   { r: 2, c: 4, color: '#FFBB4422', label: 'descent' },
   { r: 2, c: 5, color: '#FFBB4422', label: 'grade' },
   { r: 2, c: 6, color: '#44AAFF22', label: 'gait' },
-  // Row 3 - biomechanics (only visible in embedding)
+  // Row 3 - biomechanics
   { r: 3, c: 0, color: '#4CAF5044', label: 'eccentric load' },
   { r: 3, c: 1, color: '#4CAF5033', label: 'deceleration' },
   { r: 3, c: 2, color: '#4CAF5022', label: 'quad control' },
@@ -61,10 +61,18 @@ const EMBEDDING_CELLS = [
 const COLS = 7;
 const ROWS = 5;
 
-export function ResolutionCompare({ mode }: Props) {
-  const isKeywords = mode === 'keywords';
-  const cellSize = isKeywords ? 0 : 56; // used for embedding grid
+export function ResolutionCompare({ stepId }: Props) {
+  const isKeywords = stepId === 'resolution-keywords';
   const w = 440;
+  const gridH = 280;
+
+  // Each keyword block shrinks to its corresponding first cell in the embedding grid
+  // knee → row 0 col 0, pain → row 1 col 0, running → row 2 col 0
+  const keywordTargets = [
+    { row: 0, col: 0 }, // knee
+    { row: 1, col: 0 }, // pain
+    { row: 2, col: 0 }, // running
+  ];
 
   return (
     <div style={{
@@ -87,6 +95,7 @@ export function ResolutionCompare({ mode }: Props) {
           color: isKeywords ? '#FF8800' : '#4CAF50',
           textTransform: 'uppercase',
           letterSpacing: '0.1em',
+          transition: 'color 0.6s ease',
         }}>
           {isKeywords ? 'Keywords — 3 dimensions' : 'Embedding — 384 dimensions'}
         </span>
@@ -99,78 +108,99 @@ export function ResolutionCompare({ mode }: Props) {
         </span>
       </div>
 
-      {/* The grid */}
+      {/* The grid — same container for both modes */}
       <div style={{
         borderRadius: 10,
         overflow: 'hidden',
         border: `1px solid ${isKeywords ? '#FF880033' : '#4CAF5033'}`,
         background: '#0d0d20',
+        position: 'relative',
+        height: gridH,
+        transition: 'border-color 0.6s ease',
       }}>
-        {isKeywords ? (
-          /* Keyword mode: 3 big blurry blocks */
-          <div style={{ display: 'flex', height: 240 }}>
-            {KEYWORD_BLOCKS.map((block, i) => (
-              <div
-                key={i}
-                style={{
-                  flex: block.width,
-                  background: block.color,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  filter: 'blur(2px)',
-                  opacity: 0,
-                  animation: `resFadeIn 0.4s ease ${i * 0.15}s forwards`,
-                }}
-              >
-                <span style={{
-                  fontSize: '1.1rem',
-                  fontWeight: 700,
-                  color: '#fff',
-                  textShadow: '0 0 8px rgba(0,0,0,0.5)',
-                  filter: 'blur(0px)', // unblur the text
-                }}>
-                  {block.label}
-                </span>
-              </div>
-            ))}
-          </div>
-        ) : (
-          /* Embedding mode: fine grid with semantic labels */
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: `repeat(${COLS}, 1fr)`,
-            gridTemplateRows: `repeat(${ROWS}, ${cellSize}px)`,
-            gap: 1,
-            padding: 1,
-          }}>
-            {EMBEDDING_CELLS.map((cell, i) => (
-              <div
-                key={i}
-                style={{
-                  background: cell.color,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  padding: '2px 1px',
-                  opacity: 0,
-                  animation: `resFadeIn 0.2s ease ${0.02 * i}s forwards`,
-                }}
-              >
-                <span style={{
-                  fontSize: '0.5rem',
-                  fontFamily: fonts.mono,
-                  color: '#ccc',
-                  textAlign: 'center',
-                  lineHeight: 1.2,
-                  opacity: 0.8,
-                }}>
-                  {cell.label}
-                </span>
-              </div>
-            ))}
-          </div>
-        )}
+        {/* Keyword blocks — always rendered, shrink to target cell when embeddings mode */}
+        {KEYWORD_BLOCKS.map((block, i) => {
+          const target = keywordTargets[i];
+          const targetLeft = (target.col / COLS) * 100;
+          const targetTop = (target.row / ROWS) * 100;
+          const targetW = (1 / COLS) * 100;
+          const targetH = (1 / ROWS) * 100;
+          return (
+            <div
+              key={`kw-${i}`}
+              style={{
+                position: 'absolute',
+                top: isKeywords ? '0%' : `${targetTop}%`,
+                left: isKeywords ? `${(i === 0 ? 0 : i === 1 ? 33 : 66)}%` : `${targetLeft}%`,
+                width: isKeywords ? `${block.width * 100}%` : `${targetW}%`,
+                height: isKeywords ? '100%' : `${targetH}%`,
+                background: block.color,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                filter: isKeywords ? 'blur(2px)' : 'blur(0px)',
+                opacity: isKeywords ? 1 : 0,
+                transition: 'all 0.8s ease',
+                zIndex: isKeywords ? 2 : 0,
+              }}
+            >
+              <span style={{
+                fontSize: isKeywords ? '1.1rem' : '0.5rem',
+                fontWeight: 700,
+                color: '#fff',
+                textShadow: '0 0 8px rgba(0,0,0,0.5)',
+                filter: 'blur(0px)',
+                transition: 'font-size 0.8s ease',
+              }}>
+                {block.label}
+              </span>
+            </div>
+          );
+        })}
+
+        {/* Embedding cells — always rendered, appear when embeddings mode */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          display: 'grid',
+          gridTemplateColumns: `repeat(${COLS}, 1fr)`,
+          gridTemplateRows: `repeat(${ROWS}, 1fr)`,
+          gap: 1,
+          padding: 1,
+          opacity: isKeywords ? 0 : 1,
+          transition: 'opacity 0.6s ease 0.3s',
+          zIndex: isKeywords ? 0 : 1,
+        }}>
+          {EMBEDDING_CELLS.map((cell, i) => (
+            <div
+              key={i}
+              style={{
+                background: cell.color,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '2px 1px',
+                opacity: isKeywords ? 0 : 1,
+                transform: isKeywords ? 'scale(0.8)' : 'scale(1)',
+                transition: `opacity 0.3s ease ${0.02 * i + 0.4}s, transform 0.3s ease ${0.02 * i + 0.4}s`,
+              }}
+            >
+              <span style={{
+                fontSize: '0.5rem',
+                fontFamily: fonts.mono,
+                color: '#ccc',
+                textAlign: 'center',
+                lineHeight: 1.2,
+                opacity: 0.8,
+              }}>
+                {cell.label}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Caption */}
@@ -185,13 +215,6 @@ export function ResolutionCompare({ mode }: Props) {
           : 'same query → 384 dimensions of meaning'
         }
       </div>
-
-      <style>{`
-        @keyframes resFadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-      `}</style>
     </div>
   );
 }
