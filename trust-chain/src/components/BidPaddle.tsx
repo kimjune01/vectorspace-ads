@@ -8,9 +8,11 @@ interface Props {
   visible: boolean;
   index: number;
   qualityScore?: string;
+  /** Start fully visible (skip slide-in) for animated rows */
+  forceVisible?: boolean;
 }
 
-export function BidPaddle({ name, bid, color, isWinner, visible, index, qualityScore }: Props) {
+export function BidPaddle({ name, bid, color, isWinner, visible, index, qualityScore, forceVisible }: Props) {
   const delay = `${index * 0.12}s`;
   return (
     <div style={{
@@ -18,17 +20,17 @@ export function BidPaddle({ name, bid, color, isWinner, visible, index, qualityS
       alignItems: 'center',
       gap: 0,
       padding: '8px 12px',
-      borderLeft: isWinner ? `3px solid ${color}` : '3px solid transparent',
-      background: isWinner ? 'rgba(76, 175, 80, 0.06)' : 'transparent',
+      borderLeft: (isWinner || forceVisible) ? `3px solid ${color}` : '3px solid transparent',
+      background: isWinner ? 'rgba(76, 175, 80, 0.06)' : forceVisible ? `${color}11` : 'transparent',
       borderBottom: '1px solid #222',
-      opacity: visible ? 0 : 0,
-      animation: visible ? `bidRowSlideIn 0.35s ease ${delay} forwards` : 'none',
+      opacity: forceVisible ? 1 : (visible ? 0 : 0),
+      animation: forceVisible ? 'none' : (visible ? `bidRowSlideIn 0.35s ease ${delay} forwards` : 'none'),
     }}>
       {/* Rank */}
       <div style={{
         fontFamily: fonts.mono,
         fontSize: '0.7rem',
-        color: isWinner ? color : '#555',
+        color: (isWinner || forceVisible) ? color : '#555',
         fontWeight: 600,
         width: 28,
         flexShrink: 0,
@@ -40,9 +42,9 @@ export function BidPaddle({ name, bid, color, isWinner, visible, index, qualityS
       <div style={{
         flex: 1,
         fontSize: '0.8rem',
-        color: isWinner ? '#e0e0e0' : '#777',
-        fontWeight: isWinner ? 600 : 400,
-        opacity: isWinner ? 1 : 0.7,
+        color: (isWinner || forceVisible) ? '#e0e0e0' : '#777',
+        fontWeight: (isWinner || forceVisible) ? 600 : 400,
+        opacity: (isWinner || forceVisible) ? 1 : 0.7,
       }}>
         {name}
       </div>
@@ -67,7 +69,7 @@ export function BidPaddle({ name, bid, color, isWinner, visible, index, qualityS
         fontFamily: fonts.mono,
         fontWeight: 700,
         fontSize: '0.9rem',
-        color: isWinner ? color : '#666',
+        color: (isWinner || forceVisible) ? color : '#666',
         minWidth: 40,
         textAlign: 'right',
       }}>

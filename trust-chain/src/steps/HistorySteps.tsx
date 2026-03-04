@@ -22,10 +22,10 @@ export const HistorySteps = {
             Someone connects ads to intent.
           </h2>
           <p style={{ color: '#bbb' }}>
-            2000. A company called Overture<Cite href="https://en.wikipedia.org/wiki/Yahoo_Native" n={1} /> lets businesses bid on search keywords. You search "knee pain" — a physio ad appears. You click, they pay. No click, no charge.
+            1998. A company called GoTo.com<Cite href="https://en.wikipedia.org/wiki/Pay-per-click" n={1} /> lets businesses bid on search keywords. You search "knee pain" — a physio ad appears. You click, they pay. No click, no charge.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            For the first time, the ad <em>is the answer to your question</em>. That's not an interruption — it's a service.
+            For the first time, the ad <em>is the answer to your question</em>.
           </p>
         </StepText>
       ),
@@ -42,26 +42,10 @@ export const HistorySteps = {
             Overture has a flaw: a hedge fund running knee-brace arbitrage can outbid the physical therapist who actually helps runners.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            Google fixes this. AdWords adds Quality Score — your ad's <em>relevance</em> affects your rank, not just your bid. A helpful ad with a lower bid beats a spammy ad with a higher one.
+            Google fixes this. AdWords adds Quality Score<Cite href="https://en.wikipedia.org/wiki/Quality_Score" n={11} /> — your ad's <em>relevance</em> affects your rank, not just your bid. A helpful ad with a lower bid beats a spammy ad with a higher one.
           </p>
           <p style={{ color: '#888', marginTop: 12 }}>
-            This is the mechanism that makes the system fair. Remember it — it matters later.
-          </p>
-        </StepText>
-      ),
-    },
-    {
-      id: 'history-middlemen',
-      content: (
-        <StepText>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
-            Quality Score works — on Google. But most of the web isn't Google.
-          </h2>
-          <p style={{ color: '#bbb' }}>
-            Millions of sites have readers but can't sell their own ads. And advertisers want to reach people across thousands of sites, not just on search.
-          </p>
-          <p style={{ color: '#bbb', marginTop: 12 }}>
-            Supply-side platforms represent publishers. Demand-side platforms bid for advertisers. An ad exchange connects them in real time. Each solves a real problem. Each takes a cut.
+            This is the part that matters later.
           </p>
         </StepText>
       ),
@@ -72,13 +56,13 @@ export const HistorySteps = {
         <StepText>
 
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
-            One company buys all three layers.
+            An ecosystem appears. One company buys it all.
           </h2>
           <p style={{ color: '#bbb' }}>
-            2008: DoubleClick<Cite href="https://en.wikipedia.org/wiki/DoubleClick" n={2} /> (ad server). 2009: AdMob<Cite href="https://en.wikipedia.org/wiki/AdMob" n={3} /> (mobile). 2010: Invite Media<Cite href="https://en.wikipedia.org/wiki/Invite_Media" n={4} /> (DSP). Each acquisition fills a gap. Each makes sense alone.
+            Publishers need help selling ads. Advertisers need help buying them. Middlemen appear — SSPs, DSPs, exchanges — each solving a real problem, each taking a cut.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            But now Google operates the tool advertisers use to buy, the tool publishers use to sell, <em>and</em> the exchange in the middle. The referee is also both teams.
+            Then Google acquires them. 2008: DoubleClick<Cite href="https://en.wikipedia.org/wiki/DoubleClick" n={2} />. 2009: AdMob<Cite href="https://en.wikipedia.org/wiki/AdMob" n={3} />. 2010: Invite Media<Cite href="https://en.wikipedia.org/wiki/Invite_Media" n={4} />. Now Google operates the tool advertisers use to buy, the tool publishers use to sell, <em>and</em> the exchange in the middle.
           </p>
         </StepText>
       ),
@@ -89,16 +73,13 @@ export const HistorySteps = {
         <StepText>
 
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
-            Then Google starts making the matching worse on purpose.
+            Then the matching gets worse. On purpose.
           </h2>
           <p style={{ color: '#bbb' }}>
-            Broad match becomes the default — you bid on "running knee specialist," Google matches you to "knee pain," "leg doctor," "orthopedic surgery." More advertisers per auction means higher bids.
-          </p>
-          <p style={{ color: '#888', marginTop: 12 }}>
-            Search term reports get cut. "Exact match" is redefined to not mean exact. Manual bidding is replaced by Google's algorithm.
+            You bid on "running knee specialist." Google shows your ad to people searching "leg doctor"<Cite href="https://searchengineland.com/google-ads-broad-match-default-new-search-campaigns-444003" n={17} />. You ask which searches triggered your ad. Google stops telling you<Cite href="https://searchengineland.com/google-ads-to-limit-search-terms-reporting-citing-privacy-340137" n={18} />. You set "exact match." Google redefines exact to mean approximate<Cite href="https://searchengineland.com/googles-exact-match-close-variants-expand-again-now-include-same-meaning-variations-305056" n={19} />.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            The ads aren't irrelevant because ads are inherently bad. They're irrelevant because <em style={{ color: '#2196F3' }}>Google makes more money when they're vague</em>.
+            Each change makes the auction less precise and more crowded. More advertisers competing per query means higher bids. <strong style={{ color: '#fff' }}>Google makes more money when the matching is vague.</strong>
           </p>
         </StepText>
       ),
@@ -114,7 +95,7 @@ export const HistorySteps = {
             2024. The DOJ's<Cite href="https://en.wikipedia.org/wiki/United_States_v._Google_LLC_(2023)" n={5} /> most effective exhibit is a Monopoly board with every road leading to Google.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            The judge rules: <span style={{ color: '#2196F3', fontWeight: 600 }}>monopoly</span><Cite href="https://en.wikipedia.org/wiki/United_States_v._Google_LLC_(2020)" n={6} />. But the ruling changes nothing. Google has the search box. 90% of searches start there<Cite href="https://gs.statcounter.com/search-engine-market-share" n={7} />. The advertisers can't leave.
+            The judge rules: <strong style={{ color: '#fff' }}>monopoly</strong><Cite href="https://en.wikipedia.org/wiki/United_States_v._Google_LLC_(2020)" n={6} />. But the ruling changes nothing. Google has the search box. 90% of searches start there<Cite href="https://gs.statcounter.com/search-engine-market-share" n={7} />. The advertisers can't leave.
           </p>
           <p style={{ color: '#888', marginTop: 12 }}>
             The only players who ever escaped built their own distribution — Facebook, Instagram, TikTok. But social ads target <em>who you are</em>, not <em>what you need</em>. There's no intent.
@@ -146,7 +127,7 @@ export const HistorySteps = {
             "my knee hurts when I run downhill but not uphill"
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            Every word carries meaning. And for the first time in twenty years, the surface isn't Google's.
+            And for the first time in twenty years, the surface isn't Google's.
           </p>
         </StepText>
       ),
@@ -160,7 +141,7 @@ export const HistorySteps = {
             Google is already absorbing the new surface.
           </h2>
           <p style={{ color: '#bbb' }}>
-            AI Overviews — Google's chatbot answers — now sit above the search results, absorbing clicks that used to go to organic links. The playbook is the same: capture the new surface, bolt on the old keyword plumbing, keep the bins.
+            AI Overviews — Google's chatbot answers — now sit above the search results, absorbing clicks that used to go to organic links<Cite href="https://searchengineland.com/google-ai-overviews-drive-drop-organic-paid-ctr-464212" n={21} />. The playbook is the same: capture the new surface, bolt on the old keyword plumbing, keep the bins.
           </p>
           <p style={{ color: '#888', marginTop: 12 }}>
             Surfaces don't stay unclaimed. The last time one appeared — search, in 1999 — one company captured it in three years. If the chat surface repeats the same pattern — keywords, bins, highest-bidder-wins — you get the same result with a different logo.

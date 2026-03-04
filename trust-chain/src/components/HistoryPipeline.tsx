@@ -7,7 +7,6 @@ interface Props {
 type SubState = 'middlemen' | 'consolidation' | 'degradation' | 'antitrust' | 'chat' | 'closing';
 
 const STEP_TO_SUBSTATE: Record<string, SubState> = {
-  'history-middlemen': 'middlemen',
   'history-consolidation': 'consolidation',
   'history-degradation': 'degradation',
   'history-antitrust': 'antitrust',
@@ -29,15 +28,22 @@ interface NodeData {
   role: string;
   isGoogle: boolean;
   isMiddleman: boolean;
+  color?: string;
 }
+
+const MIDDLEMAN_COLORS: Record<string, string> = {
+  SSP: '#E91E63',
+  Exchange: '#673AB7',
+  DSP: '#9C27B0',
+};
 
 function getNodes(subState: SubState): NodeData[] {
   const base: NodeData[] = [
-    { label: 'Advertiser', role: 'Buyer', isGoogle: false, isMiddleman: false },
-    { label: 'DSP', role: 'Demand-side platform', isGoogle: false, isMiddleman: true },
-    { label: 'Exchange', role: 'Ad marketplace', isGoogle: false, isMiddleman: true },
-    { label: 'SSP', role: 'Supply-side platform', isGoogle: false, isMiddleman: true },
     { label: 'Publisher', role: 'Seller', isGoogle: false, isMiddleman: false },
+    { label: 'SSP', role: 'Supply-side platform', isGoogle: false, isMiddleman: true },
+    { label: 'Exchange', role: 'Ad marketplace', isGoogle: false, isMiddleman: true },
+    { label: 'DSP', role: 'Demand-side platform', isGoogle: false, isMiddleman: true },
+    { label: 'Advertiser', role: 'Buyer', isGoogle: false, isMiddleman: false },
   ];
 
   if (subState === 'middlemen') return base;
@@ -64,7 +70,7 @@ function GoogleLogo({ size = '1.1rem' }: { size?: string }) {
 }
 
 export function HistoryPipeline({ stepId }: Props) {
-  const subState = STEP_TO_SUBSTATE[stepId] ?? 'middlemen';
+  const subState = STEP_TO_SUBSTATE[stepId] ?? 'consolidation';
   const nodes = getNodes(subState);
   const isDimmed = subState === 'chat' || subState === 'closing';
   const showGavel = subState === 'antitrust';
@@ -72,7 +78,7 @@ export function HistoryPipeline({ stepId }: Props) {
   const showKeywordBlur = subState === 'degradation';
   const showNewPipeline = subState === 'chat' || subState === 'closing';
   const showGCreep = subState === 'closing';
-  const isFirstAppearance = subState === 'middlemen';
+  const isFirstAppearance = subState === 'consolidation';
 
   const nodeW = isDimmed ? 160 : 220;
   const nodeH = isDimmed ? 32 : 40;
@@ -109,16 +115,19 @@ export function HistoryPipeline({ stepId }: Props) {
           transformOrigin: 'center center',
         }}>
           {nodes.map((node, i) => {
-            const nodeColor = node.isGoogle
+            const middlemanColor = MIDDLEMAN_COLORS[node.label] ?? '#888';
+            // For consolidation first appearance, start with independent colors
+            const showGoogleTransition = isFirstAppearance && node.isMiddleman;
+            const nodeColor = node.isGoogle && !showGoogleTransition
               ? colors.googleRed
               : node.isMiddleman
-                ? '#888'
-                : colors.pipeline.advertiser;
-            const bgColor = node.isGoogle
+                ? middlemanColor
+                : node.label === 'Publisher' ? '#2196F3' : colors.pipeline.advertiser;
+            const bgColor = node.isGoogle && !showGoogleTransition
               ? 'rgba(255,68,68,0.08)'
               : node.isMiddleman
-                ? 'rgba(255,255,255,0.03)'
-                : 'rgba(76,175,80,0.04)';
+                ? `${middlemanColor}12`
+                : node.label === 'Publisher' ? 'rgba(33,150,243,0.04)' : 'rgba(76,175,80,0.04)';
             const staggerDelay = isFirstAppearance && node.isMiddleman
               ? `${(i - 1) * 0.2}s`
               : '0s';
@@ -128,7 +137,7 @@ export function HistoryPipeline({ stepId }: Props) {
                 {/* Arrow connector */}
                 {i > 0 && (
                   <div style={{
-                    color: node.isGoogle ? colors.googleRed : '#444',
+                    color: node.isGoogle && !showGoogleTransition ? colors.googleRed : '#444',
                     fontSize: '0.8rem',
                     lineHeight: 1,
                     height: vertGap + 8,
@@ -161,8 +170,35 @@ export function HistoryPipeline({ stepId }: Props) {
                     : 'none',
                   boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
                 }}>
-                  {/* G logo */}
-                  {node.isGoogle && (
+                  {/* Google overlay — fades in at 1.8s for consolidation */}
+                  {showGoogleTransition && (
+                    <div style={{
+                      position: 'absolute',
+                      inset: -2,
+                      borderRadius: 10,
+                      border: `2px solid ${colors.googleRed}`,
+                      background: '#140a0c',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: 8,
+                      opacity: 0,
+                      animation: 'consolidateOverlay 0.6s ease 1.8s forwards',
+                      zIndex: 1,
+                    }}>
+                      <GoogleLogo size="1.1rem" />
+                      <div style={{ textAlign: 'center' }}>
+                        <div style={{ fontWeight: 600, fontSize: '0.85rem', color: '#fff' }}>
+                          Google {node.label}
+                        </div>
+                        <div style={{ fontSize: '0.65rem', color: '#888', fontFamily: fonts.mono }}>
+                          {node.role}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  {/* G logo (for non-transitioning Google nodes) */}
+                  {node.isGoogle && !showGoogleTransition && (
                     <GoogleLogo size={isDimmed ? '0.9rem' : '1.1rem'} />
                   )}
                   {/* Label */}
@@ -172,7 +208,7 @@ export function HistoryPipeline({ stepId }: Props) {
                       fontSize: isDimmed ? '0.7rem' : '0.85rem',
                       color: '#fff',
                     }}>
-                      {node.isGoogle ? `Google ${node.label}` : node.label}
+                      {node.isGoogle && !showGoogleTransition ? `Google ${node.label}` : node.label}
                     </div>
                     <div style={{
                       fontSize: isDimmed ? '0.55rem' : '0.65rem',
@@ -197,7 +233,7 @@ export function HistoryPipeline({ stepId }: Props) {
             gap: 0,
             flex: '0 0 auto',
           }}>
-            {['Chat', '???', '???', '???', 'User'].map((label, i) => {
+            {['Chat', '???', '???', '???', 'Advertiser'].map((label, i) => {
               const isFilling = showGCreep && i > 0 && i < 4;
               return (
                 <div key={`new-${i}`} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -216,26 +252,37 @@ export function HistoryPipeline({ stepId }: Props) {
                     </div>
                   )}
                   <div style={{
-                    width: 140,
-                    height: 32,
-                    borderRadius: 8,
+                    width: 160,
+                    height: 36,
+                    borderRadius: 10,
                     border: isFilling
                       ? `2px solid ${colors.googleRed}`
-                      : '2px dashed #444',
-                    background: isFilling ? 'rgba(255,68,68,0.06)' : 'transparent',
+                      : `2px solid ${label === 'Chat' || label === 'Advertiser' ? '#6366f1' : colors.glow}`,
+                    background: isFilling
+                      ? 'rgba(255,68,68,0.06)'
+                      : label === 'Chat' || label === 'Advertiser'
+                        ? 'rgba(99,102,241,0.08)'
+                        : `rgba(76,175,80,0.06)`,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: 4,
                     opacity: 0,
                     animation: `fadeSlideDown 0.3s ease ${i * 0.08}s forwards`,
-                    boxShadow: isFilling ? '0 2px 6px rgba(0,0,0,0.15)' : 'none',
+                    boxShadow: isFilling
+                      ? '0 2px 6px rgba(0,0,0,0.15)'
+                      : '0 2px 6px rgba(0,0,0,0.1)',
                   }}>
                     {isFilling && <GoogleLogo size="0.9rem" />}
                     <span style={{
                       fontFamily: fonts.mono,
-                      fontSize: '0.7rem',
-                      color: isFilling ? colors.googleRed : '#555',
+                      fontSize: '0.75rem',
+                      fontWeight: 600,
+                      color: isFilling
+                        ? colors.googleRed
+                        : label === 'Chat' || label === 'Advertiser'
+                          ? '#8b8cf8'
+                          : colors.glow,
                     }}>
                       {label}
                     </span>
@@ -402,6 +449,10 @@ export function HistoryPipeline({ stepId }: Props) {
         @keyframes fadeSlideDown {
           from { opacity: 0; transform: translateY(-8px); }
           to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes consolidateOverlay {
+          from { opacity: 0; }
+          to { opacity: 1; }
         }
       `}</style>
     </div>

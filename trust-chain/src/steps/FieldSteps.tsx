@@ -37,7 +37,7 @@ export const FieldSteps = {
             "my knee hurts when I run downhill but not uphill"
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            Every word stays. The coordinate lands not in a bin, but in an open field. And in the field, distance is meaning.
+            Every word stays. The coordinate lands not in a bin, but in an open field. Nearby points mean similar things.
           </p>
         </StepText>
       ),
@@ -54,7 +54,7 @@ export const FieldSteps = {
             Today's ad protocol can't carry this. OpenRTB<Cite href="https://iabtechlab.com/standards/openrtb/" n={8} /> — the standard behind every real-time bid request — has fields for keywords and category codes. No field for a vector.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            The full meaning dies at the protocol boundary. The fix is three optional fields. That's the bottleneck.
+            The full meaning gets dropped at the protocol boundary. The fix is three optional fields<Cite href="/embedding-gap/" n={26} />. That's the bottleneck.
           </p>
           <p style={{ color: '#888', marginTop: 12 }}>
             But assume it exists. Here's what the field looks like.
@@ -71,7 +71,7 @@ export const FieldSteps = {
             Each advertiser claims a spot — and a radius.
           </h2>
           <p style={{ color: '#bbb' }}>
-            In the field, every advertiser declares two things: <em>where</em> they stand (their embedding) and <em>how far</em> they reach (their sigma — σ). Sigma is their self-declared circle of competence.
+            In the field, every advertiser declares two things: <em>where</em> they stand (their embedding) and <em>how far</em> they reach (their sigma — σ<Cite href="/the-price-of-relevance/" n={27} />). Sigma is their self-declared circle of competence.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
             Dr. Chen treats runners with eccentric loading injuries — your exact problem. Narrow σ. Small, bright circle: <em>"I'm excellent at this one thing."</em>
@@ -88,13 +88,13 @@ export const FieldSteps = {
         <StepText>
 
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
-            What stops Metro from claiming to be a specialist too?
+            Sigma is self-correcting.
           </h2>
           <p style={{ color: '#bbb' }}>
-            If Metro claims a narrow sigma to look like a specialist in <em>your</em> injury, they miss every query outside that tiny circle. Their volume collapses.
+            Claim a sigma narrower than your real expertise and you miss queries you could have won. Claim wider and you pay for impressions you can't convert.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            If Dr. Chen claims a wide sigma to win more auctions, she pays for impressions from people she can't help — post-surgical rehab, arthritis, knee replacements. Her budget burns on bad matches.
+            Metro can't fake being a specialist — a narrow sigma kills their volume. Dr. Chen can't fake being a generalist — a wide sigma burns her budget on bad matches.
           </p>
           <p style={{ color: '#4CAF50', marginTop: 12, fontWeight: 600 }}>
             The sigma that makes you the most money is the one that matches your actual expertise. The honest signal <em>is</em> the greedy signal.
@@ -107,13 +107,13 @@ export const FieldSteps = {
       content: (
         <StepText>
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
-            Here's the trick: keywords already work this way.
+            Keywords still work. Nothing breaks.
           </h2>
           <p style={{ color: '#bbb' }}>
-            A keyword is just an embedding with sigma near zero. The tightest possible circle. A single point.
+            A keyword is just an embedding with sigma near zero<Cite href="/keywords-are-tiny-circles/" n={28} /> — the tightest possible circle. A single point in the same coordinate system. Every keyword campaign that works today works tomorrow, unchanged.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            The old system isn't being replaced — it's being <em>generalized</em>. Keywords still work. They're tiny circles in the same field. The difference is that now sigma can grow.
+            The difference is that now sigma can grow. Advertisers who want precision keep their points. Advertisers who want reach expand their circles. Both live in the same field, competing in the same auction.
           </p>
         </StepText>
       ),
@@ -124,13 +124,13 @@ export const FieldSteps = {
         <StepText>
 
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
-            If everyone can move freely, everyone moves to the center.
+            What stops people from gaming this?
           </h2>
           <p style={{ color: '#bbb' }}>
-            Dr. Chen sees that most queries cluster around "knee pain." She's tempted to broaden her positioning — drift away from "downhill eccentric loading" toward the generic center where the traffic is.
+            Nothing yet. Dr. Chen sees that most queries cluster around "knee pain." She lies about her position — drifts away from "downhill eccentric loading" toward the generic center where the traffic is.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            So is every other specialist. They all abandon their niches and crowd the center. The field collapses back into a bin.
+            So does every other specialist. They all abandon their niches and crowd the center. The field collapses back into a bin.
           </p>
           <p style={{ color: '#FF8800', marginTop: 12 }}>
             You lose Dr. Chen. She's standing in the same crowd as Metro Orthopedic again, competing on budget instead of expertise.
@@ -144,16 +144,16 @@ export const FieldSteps = {
         <StepText>
 
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
-            It costs money to move.
+            Make lying expensive.
           </h2>
           <p style={{ color: '#bbb' }}>
-            A relocation fee: shift your position, pay proportional to how far you moved. Small adjustments are cheap. Abandoning your niche to chase the center is expensive.
+            A relocation fee: shift your declared position, pay proportional to how far you moved. Small adjustments are cheap. Abandoning your niche to chase the center is expensive.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            Dr. Chen runs the numbers. Staying where she is — "downhill running biomechanics" — costs nothing. Drifting to "general knee pain" would cost more than the extra impressions are worth. She stays put.
+            Dr. Chen runs the numbers. Staying where she is — "downhill running biomechanics" — costs nothing. Drifting to "general knee pain" would cost more than the extra impressions are worth. The honest position <em>is</em> the profitable position.
           </p>
           <p style={{ color: '#4CAF50', marginTop: 12, fontSize: '1rem' }}>
-            Simulations confirm it: with relocation fees, specialist surplus flips from negative to positive. Dr. Chen earns more per impression than Metro.
+            Simulations confirm it<Cite href="/relocation-fees/" n={22} />: with relocation fees, specialist surplus flips from negative to positive. Dr. Chen earns more per impression than Metro.
           </p>
         </StepText>
       ),
@@ -167,13 +167,13 @@ export const FieldSteps = {
             Greed aligns.
           </h2>
           <p style={{ color: '#bbb' }}>
-            Dr. Chen stays in her niche because moving is expensive and her niche is where she converts best. Metro stays wide because their generalist model needs volume. And you — you get Dr. Chen, three steps away, for $2 instead of Metro for $8.
+            Dr. Chen stays in her niche because moving is expensive and her niche is where she converts best. Near her point, every impression is a downhill runner — she converts one in four. At that rate she can bid $10 and still profit. Metro, far from your query, can't justify more than $3.
           </p>
           <p style={{ color: '#888', marginTop: 12 }}>
-            Nobody is being altruistic. The mechanism makes the selfish move the fair move.
+            Nobody is being altruistic. Everyone is doing what makes them the most money.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            The economics look like 2003 again. Before the middlemen. Before the consolidation. Before the degradation — not by going backwards, but by building forward with a better signal.
+            The economics look like 2003 again — before the middlemen took over. A better signal needs less infrastructure.
           </p>
         </StepText>
       ),
@@ -199,11 +199,11 @@ export const FieldSteps = {
       id: 'enclave-proof',
       content: (
         <StepText>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#00BCD4', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
             The auction runs inside sealed hardware.
           </h2>
           <p style={{ color: '#bbb' }}>
-            A TEE — trusted execution environment — is a chip-level enclave. The auction code runs inside it. The exchange can trigger the computation, but it can't read the inputs, alter the logic, or change the output.
+            A TEE — trusted execution environment<Cite href="/the-last-ad-layer/" n={29} /> — is a chip-level enclave. The auction code runs inside it. The exchange can trigger the computation, but it can't read the inputs, alter the logic, or change the output. No middleman ever sees your embedding.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
             The result comes out with a cryptographic signature — proof that the code ran exactly as published, unmodified. Not a promise. A receipt you can verify.

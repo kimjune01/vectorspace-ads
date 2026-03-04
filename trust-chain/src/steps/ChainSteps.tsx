@@ -17,13 +17,13 @@ export const ChainSteps = {
       content: (
         <StepText>
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
-            The chatbot providers have the richest intent signal ever — but can't use it to cover costs.
+            Chatbot providers have the best ad signal ever built — and no way to use it.
           </h2>
           <p style={{ color: '#bbb' }}>
-            Every conversation carries an embedding. Every question is intent in vector form. ChatGPT, Claude, Perplexity — they have the richest signal any ad system has ever seen, and no way to connect it to advertisers.
+            Every conversation already produces an embedding — intent in vector form. ChatGPT, Claude, Perplexity all have it. None of them can connect it to advertisers.
           </p>
           <p style={{ color: '#888', marginTop: 12 }}>
-            Perplexity tried ads. Users revolted<Cite href="https://futurism.com/artificial-intelligence/openai-perplexity-admits-ai-adverts-mistake" n={9} />. Anthropic promised no ads at all<Cite href="https://www.anthropic.com/news/claude-is-a-space-to-think" n={10} />. Billions of high-intent queries, every day, with full semantic resolution. Thrown away — because there's no protocol, no auction, and no trust layer to carry it.
+            Perplexity tried ads. Users revolted<Cite href="https://futurism.com/artificial-intelligence/openai-perplexity-admits-ai-adverts-mistake" n={9} />. Anthropic promised no ads at all<Cite href="https://www.anthropic.com/news/claude-is-a-space-to-think" n={10} />. The signal exists. There's just no pipe to carry it<Cite href="/the-last-signal/" n={31} />.
           </p>
         </StepText>
       ),
@@ -33,13 +33,16 @@ export const ChainSteps = {
       content: (
         <StepText>
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
-            The ad industry is building the wrong thing.
+            The adtech industry is building around the wrong abstraction.
           </h2>
           <p style={{ color: '#bbb' }}>
-            Google won't build it — an embedding auction would cannibalize the keyword monopoly. Every improvement to matching quality is a threat to a $265 billion business<Cite href="https://www.visualcapitalist.com/alphabets-revenue-breakdown-in-2024/" n={11} />.
+            Google's "AI Max" uses AI to broad-match your exact-match keywords<Cite href="https://www.seroundtable.com/google-ads-ai-max-broad-matchifies-40562.html" n={15} />. The Trade Desk's Kokai<Cite href="https://www.thetradedesk.com/press-room/the-trade-desk-launches-kokai-a-new-media-buying-platform-that-brings-the-full-power-of-ai-to-digital-marketing" n={23} /> optimizes bids within the same OpenRTB pipe. More AI, same primitives.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            SSPs and DSPs are reaching for the wrong piece — bolting embeddings onto the old infrastructure. Embed the page content, score it with cosine similarity, run the same auction. It's a better keyword, not a new system.
+            Cognitiv<Cite href="https://www.globenewswire.com/news-release/2024/06/11/2896871/0/en/PubMatic-Is-The-First-SSP-To-Make-Cognitiv-ContextGPT-4-Available-To-Buyers.html" n={16} />, Seedtag<Cite href="https://www.seedtag.com/contextual-ai/" n={24} />, GumGum<Cite href="https://www.businesswire.com/news/home/20200115005272/en/GumGums-Groundbreaking-Contextual-Analysis-Solution-for-Digital-Publishers-Makes-Official-Debut" n={25} /> — they all use embeddings to <em>read</em> page content. But the output collapses to a deal ID or a segment code before it enters the bid stream. The vector never reaches the auction. OpenRTB 2.6 has fields for keywords and category codes. No field for a vector.
+          </p>
+          <p style={{ color: '#888', marginTop: 12 }}>
+            Everyone is using AI to optimize the selection of the same old primitives. Nobody is changing the pipe.
           </p>
         </StepText>
       ),
@@ -106,13 +109,13 @@ export const ChainSteps = {
             Without revenue, chatbots become subsidiaries.
           </h2>
           <p style={{ color: '#bbb' }}>
-            OpenAI, Anthropic, Perplexity — none of them are profitable. They burn billions on compute and survive on venture capital. VC money has an expiration date.
+            OpenAI loses $5 billion a year<Cite href="https://fortune.com/2025/11/12/openai-cash-burn-rate-annual-losses-2028-profitable-2030-financial-documents/" n={12} />. Anthropic burns $3 billion<Cite href="https://cybernews.com/ai-news/openai-anthropic-profit-revenue-ai/" n={13} />. Perplexity spends more on compute than it earns<Cite href="https://sacra.com/c/perplexity/" n={14} />. None of them are profitable. They survive on venture capital, and VC money has an expiration date.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
             When it runs out, the exits are acquisition or subsidy. Microsoft absorbs OpenAI. Google absorbs Gemini's costs because it owns the ad engine. Independent AI companies without a revenue model become features inside megacorps — or instruments of governments that fund them.
           </p>
           <p style={{ color: '#888', marginTop: 12 }}>
-            An honest ad layer isn't just about better ads. It's the difference between an open AI ecosystem and one where every model is a loss leader for someone else's business.
+            An ad layer that works would let chatbots pay for themselves. Without one, every model becomes a feature inside a company that can afford to lose money on it.
           </p>
         </StepText>
       ),
@@ -128,13 +131,42 @@ export const ChainSteps = {
             The immigration lawyer who speaks Tagalog. The HVAC tech who specializes in century homes. The tutor who teaches calculus to kids with ADHD. Every one of them is invisible to keyword ads — too niche to win a bid, too specific to fit a category.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            An embedding auction makes them discoverable for the first time — matched to the people who actually need them, at a price they can afford. Not because someone tracked a user across the internet, but because the user described exactly what they needed.
+            An embedding auction makes them discoverable for the first time — matched to the people who actually need them, at a price they can afford, because the user described exactly what they needed.
+          </p>
+        </StepText>
+      ),
+    },
+    {
+      id: 'zoom-jobs',
+      content: (
+        <StepText>
+          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+            Each dot is a business. Each business supports jobs.
+          </h2>
+          <p style={{ color: '#bbb' }}>
+            Dr. Chen has a receptionist, a billing coder, a PT aide. The HVAC tech has an apprentice and a dispatcher. The tutor hires other tutors when demand grows.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            AI is replacing tasks. These are the people who do what AI can't — hands-on, local, specialized work that requires showing up. Connecting them to the people who need them isn't charity. It's the other half of the AI economy: the part where humans still matter.
+            These are the people who do what AI can't — hands-on, local, specialized work that requires showing up. When they get discovered, they hire.
           </p>
           <p style={{ color: '#888', marginTop: 12 }}>
-            That's not an optimization. That's a different economy.
+            That's not a better ad. That's a better labor market.
+          </p>
+        </StepText>
+      ),
+    },
+    {
+      id: 'closing',
+      content: (
+        <StepText>
+          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+            Your knee still hurts. But this time, Dr. Chen is one click away.
+          </h2>
+          <p style={{ color: '#bbb' }}>
+            You didn't search a keyword. You described your problem. The auction didn't sell you to the highest bidder — it matched you to the nearest expert. Nobody tracked you. Nobody profiled you. The chatbot proved the match was honest, and you tapped because you wanted to.
+          </p>
+          <p style={{ color: '#888', marginTop: 12 }}>
+            Remember when you could just ask a question and get help?
           </p>
         </StepText>
       ),

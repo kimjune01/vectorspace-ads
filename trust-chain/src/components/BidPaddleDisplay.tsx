@@ -1,4 +1,4 @@
-import { fonts } from '../theme';
+import { colors, fonts } from '../theme';
 import { BidPaddle } from './BidPaddle';
 import { QUALITY_SCORE_BIDDERS, GOOGLE_BIDDERS } from '../data';
 
@@ -148,28 +148,48 @@ export function BidPaddleDisplay({ stepId }: Props) {
       {/* Keyword bin label */}
       <div style={{
         fontSize: '0.6rem',
-        color: '#888',
         letterSpacing: '0.05em',
         fontFamily: fonts.mono,
         padding: '6px 12px',
         borderBottom: '1px solid #222',
         background: 'rgba(255,136,0,0.04)',
+        display: 'flex',
+        gap: 4,
       }}>
-        BIN: "knee pain running"
+        <span style={{ color: '#888' }}>BIN:</span>
+        <span style={{ color: colors.googleOrange }}>"knee pain running"</span>
       </div>
 
       {/* Rows */}
-      {GOOGLE_BIDDERS.map((bidder, i) => (
-        <BidPaddle
-          key={bidder.name}
-          name={bidder.name}
-          bid={bidder.bid}
-          color={bidder.color}
-          isWinner={i === 0}
-          visible={true}
-          index={i}
-        />
-      ))}
+      {GOOGLE_BIDDERS.map((bidder, i) => {
+        const isDrChen = bidder.name.includes('Dr. Chen');
+        return (
+          <div
+            key={bidder.name}
+            style={isDrChen ? {
+              background: 'rgba(68, 170, 255, 0.12)',
+              animation: 'drChenDesaturate 1.2s ease 1.5s forwards',
+            } : undefined}
+          >
+            <BidPaddle
+              name={bidder.name}
+              bid={bidder.bid}
+              color={bidder.color}
+              isWinner={i === 0}
+              visible={true}
+              index={i}
+              forceVisible={isDrChen}
+            />
+          </div>
+        );
+      })}
+
+      <style>{`
+        @keyframes drChenDesaturate {
+          0% { filter: none; opacity: 1; background: rgba(68, 170, 255, 0.12); }
+          100% { filter: saturate(0) brightness(0.5); opacity: 0.35; background: transparent; }
+        }
+      `}</style>
     </div>
   );
 }

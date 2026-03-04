@@ -23,7 +23,7 @@ export function CTA() {
         lineHeight: 1.7,
         marginBottom: 40,
       }}>
-        I built some of the pieces.
+        I proved that the pieces fit together.
       </p>
 
       <div style={{
@@ -59,9 +59,21 @@ export function CTA() {
           fontSize: '1.1rem',
           lineHeight: 1.7,
         }}>
-          I designed the auction mechanism, ran the simulations, and built the interactive prototype. What I can't build alone is the protocol layer and the TEE integration. If you're working on a piece of this chain — or want to —{' '}
+          If you want to strengthen the case —{' '}
           <a
-            href="mailto:june@junekim.xyz"
+            href="/vector-space"
+            style={{
+              color: colors.embedBlue,
+              textDecoration: 'none',
+              borderBottom: `1px solid ${colors.embedBlue}`,
+            }}
+          >
+            let's research together
+          </a>
+          .<br />
+          If you want to make money —{' '}
+          <a
+            href="/about"
             style={{
               color: colors.embedBlue,
               textDecoration: 'none',
@@ -83,10 +95,9 @@ export function CTA() {
       }}>
         <p>
           Built by{' '}
-          <a href="mailto:june@june.kim" style={{ color: '#666', textDecoration: 'none', borderBottom: '1px solid #444' }}>
-            june@june.kim
+          <a href="/" style={{ color: '#666', textDecoration: 'none', borderBottom: '1px solid #444' }}>
+            June Kim
           </a>
-          {' '}· currently looking for work
         </p>
         <p style={{ marginTop: 8 }}>
           Written with{' '}

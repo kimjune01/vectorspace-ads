@@ -166,14 +166,14 @@ export function EmbeddingField({ stepId }: Props) {
             <text
               x={toX(drChenPos.x)}
               y={toY(drChenPos.y) - (showInflateAnim ? 40 : 38)}
-              fill={drChen.color}
+              fill={isHotelling ? colors.googleOrange : drChen.color}
               fontSize={9}
               fontFamily={fonts.mono}
               fontWeight={600}
               textAnchor="middle"
-              style={{ transition: 'x 0.8s, y 0.8s' }}
+              style={{ transition: 'x 0.8s, y 0.8s, fill 0.8s' }}
             >
-              Dr. Chen · $2
+              Dr. Chen · {isHotelling ? '$5' : '$10'}
             </text>
             {isEquilibrium && (
               <text
@@ -402,68 +402,110 @@ export function EmbeddingField({ stepId }: Props) {
         }
       `}</style>
 
-      {/* Protocol overlay (protocol-gap) */}
+      {/* Protocol overlay (protocol-gap) — code editor at 85% opacity */}
       {showProtocolOverlay && (
         <div style={{
           position: 'absolute',
           top: '50%',
           left: '50%',
-          transform: 'translate(-50%, -50%)',
-          background: 'rgba(10, 10, 26, 0.95)',
-          border: `2px solid ${colors.embedBlue}`,
-          borderRadius: 10,
-          padding: 20,
-          maxWidth: 260,
+          opacity: 0,
+          maxWidth: 320,
           width: '90%',
+          borderRadius: 8,
+          overflow: 'hidden',
+          border: '1px solid #333',
+          background: '#1e1e2e',
+          boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+          animation: 'protoExpand 0.5s ease forwards',
+          transformOrigin: 'center center',
         }}>
+          {/* Tab header */}
           <div style={{
-            fontSize: '0.7rem',
-            color: '#888',
-            textTransform: 'uppercase',
-            letterSpacing: '0.1em',
-            marginBottom: 12,
-            fontFamily: fonts.mono,
+            display: 'flex',
+            alignItems: 'center',
+            background: '#181825',
+            borderBottom: '1px solid #333',
           }}>
-            OpenRTB Bid Request
-          </div>
-          {[
-            { label: 'keywords', value: '"knee, pain, running"', ok: true },
-            { label: 'category', value: '"IAB7-1"', ok: true },
-            { label: 'geo', value: '"US-CA"', ok: true },
-            { label: 'embedding', value: '???', ok: false },
-          ].map(f => (
-            <div key={f.label} style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              padding: '6px 0',
-              borderBottom: '1px solid #222',
+            <div style={{
+              padding: '5px 12px',
+              fontSize: '0.65rem',
+              fontFamily: fonts.mono,
+              color: '#cdd6f4',
+              background: '#1e1e2e',
+              borderBottom: '2px solid #89b4fa',
+              borderRight: '1px solid #333',
             }}>
-              <span style={{
-                fontFamily: fonts.mono,
-                fontSize: '0.8rem',
-                color: f.ok ? '#888' : colors.googleOrange,
-              }}>
-                {f.label}:
-              </span>
-              <span style={{
-                fontFamily: fonts.mono,
-                fontSize: '0.8rem',
-                color: f.ok ? '#666' : colors.googleOrange,
-                fontStyle: f.ok ? 'normal' : 'italic',
-              }}>
-                {f.value}
-              </span>
+              bid_request.json
             </div>
-          ))}
-          <div style={{
-            marginTop: 10,
-            fontSize: '0.7rem',
-            color: colors.embedBlue,
-            textAlign: 'center',
-            fontFamily: fonts.mono,
-          }}>
-            One new field: embedding: [0.70, 0.68, ...]
+            <div style={{ flex: 1 }} />
+            <div style={{ display: 'flex', gap: 4, padding: '0 8px' }}>
+              <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#f38ba8' }} />
+              <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#f9e2af' }} />
+              <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#a6e3a1' }} />
+            </div>
           </div>
+          {/* Code lines */}
+          <div style={{ padding: '6px 0', fontSize: '0.72rem', fontFamily: fonts.mono, lineHeight: 1.7 }}>
+            {[
+              { n: 1, indent: 0, bracket: '{' },
+              { n: 2, indent: 1, k: 'keywords', v: '["knee", "pain", "running"]', comma: true },
+              { n: 3, indent: 1, k: 'category', v: '"IAB7-1"', comma: true },
+              { n: 4, indent: 1, k: 'geo', v: '"US-CA"', comma: true },
+              { n: 5, indent: 1, k: 'embedding', v: '???', hi: true },
+              { n: 6, indent: 0, bracket: '}' },
+            ].map(l => (
+              <div key={l.n} style={{
+                display: 'flex',
+                alignItems: 'center',
+                background: l.hi ? 'rgba(255, 152, 0, 0.1)' : 'transparent',
+                borderLeft: l.hi ? `3px solid ${colors.googleOrange}` : '3px solid transparent',
+                padding: '0 10px 0 0',
+                opacity: 0,
+                animation: `protoLineIn 0.3s ease ${l.n * 0.08}s forwards`,
+              }}>
+                <span style={{
+                  width: 28,
+                  textAlign: 'right',
+                  color: '#585b70',
+                  fontSize: '0.65rem',
+                  paddingRight: 10,
+                  userSelect: 'none',
+                  flexShrink: 0,
+                }}>{l.n}</span>
+                <span>
+                  {'  '.repeat(l.indent ?? 0)}
+                  {l.bracket && <span style={{ color: '#cdd6f4' }}>{l.bracket}</span>}
+                  {l.k && (
+                    <>
+                      <span style={{ color: l.hi ? colors.googleOrange : '#89b4fa' }}>"{l.k}"</span>
+                      <span style={{ color: '#cdd6f4' }}>: </span>
+                    </>
+                  )}
+                  {l.v && (
+                    <span style={{
+                      color: l.hi ? colors.googleOrange
+                        : l.v.startsWith('"') ? '#a6e3a1'
+                        : '#f9e2af',
+                      fontStyle: l.hi ? 'italic' : 'normal',
+                    }}>
+                      {l.v}
+                    </span>
+                  )}
+                  {l.comma && <span style={{ color: '#cdd6f4' }}>,</span>}
+                </span>
+              </div>
+            ))}
+          </div>
+          <style>{`
+            @keyframes protoLineIn {
+              from { opacity: 0; transform: translateX(-8px); }
+              to { opacity: 1; transform: translateX(0); }
+            }
+            @keyframes protoExpand {
+              from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+              to { opacity: 0.85; transform: translate(-50%, -50%) scale(1); }
+            }
+          `}</style>
         </div>
       )}
     </div>

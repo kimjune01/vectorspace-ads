@@ -1,9 +1,12 @@
 import { fonts, colors } from '../theme';
 
 interface ReceiptData {
+  customerMargin: number;
+  conversion: string;
+  revenuePerClick: number;
   clickCost: number;
   cuts: { label: string; amount: number }[];
-  toAdvertiser: number;
+  profitPerClick: number;
   winner: string;
   cta: string;
   subtitle: string;
@@ -19,6 +22,7 @@ export function Receipt({ data, variant, visible }: Props) {
   const accentColor = variant === 'google' ? colors.googleRed : colors.embedGreen;
   const title = variant === 'google' ? 'GOOGLE SEARCH' : 'EMBEDDING AUCTION';
   const txnId = variant === 'google' ? '#TXN-4419203' : '#TXN-8847291';
+  const profitColor = data.profitPerClick >= 30 ? '#2e7d32' : '#888';
 
   return (
     <div style={{
@@ -80,34 +84,31 @@ export function Receipt({ data, variant, visible }: Props) {
         </div>
 
         {/* Dashed divider */}
-        <div style={{
-          borderBottom: '1px dashed #bbb',
-          marginBottom: 8,
-        }} />
+        <Divider />
 
-        {/* Line items */}
+        {/* Revenue side */}
         <div style={{ marginBottom: 8 }}>
-          <Row label="Click cost" amount={`$${data.clickCost.toFixed(2)}`} />
+          <Row label="Customer margin" amount={`$${data.customerMargin}`} />
+          <Row label="Conversion" amount={data.conversion} dim />
+          <Row label="Revenue / click" amount={`$${data.revenuePerClick.toFixed(2)}`} />
+        </div>
+
+        <Divider />
+
+        {/* Cost side */}
+        <div style={{ marginBottom: 8 }}>
+          <Row label="Click cost" amount={`-$${data.clickCost.toFixed(2)}`} />
           {data.cuts.map((cut, i) => (
-            <Row key={i} label={cut.label} amount={`-$${Math.abs(cut.amount).toFixed(2)}`} dim />
+            <Row key={i} label={`  ${cut.label}`} amount={`$${Math.abs(cut.amount).toFixed(2)}`} dim />
           ))}
         </div>
 
-        {/* Dashed divider */}
-        <div style={{
-          borderBottom: '1px dashed #bbb',
-          marginBottom: 8,
-        }} />
+        <Divider />
 
-        {/* Total */}
-        <Row label="TO ADVERTISER" amount={`$${data.toAdvertiser.toFixed(2)}`} bold />
+        {/* Profit */}
+        <Row label="PROFIT / CLICK" amount={`$${data.profitPerClick.toFixed(2)}`} bold color={profitColor} />
 
-        {/* Dashed divider */}
-        <div style={{
-          borderBottom: '1px dashed #bbb',
-          marginTop: 8,
-          marginBottom: 10,
-        }} />
+        <Divider margin="8px 0 10px" />
 
         {/* Winner info */}
         <div style={{ textAlign: 'center' }}>
@@ -139,7 +140,11 @@ export function Receipt({ data, variant, visible }: Props) {
   );
 }
 
-function Row({ label, amount, bold, dim }: { label: string; amount: string; bold?: boolean; dim?: boolean }) {
+function Divider({ margin = '0 0 8px' }: { margin?: string }) {
+  return <div style={{ borderBottom: '1px dashed #bbb', margin }} />;
+}
+
+function Row({ label, amount, bold, dim, color }: { label: string; amount: string; bold?: boolean; dim?: boolean; color?: string }) {
   return (
     <div style={{
       display: 'flex',
@@ -147,7 +152,7 @@ function Row({ label, amount, bold, dim }: { label: string; amount: string; bold
       padding: '2px 0',
       fontWeight: bold ? 700 : 400,
       fontSize: bold ? '0.85rem' : '0.75rem',
-      color: dim ? '#888' : '#333',
+      color: color ?? (dim ? '#888' : '#333'),
     }}>
       <span>{label}</span>
       <span>{amount}</span>

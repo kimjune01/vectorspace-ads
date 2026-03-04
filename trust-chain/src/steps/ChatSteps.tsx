@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import type { StepData } from '../ScrollySection';
+import { Cite } from '../components/Cite';
 
 function StepText({ children }: { children: ReactNode }) {
   return (
@@ -19,7 +20,7 @@ export const ChatSteps = {
             So what does the user actually see?
           </h2>
           <p style={{ color: '#bbb' }}>
-            All this mechanism — embeddings, sigma, relocation fees, sealed auctions — is invisible. The user never sees any of it. They see one thing: a dot.
+            All this mechanism — embeddings, sigma, relocation fees, sealed auctions — is invisible. The user never sees any of it. They see one thing: a dot<Cite href="/ask-first/" n={30} />.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
             You open a chat. You start typing. A small dot appears in the margin. Barely visible. Dim gray. It means: <em>there's expertise somewhere in this space, but it's far away. Your query is vague.</em>
@@ -41,7 +42,7 @@ export const ChatSteps = {
             You add more detail. The dot brightens slightly. Warmer. Closer. Your intent is getting more specific, and somewhere in the embedding field, an advertiser's circle overlaps with where you're standing.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            The dot glows. Bright. Close. It's not selling anything. It's not a link. It's an ambient signal: <em style={{ color: '#4CAF50' }}>someone nearby can help with exactly this.</em>
+            The dot glows. Bright. Close. It's not selling anything. It's not a link. It's an ambient signal: <strong style={{ color: '#fff' }}>someone nearby can help with exactly this.</strong>
           </p>
           <p style={{ color: '#888', marginTop: 12 }}>
             You tap it.
@@ -57,7 +58,7 @@ export const ChatSteps = {
             Now — and only now — the auction fires.
           </h2>
           <p style={{ color: '#bbb' }}>
-            The chatbot sends your embedding into the sealed auction. The TEE runs the match. Dr. Chen wins — three steps away, $2 bid. Metro Orthopedic, far across the field, never had a chance.
+            This is intentcasting — you broadcast your need, and the right vendor finds you. The chatbot sends your embedding into the sealed auction. The TEE runs the match. Dr. Chen wins — one click away, bidding $10 because every impression near her converts. Metro Orthopedic, far across the field, can't justify more than $3.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
             You tapped because you were curious. The match is real because the math is real. The chatbot can prove — cryptographically — that it didn't choose Dr. Chen. The sealed auction did.

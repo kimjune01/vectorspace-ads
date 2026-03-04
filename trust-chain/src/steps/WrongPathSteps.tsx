@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import type { StepData } from '../ScrollySection';
+import { Cite } from '../components/Cite';
 
 function StepText({ children }: { children: ReactNode }) {
   return (
@@ -16,10 +17,10 @@ export const WrongPathSteps = {
       content: (
         <StepText>
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
-            You're in the bin.
+            You're thrown into the bin.
           </h2>
           <p style={{ color: '#bbb' }}>
-            Your query — all its nuance — got compressed into{' '}
+            Your intent — all its nuance — got compressed into{' '}
             <span style={{ fontFamily: "'JetBrains Mono', monospace", color: '#FF8800' }}>knee pain running</span>{' '}
             and thrown into a pen. You're crowded in with everyone who ever typed anything vaguely knee-related.
           </p>
@@ -37,7 +38,10 @@ export const WrongPathSteps = {
             Same bin, same outcome.
           </h2>
           <p style={{ color: '#bbb' }}>
-            Every advertiser who bought "knee pain" competes for you. Dr. Chen — the specialist who actually treats downhill runners — is drowned out by bigger budgets.
+            Dr. Chen could pay $10 for a downhill runner — that patient converts. But the bin doesn't send her downhill runners. It sends everyone who typed "knee." She converts one in twenty. At that rate she can only afford $2.
+          </p>
+          <p style={{ color: '#bbb', marginTop: 12 }}>
+            Metro converts one in five — not because they're better, but because "general consultation" matches more of the bin. Low resolution rewards the generalist and prices out the specialist.
           </p>
         </StepText>
       ),
@@ -49,8 +53,11 @@ export const WrongPathSteps = {
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
             The old economics repeat.
           </h2>
-          <p style={{ color: '#666', marginTop: 12, fontStyle: 'italic' }}>
-            This is where the story usually ends.
+          <p style={{ color: '#bbb' }}>
+            Google keeps 37 cents of every ad dollar<Cite href="https://digiday.com/media/the-rundown-u-s-v-google-ad-tech-antitrust-trial-by-numbers-so-far/" n={32} /> across three layers it controls. Internal documents show CPCs doubled between 2013 and 2020 through deliberate "tunings"<Cite href="https://searchengineland.com/doj-google-search-ad-price-manipulation-440207" n={33} /> — and advertisers can't even see 28% of the queries their money is spent on<Cite href="https://www.seerinteractive.com/insights/google-ads-removes-search-terms-for-28-percent-of-paid-search-budgets" n={34} />.
+          </p>
+          <p style={{ color: '#888', marginTop: 12 }}>
+            But look at where the value was lost. It wasn't in the auction. It was in the signal — the moment your full question got crushed into three keywords.
           </p>
         </StepText>
       ),

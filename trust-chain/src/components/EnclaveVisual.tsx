@@ -146,7 +146,7 @@ export function EnclaveVisual({ stepId }: Props) {
       }}>
         <OutputBox
           label="Winner"
-          value={sealed ? 'Dr. Chen — $8' : 'Dr. Chen — $2'}
+          value={sealed ? 'Dr. Chen — $8' : 'Dr. Chen — $10'}
           color={sealed ? '#FF4444' : colors.embedGreen}
           highlight={sealed}
           highlightColor={sealed ? 'rgba(255, 68, 68, 0.08)' : undefined}

@@ -17,24 +17,31 @@ export const QUALITY_SCORE_BIDDERS = [
 ];
 
 export const GOOGLE_RECEIPT = {
-  clickCost: 8.0,
+  customerMargin: 100,
+  conversion: "1 in 5",
+  revenuePerClick: 20,
+  clickCost: 16.0,
   cuts: [
-    { label: "Google Search (pub)", amount: -1.6 },
-    { label: "Google Ads (DSP)", amount: -0.8 },
-    { label: "Google AdX (exchange)", amount: -0.8 },
+    { label: "Publisher (Google)", amount: -1.6 },
+    { label: "Google Ads (DSP)", amount: -8.4 },
+    { label: "Google AdX (exchange)", amount: -6.0 },
   ],
-  toAdvertiser: 4.8,
+  profitPerClick: 4,
   winner: "Metro Orthopedic",
   cta: "Book a consultation",
   subtitle: "general orthopedics",
 };
 
 export const EMBEDDING_RECEIPT = {
-  clickCost: 2.0,
+  customerMargin: 100,
+  conversion: "1 in 4",
+  revenuePerClick: 25,
+  clickCost: 10.0,
   cuts: [
-    { label: "Exchange (TEE)", amount: -0.2 },
+    { label: "Publisher (chatbot)", amount: -4.0 },
+    { label: "Exchange (TEE)", amount: -1.5 },
   ],
-  toAdvertiser: 1.8,
+  profitPerClick: 15,
   winner: "Dr. Chen Sports",
   cta: "Runner knee specialist",
   subtitle: "eccentric loading expert",
@@ -42,7 +49,7 @@ export const EMBEDDING_RECEIPT = {
 
 export const EMBEDDING_MAP_POINTS = [
   { id: "query", label: "Your query", x: 0.72, y: 0.72, type: "query" as const },
-  { id: "drchen", label: "Dr. Chen Sports", x: 0.80, y: 0.62, type: "advertiser" as const, bid: 2 },
+  { id: "drchen", label: "Dr. Chen Sports", x: 0.80, y: 0.62, type: "advertiser" as const, bid: 10 },
   { id: "eccentric", label: "Eccentric loading", x: 0.90, y: 0.85, type: "concept" as const },
   { id: "anterior", label: "Anterior knee pain", x: 0.52, y: 0.52, type: "concept" as const },
   { id: "downhill", label: "Downhill running", x: 0.58, y: 0.88, type: "concept" as const },
@@ -60,6 +67,7 @@ export type SurplusSegment = {
 };
 
 export const SURPLUS_BAR_CONFIG: Record<string, SurplusSegment[] | null> = {
+  'intro-title': null,
   'intro-1999': null,
   'intro-search': null,
   'intro-results': null,
@@ -79,13 +87,6 @@ export const SURPLUS_BAR_CONFIG: Record<string, SurplusSegment[] | null> = {
     { label: 'Publisher', color: '#2196F3', width: 0.20 },
     { label: 'Google', color: '#FF4444', width: 0.20 },
     { label: 'Advertiser', color: '#4CAF50', width: 0.60 },
-  ],
-  'history-middlemen': [
-    { label: 'Publisher', color: '#2196F3', width: 0.14 },
-    { label: 'SSP', color: '#E91E63', width: 0.12 },
-    { label: 'Exchange', color: '#673AB7', width: 0.12 },
-    { label: 'DSP', color: '#9C27B0', width: 0.12 },
-    { label: 'Advertiser', color: '#4CAF50', width: 0.50 },
   ],
   'history-consolidation': [
     { label: 'Publisher', color: '#2196F3', width: 0.15 },
@@ -111,9 +112,10 @@ export const SURPLUS_BAR_CONFIG: Record<string, SurplusSegment[] | null> = {
   'wrong-path-bins': null,
   'wrong-path-auction': null,
   'wrong-path-receipt': [
-    { label: 'Publisher', color: '#2196F3', width: 0.15 },
-    { label: 'Google', color: '#FF4444', width: 0.70 },
-    { label: 'Advertiser', color: '#4CAF50', width: 0.15 },
+    { label: 'Publisher', color: '#2196F3', width: 0.08 },
+    { label: 'Google', color: '#FF4444', width: 0.42 },
+    { label: 'Wasted clicks', color: '#555', width: 0.30 },
+    { label: 'Advertiser', color: '#4CAF50', width: 0.20 },
   ],
   'resolution-keywords': null,
   'resolution-embeddings': null,
@@ -132,16 +134,16 @@ export const SURPLUS_BAR_CONFIG: Record<string, SurplusSegment[] | null> = {
     { label: 'Advertiser', color: '#4CAF50', width: 0.15 },
   ],
   'enclave-proof': [
-    { label: 'Publisher', color: '#2196F3', width: 0.20 },
+    { label: 'Publisher', color: '#2196F3', width: 0.40 },
     { label: 'Exchange', color: '#673AB7', width: 0.15 },
-    { label: 'Advertiser', color: '#4CAF50', width: 0.65 },
+    { label: 'Advertiser', color: '#4CAF50', width: 0.45 },
   ],
   'dot-intro': null,
   'dot-brightens': null,
   'dot-auction': [
-    { label: 'Publisher', color: '#2196F3', width: 0.20 },
+    { label: 'Publisher', color: '#2196F3', width: 0.40 },
     { label: 'Exchange', color: '#673AB7', width: 0.15 },
-    { label: 'Advertiser', color: '#4CAF50', width: 0.65 },
+    { label: 'Advertiser', color: '#4CAF50', width: 0.45 },
   ],
   'dot-philosophy': null,
   'chatbots-stuck': null,
@@ -151,20 +153,26 @@ export const SURPLUS_BAR_CONFIG: Record<string, SurplusSegment[] | null> = {
   'zoom-surveillance': null,
   'zoom-independence': null,
   'zoom-businesses': [
-    { label: 'Publisher', color: '#2196F3', width: 0.20 },
-    { label: 'Exchange', color: '#673AB7', width: 0.10 },
-    { label: 'Advertiser', color: '#4CAF50', width: 0.70 },
+    { label: 'Publisher', color: '#2196F3', width: 0.40 },
+    { label: 'Exchange', color: '#673AB7', width: 0.15 },
+    { label: 'Advertiser', color: '#4CAF50', width: 0.45 },
   ],
+  'zoom-jobs': [
+    { label: 'Publisher', color: '#2196F3', width: 0.40 },
+    { label: 'Exchange', color: '#673AB7', width: 0.15 },
+    { label: 'Advertiser', color: '#4CAF50', width: 0.45 },
+  ],
+  'closing': null,
 };
 
 // Pipeline step configuration — maps stepId to visual state
 export type VisualState =
   | 'empty'
   | 'query-banner'
-  | 'clean-ad'
   | 'bid-paddles'
   | 'history-pipeline'
   | 'keyword-bin'
+  | 'query-compression'
   | 'receipt-google'
   | 'embedding-field'
   | 'chat-mockup'
@@ -172,30 +180,31 @@ export type VisualState =
   | 'chain-links'
   | 'protocol-form'
   | 'enclave'
-  | 'resolution-keywords'
-  | 'resolution-embeddings'
+  | 'dot-only'
+  | 'resolution'
   | 'surveillance-compare'
   | 'absorption'
-  | 'populated-field';
+  | 'populated-field'
+  | 'dot-field';
 
 export const STEP_VISUAL_MAP: Record<string, VisualState> = {
+  'intro-title': 'query-banner',
   'intro-1999': 'query-banner',
   'intro-search': 'query-banner',
   'intro-results': 'query-banner',
   'intro-ads': 'query-banner',
-  'history-overture': 'clean-ad',
+  'history-overture': 'query-banner',
   'history-quality-score': 'bid-paddles',
-  'history-middlemen': 'history-pipeline',
   'history-consolidation': 'history-pipeline',
   'history-degradation': 'history-pipeline',
   'history-antitrust': 'history-pipeline',
   'history-chat': 'history-pipeline',
   'history-closing': 'history-pipeline',
-  'wrong-path-bins': 'keyword-bin',
+  'wrong-path-bins': 'query-compression',
   'wrong-path-auction': 'bid-paddles',
   'wrong-path-receipt': 'receipt-google',
-  'resolution-keywords': 'resolution-keywords',
-  'resolution-embeddings': 'resolution-embeddings',
+  'resolution-keywords': 'resolution',
+  'resolution-embeddings': 'resolution',
   'gate-opens': 'embedding-field',
   'protocol-gap': 'embedding-field',
   'sigma-intro': 'embedding-field',
@@ -209,14 +218,16 @@ export const STEP_VISUAL_MAP: Record<string, VisualState> = {
   'dot-intro': 'chat-mockup',
   'dot-brightens': 'chat-mockup',
   'dot-auction': 'chat-mockup',
-  'dot-philosophy': 'chat-mockup',
-  'chatbots-stuck': 'who-builds',
+  'dot-philosophy': 'dot-only',
+  'chatbots-stuck': 'dot-field',
   'incumbents-wrong': 'who-builds',
   'the-chain': 'chain-links',
   'the-surface': 'chain-links',
   'zoom-surveillance': 'surveillance-compare',
   'zoom-independence': 'absorption',
   'zoom-businesses': 'populated-field',
+  'zoom-jobs': 'populated-field',
+  'closing': 'populated-field',
 };
 
 // Chat messages for ChatMockup
@@ -232,7 +243,7 @@ export const CHAIN_LINKS = [
   {
     id: 'ux',
     label: 'UX',
-    problem: 'Users trained to ignore or block ads',
+    problem: 'Ads that people actually want to see',
     solution: 'Ambient dot — opt-in signal, not interruption',
     status: 'designed' as const,
     statusLabel: 'Designed',
@@ -241,7 +252,7 @@ export const CHAIN_LINKS = [
   {
     id: 'intent',
     label: 'Intent',
-    problem: 'Chatbot providers discarding embeddings',
+    problem: 'Full meaning carried through the pipe',
     solution: 'Carry the vector through the protocol',
     status: 'missing' as const,
     statusLabel: 'Missing — the bottleneck',
@@ -250,7 +261,7 @@ export const CHAIN_LINKS = [
   {
     id: 'auction',
     label: 'Auction',
-    problem: 'Ad industry patching keywords',
+    problem: 'Matching on meaning, not keywords',
     solution: 'Power diagrams with σ, not cosine + second-price',
     status: 'proven' as const,
     statusLabel: 'Proven',
@@ -259,7 +270,7 @@ export const CHAIN_LINKS = [
   {
     id: 'trust',
     label: 'Proof',
-    problem: 'Exchange could rig the auction like Google did',
+    problem: 'Exchange can\'t rig the auction',
     solution: 'Sealed auction in TEE — cryptographic proof the code ran unmodified',
     status: 'building' as const,
     statusLabel: 'Being built',
@@ -268,7 +279,7 @@ export const CHAIN_LINKS = [
   {
     id: 'incentives',
     label: 'Incentives',
-    problem: 'Specialists priced out of bins',
+    problem: 'Specialists earn more than generalists',
     solution: 'Relocation fees make honesty profitable',
     status: 'proven' as const,
     statusLabel: 'Simulated',
@@ -286,7 +297,7 @@ export const FIELD_ADVERTISERS = [
     x: 0.80,
     y: 0.62,
     sigma: 0.08,
-    bid: 2,
+    bid: 10,
     color: '#4CAF50',
     specialty: 'eccentric loading for downhill runners',
   },
