@@ -18,7 +18,7 @@ export function CTA() {
         <CTALink
           href="/vectorspace-ads/"
           label="Try the auction"
-          desc="Drag advertisers, drop a query, watch proximity win"
+          desc="Drag advertisers, drop a query, watch proximity win (turn off adblocker)"
         />
         <CTALink
           href="https://github.com/kimjune01/openauction"
