@@ -128,6 +128,7 @@ export function WindowTimeline() {
                 paddingTop: 2,
                 fontWeight: event.highlight || event.danger ? 600 : 400,
                 lineHeight: 1.4,
+                animation: event.danger ? 'dangerGlow 2s ease-in-out infinite' : 'none',
               }}>
                 {event.label}
               </div>
@@ -143,6 +144,10 @@ export function WindowTimeline() {
         @keyframes timelineReveal {
           from { opacity: 0; transform: translateX(-8px); }
           to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes dangerGlow {
+          0%, 100% { text-shadow: 0 0 4px rgba(255,68,68,0.3); }
+          50% { text-shadow: 0 0 16px rgba(255,68,68,0.8), 0 0 32px rgba(255,68,68,0.4); }
         }
       `}</style>
     </div>

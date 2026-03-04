@@ -3,94 +3,144 @@ import { colors, fonts } from '../theme';
 // ─── Surveillance comparison ───────────────────────────────
 
 export function SurveillanceCompare() {
-  const w = 440;
-  const h = 320;
-
-  // Keyword tracking: tangled web of nodes
-  const trackingNodes = [
-    { x: 60, y: 40, label: 'User', color: '#bbb' },
-    { x: 180, y: 30, label: 'Cookie', color: colors.googleRed },
-    { x: 300, y: 50, label: 'Tracker', color: colors.googleRed },
-    { x: 120, y: 90, label: 'Fingerprint', color: colors.googleRed },
-    { x: 240, y: 100, label: 'Data broker', color: colors.googleRed },
-    { x: 370, y: 80, label: 'Profile', color: colors.googleOrange },
-    { x: 370, y: 130, label: 'Ad', color: '#888' },
+  const keywordSteps = [
+    { label: 'Cookie', color: colors.googleRed },
+    { label: 'Tracker', color: colors.googleRed },
+    { label: 'Fingerprint', color: colors.googleRed },
+    { label: 'Data broker', color: colors.googleRed },
+    { label: 'Profile', color: colors.googleOrange },
+    { label: 'Ad', color: '#888' },
   ];
-  const trackingEdges = [
-    [0,1],[0,2],[0,3],[1,2],[1,4],[2,4],[3,4],[4,5],[5,6],[2,5],
+
+  const embeddingSteps = [
+    { label: 'Vector', color: colors.embedGreen },
+    { label: 'Enclave', color: colors.embedGreen },
+    { label: 'Match', color: colors.embedGreen },
   ];
 
   return (
-    <div style={{ width: '100%', maxWidth: 440 }}>
-      <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} role="img" aria-label="Comparison of keyword ads requiring surveillance versus embedding ads preserving privacy" style={{ width: '100%', height: 'auto' }}>
-        {/* Top: keyword tracking web */}
-        <text x={20} y={16} fill={colors.googleRed} fontSize="10" fontFamily={fonts.mono} style={{ textTransform: 'uppercase' as const, letterSpacing: '0.1em' }}>
+    <div style={{ width: '100%', maxWidth: 400, display: 'flex', flexDirection: 'column', gap: 24 }}>
+      {/* Keyword ads section */}
+      <div>
+        <div style={{
+          fontFamily: fonts.mono,
+          fontSize: '0.75rem',
+          color: colors.googleRed,
+          textTransform: 'uppercase',
+          letterSpacing: '0.1em',
+          marginBottom: 12,
+          opacity: 0,
+          animation: 'survFadeIn 0.4s ease forwards',
+        }}>
           keyword ads
-        </text>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 6 }}>
+          <span style={{
+            fontFamily: fonts.mono,
+            fontSize: '0.95rem',
+            color: '#bbb',
+            opacity: 0,
+            animation: 'survFadeIn 0.3s ease 0.1s forwards',
+          }}>
+            User
+          </span>
+          {keywordSteps.map((step, i) => (
+            <span key={step.label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span style={{
+                color: '#555',
+                fontSize: '0.8rem',
+                opacity: 0,
+                animation: `survFadeIn 0.3s ease ${0.2 + i * 0.4}s forwards`,
+              }}>→</span>
+              <span style={{
+                fontFamily: fonts.mono,
+                fontSize: '1.1rem',
+                fontWeight: 600,
+                color: step.color,
+                opacity: 0,
+                animation: `survPopIn 0.5s ease ${0.3 + i * 0.4}s forwards`,
+              }}>
+                {step.label}
+              </span>
+            </span>
+          ))}
+        </div>
+      </div>
 
-        {/* Edges */}
-        {trackingEdges.map(([a, b], i) => (
-          <line
-            key={`e${i}`}
-            x1={trackingNodes[a].x} y1={trackingNodes[a].y}
-            x2={trackingNodes[b].x} y2={trackingNodes[b].y}
-            stroke={`${colors.googleRed}40`}
-            strokeWidth={1}
-            strokeDasharray="3 2"
-            style={{ opacity: 0, animation: `zoomFadeIn 0.3s ease ${0.05 * i}s forwards` }}
-          />
-        ))}
+      {/* Divider */}
+      <div style={{
+        height: 1,
+        background: '#333',
+        opacity: 0,
+        animation: 'survFadeIn 0.3s ease 2.8s forwards',
+      }} />
 
-        {/* Nodes */}
-        {trackingNodes.map((n, i) => (
-          <g key={`n${i}`} style={{ opacity: 0, animation: `zoomFadeIn 0.3s ease ${0.05 * i + 0.1}s forwards` }}>
-            <circle cx={n.x} cy={n.y} r={6} fill={`${n.color}33`} stroke={n.color} strokeWidth={1} />
-            <text x={n.x} y={n.y + 18} textAnchor="middle" fill="#666" fontSize="7" fontFamily={fonts.mono}>
-              {n.label}
-            </text>
-          </g>
-        ))}
-
-        {/* Divider */}
-        <line x1={20} y1={170} x2={420} y2={170} stroke="#222" strokeWidth={1}
-          style={{ opacity: 0, animation: 'zoomFadeIn 0.3s ease 0.5s forwards' }}
-        />
-
-        {/* Bottom: embedding — clean direct line */}
-        <text x={20} y={196} fill={colors.embedGreen} fontSize="10" fontFamily={fonts.mono} style={{ textTransform: 'uppercase' as const, letterSpacing: '0.1em' }}>
+      {/* Embedding ads section */}
+      <div>
+        <div style={{
+          fontFamily: fonts.mono,
+          fontSize: '0.75rem',
+          color: colors.embedGreen,
+          textTransform: 'uppercase',
+          letterSpacing: '0.1em',
+          marginBottom: 12,
+          opacity: 0,
+          animation: 'survFadeIn 0.4s ease 3s forwards',
+        }}>
           embedding ads
-        </text>
-
-        {/* Simple flow: User → Vector → Enclave → Match */}
-        {['User', 'Vector', 'Enclave', 'Match'].map((label, i) => {
-          const x = 60 + i * 110;
-          const y = 240;
-          const c = i === 0 ? '#bbb' : colors.embedGreen;
-          return (
-            <g key={label} style={{ opacity: 0, animation: `zoomFadeIn 0.3s ease ${0.6 + i * 0.1}s forwards` }}>
-              <circle cx={x} cy={y} r={8} fill={`${c}22`} stroke={c} strokeWidth={1.5} />
-              <text x={x} y={y + 22} textAnchor="middle" fill="#888" fontSize="8" fontFamily={fonts.mono}>
-                {label}
-              </text>
-              {i < 3 && (
-                <line x1={x + 12} y1={y} x2={x + 98} y2={y} stroke={`${colors.embedGreen}55`} strokeWidth={1.5} />
-              )}
-            </g>
-          );
-        })}
-
-        {/* No tracking label */}
-        <text x={w / 2} y={290} textAnchor="middle" fill="#555" fontSize="9" fontFamily={fonts.mono}
-          style={{ opacity: 0, animation: 'zoomFadeIn 0.3s ease 1s forwards' }}
-        >
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <span style={{
+            fontFamily: fonts.mono,
+            fontSize: '0.95rem',
+            color: '#bbb',
+            opacity: 0,
+            animation: 'survFadeIn 0.3s ease 3.2s forwards',
+          }}>
+            User
+          </span>
+          {embeddingSteps.map((step, i) => (
+            <span key={step.label} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span style={{
+                color: '#555',
+                fontSize: '0.8rem',
+                opacity: 0,
+                animation: `survFadeIn 0.3s ease ${3.3 + i * 0.4}s forwards`,
+              }}>→</span>
+              <span style={{
+                fontFamily: fonts.mono,
+                fontSize: '1.1rem',
+                fontWeight: 600,
+                color: step.color,
+                opacity: 0,
+                animation: `survPopIn 0.5s ease ${3.4 + i * 0.4}s forwards`,
+              }}>
+                {step.label}
+              </span>
+            </span>
+          ))}
+        </div>
+        <div style={{
+          fontFamily: fonts.mono,
+          fontSize: '0.8rem',
+          color: '#555',
+          marginTop: 12,
+          opacity: 0,
+          animation: 'survFadeIn 0.4s ease 4.8s forwards',
+        }}>
           no cookies · no profile · no third party
-        </text>
-      </svg>
+        </div>
+      </div>
 
       <style>{`
-        @keyframes zoomFadeIn {
-          from { opacity: 0; transform: translateY(6px); }
+        @keyframes survFadeIn {
+          from { opacity: 0; transform: translateY(4px); }
           to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes survPopIn {
+          0% { opacity: 0; transform: scale(0.5); }
+          60% { opacity: 1; transform: scale(1.15); }
+          100% { opacity: 1; transform: scale(1); }
         }
       `}</style>
     </div>

@@ -67,10 +67,10 @@ export function ChatMockup({ stepId }: Props) {
     }}>
     <div style={{
       width: '100%',
-      background: colors.chat.bg,
-      borderRadius: 12,
-      border: '1px solid #2a2a4a',
-      overflow: 'hidden',
+      background: 'transparent',
+      borderRadius: 0,
+      border: 'none',
+      overflow: 'visible',
       position: 'relative',
       display: 'flex',
       flexDirection: 'column',
@@ -78,7 +78,7 @@ export function ChatMockup({ stepId }: Props) {
       {/* Chat header */}
       <div style={{
         padding: '10px 16px',
-        borderBottom: '1px solid #2a2a4a',
+        borderBottom: 'none',
         display: 'flex',
         alignItems: 'center',
         gap: 10,
@@ -126,7 +126,7 @@ export function ChatMockup({ stepId }: Props) {
         flexDirection: 'column',
         gap: 6,
         maxHeight: isDotExpanded ? 120 : 280,
-        overflow: 'hidden',
+        overflow: isDotExpanded ? 'hidden' : 'visible',
         transition: 'max-height 0.5s',
       }}>
         {CHAT_MESSAGES.slice(0, visibleCount).map((msg, i) => {
@@ -177,7 +177,7 @@ export function ChatMockup({ stepId }: Props) {
                   maxWidth: '75%',
                   padding: '8px 12px',
                   borderRadius: isUser ? '12px 12px 2px 12px' : '12px 12px 12px 2px',
-                  background: isUser ? '#2563eb' : colors.chat.assistantBubble,
+                  background: isUser ? '#2563eb' : 'rgba(30, 30, 58, 0.6)',
                   fontSize: '0.8rem',
                   lineHeight: 1.5,
                   color: isUser ? '#fff' : '#bbb',
@@ -229,7 +229,7 @@ export function ChatMockup({ stepId }: Props) {
             <div style={{
               padding: '8px 14px',
               borderRadius: '12px 12px 12px 2px',
-              background: colors.chat.assistantBubble,
+              background: 'rgba(30, 30, 58, 0.6)',
               display: 'flex',
               gap: 4,
               alignItems: 'center',
@@ -304,16 +304,16 @@ export function ChatMockup({ stepId }: Props) {
       {/* Input field at bottom */}
       <div style={{
         padding: '8px 12px 12px',
-        borderTop: '1px solid #2a2a4a',
+        borderTop: 'none',
       }}>
         <div style={{
           display: 'flex',
           alignItems: 'center',
           gap: 8,
-          background: '#1e1e3a',
+          background: 'transparent',
           borderRadius: 20,
           padding: '8px 12px',
-          border: '1px solid #333',
+          border: '1px solid #333a',
         }}>
           <span style={{
             flex: 1,

@@ -74,9 +74,9 @@ export function QueryBanner({ stepId }: Props) {
 
         {/* Search box — ALWAYS visible, the constant anchor */}
         <div style={{
-          fontFamily: is1999 ? '"Press Start 2P", "Courier New", monospace' : isEarlyGoogle ? '"Times New Roman", Georgia, serif' : fonts.body,
-          fontSize: is1999 ? '0.6rem' : showBox ? '0.95rem' : '1.1rem',
-          color: showBox ? '#222' : '#fff',
+          fontFamily: (isTitle || is1999) ? '"Press Start 2P", "Courier New", monospace' : isEarlyGoogle ? '"Times New Roman", Georgia, serif' : fonts.body,
+          fontSize: (isTitle || is1999) ? '0.6rem' : showBox ? '0.95rem' : '1.1rem',
+          color: showBox ? '#222' : isTitle ? '#555' : '#fff',
           padding: showBox ? '8px 16px' : '0',
           background: showBox ? '#fff' : 'transparent',
           borderRadius: showBox ? (isEarlyGoogle ? 2 : 24) : 0,
@@ -87,8 +87,8 @@ export function QueryBanner({ stepId }: Props) {
           zIndex: 2,
           position: 'relative',
           transition: 'all 0.5s ease',
-          textShadow: is1999 ? '0 0 6px rgba(255, 255, 255, 0.3)' : 'none',
-          imageRendering: is1999 ? 'pixelated' as any : undefined,
+          textShadow: (isTitle || is1999) ? '0 0 6px rgba(255, 255, 255, 0.3)' : 'none',
+          imageRendering: (isTitle || is1999) ? 'pixelated' as any : undefined,
         }}>
           knee pain running downhill
         </div>
@@ -122,8 +122,7 @@ export function QueryBanner({ stepId }: Props) {
                   btn.style.paddingLeft = '12px';
                   btn.style.paddingBottom = '4px';
                   btn.style.paddingRight = '12px';
-                  const next = document.querySelector('[data-step-id="intro-results"]');
-                  if (next) next.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  window.open('https://letmegooglethat.com/?q=knee+pain+running+downhill', '_blank');
                 }, 150);
               }}
               style={{
@@ -194,7 +193,8 @@ export function QueryBanner({ stepId }: Props) {
           { title: "Runner's Knee: Treatment & Prevention", url: 'www.healthline.com/runners-knee', desc: 'Patellofemoral pain syndrome occurs when cartilage under the kneecap...' },
           { title: 'Downhill Running Injuries - Sports Med', url: 'www.sportsmedicinetoday.com/downhill', desc: 'Eccentric loading on the quad tendon during downhill running...' },
         ].map((link, i) => (
-          <div key={i} style={{
+          <a key={i} href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', display: 'block' }}>
+          <div style={{
             padding: '6px 0',
             opacity: showResults ? 1 : 0,
             transition: `opacity 0.4s ${i * 0.15}s`,
@@ -221,6 +221,7 @@ export function QueryBanner({ stepId }: Props) {
               {link.desc}
             </div>
           </div>
+          </a>
         ))}
       </div>
 
@@ -281,13 +282,13 @@ export function QueryBanner({ stepId }: Props) {
       </a>
 
       {/* Sponsored ad — Overture/early Google ad (history-overture) */}
+      <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', display: showSponsoredAd ? 'block' : 'none', width: '100%', maxWidth: 340 }}>
       <div style={{
         width: '100%',
         maxWidth: 340,
         opacity: showSponsoredAd ? 1 : 0,
         transform: showSponsoredAd ? 'translateY(0)' : 'translateY(12px)',
         transition: 'opacity 0.5s 0.2s, transform 0.5s 0.2s',
-        display: showSponsoredAd ? 'block' : 'none',
       }}>
         <div style={{
           fontSize: '0.65rem',
@@ -345,6 +346,7 @@ export function QueryBanner({ stepId }: Props) {
           </div>
         </div>
       </div>
+      </a>
 
       {/* Timeline marker */}
       {showSponsoredAd && (
