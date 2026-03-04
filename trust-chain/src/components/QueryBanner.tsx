@@ -63,7 +63,7 @@ export function QueryBanner({ stepId }: Props) {
         alignItems: 'center',
         opacity: googleHidden ? 0 : 1,
         maxHeight: googleHidden ? 0 : 500,
-        overflow: 'hidden',
+        overflow: googleHidden ? 'hidden' : 'visible',
         transition: 'opacity 0.15s ease, max-height 0.15s ease',
       }}>
         {/* iMac behind the search bar — fades in/out */}
