@@ -68,7 +68,7 @@ export const FieldSteps = {
         <StepText>
 
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
-            Each advertiser claims a spot — and a radius.
+            Each advertiser claims a spot and a radius.
           </h2>
           <p style={{ color: '#bbb' }}>
             In the field, every advertiser declares two things: <em>where</em> they stand (their embedding) and <em>how far</em> they reach (their sigma, <a href="/the-price-of-relevance/" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>σ</a>). Sigma is their self-declared circle of competence.

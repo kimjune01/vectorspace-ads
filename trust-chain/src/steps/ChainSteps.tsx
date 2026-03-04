@@ -17,7 +17,7 @@ export const ChainSteps = {
       content: (
         <StepText>
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
-            Chatbot providers have the best ad signal ever built — and no way to use it.
+            Chatbot providers have the best ad signal ever built, and no way to use it.
           </h2>
           <p style={{ color: '#bbb' }}>
             Every conversation already produces an embedding, intent in vector form. ChatGPT, Claude, Perplexity all have it. None of them can connect it to advertisers.
@@ -39,7 +39,7 @@ export const ChainSteps = {
             Google's "AI Max" uses AI to <a href="https://www.seroundtable.com/google-ads-ai-max-broad-matchifies-40562.html" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>broad-match your exact-match keywords</a>. The Trade Desk's <a href="https://www.thetradedesk.com/press-room/the-trade-desk-launches-kokai-a-new-media-buying-platform-that-brings-the-full-power-of-ai-to-digital-marketing" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>Kokai</a> optimizes bids within the same OpenRTB pipe. More AI, same primitives.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            <a href="https://www.globenewswire.com/news-release/2024/06/11/2896871/0/en/PubMatic-Is-The-First-SSP-To-Make-Cognitiv-ContextGPT-4-Available-To-Buyers.html" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>Cognitiv</a>, <a href="https://www.seedtag.com/contextual-ai/" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>Seedtag</a>, <a href="https://www.businesswire.com/news/home/20200115005272/en/GumGums-Groundbreaking-Contextual-Analysis-Solution-for-Digital-Publishers-Makes-Official-Debut" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>GumGum</a> — they all use embeddings to <em>read</em> page content. But the output collapses to a deal ID or a segment code before it enters the bid stream. The vector never reaches the auction. OpenRTB 2.6 has fields for keywords and category codes. No field for a vector.
+            <a href="https://www.globenewswire.com/news-release/2024/06/11/2896871/0/en/PubMatic-Is-The-First-SSP-To-Make-Cognitiv-ContextGPT-4-Available-To-Buyers.html" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>Cognitiv</a>, <a href="https://www.seedtag.com/contextual-ai/" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>Seedtag</a>, <a href="https://www.businesswire.com/news/home/20200115005272/en/GumGums-Groundbreaking-Contextual-Analysis-Solution-for-Digital-Publishers-Makes-Official-Debut" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>GumGum</a>: they all use embeddings to <em>read</em> page content. But the output collapses to a deal ID or a segment code before it enters the bid stream. The vector never reaches the auction. OpenRTB 2.6 has fields for keywords and category codes. No field for a vector.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
             Google won't fix this. A precise signal means fewer competitors per query, lower bids, and transparent matching, all of which erode the margin that vague keywords protect. The better signal is the one they can't afford to carry.
@@ -166,7 +166,7 @@ export const ChainSteps = {
             Your knee still hurts. But this time, Dr. Chen is one click away.
           </h2>
           <p style={{ color: '#bbb' }}>
-            You didn't search a keyword. You described your problem. The auction didn't sell you to the highest bidder — it matched you to the nearest expert. Nobody tracked you. Nobody profiled you. The chatbot proved the match was honest, and you tapped because you wanted to.
+            You didn't search a keyword. You described your problem. The auction didn't sell you to the highest bidder. It matched you to the nearest expert. Nobody tracked you. Nobody profiled you. The chatbot proved the match was honest, and you tapped because you wanted to.
           </p>
           <p style={{ color: '#888', marginTop: 12 }}>
             Remember when you could just ask a question and get help?

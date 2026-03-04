@@ -55,7 +55,7 @@ export const ChatSteps = {
       content: (
         <StepText>
           <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
-            Now — and only now — the auction fires.
+            Only when you tap does the auction fire.
           </h2>
           <p style={{ color: '#bbb' }}>
             This is intentcasting: you broadcast your need, and the right vendor finds you. The chatbot sends your embedding into the sealed auction. The TEE runs the match. Dr. Chen wins, one click away, bidding $10 because every impression near her converts. Metro Orthopedic, far across the field, can't justify more than $3.

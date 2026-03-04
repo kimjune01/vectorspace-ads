@@ -25,7 +25,7 @@ export const IntroSteps = {
             The Journey of Internet Ads
           </h1>
           <p style={{ color: '#bbb', fontSize: '1.15rem', lineHeight: 1.6 }}>
-            By the end of this, you'll understand exactly how ads should work on chatbots — and why no one has built it yet.
+            By the end of this, you'll understand exactly how ads should work on chatbots, and why no one has built it yet.
           </p>
           <p style={{ color: '#666', marginTop: 20, fontSize: '0.95rem', lineHeight: 1.6 }}>
             How search ads went from useful to exploitative, why chatbots can't repeat the same pattern, and the mechanism that fixes it.
