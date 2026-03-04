@@ -14,6 +14,7 @@ interface Props {
   links: ChainLinkData[];
   revealCount: number;
   showLinks?: boolean;
+  mutedIds?: string[];
 }
 
 const statusColors: Record<string, string> = {
@@ -24,24 +25,27 @@ const statusColors: Record<string, string> = {
   designed: '#9C27B0',
 };
 
-export function ChainLinks({ links, revealCount, showLinks }: Props) {
+export function ChainLinks({ links, revealCount, showLinks, mutedIds }: Props) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 4, width: '100%' }}>
       {links.map((link, i) => {
         const revealed = i < revealCount;
+        const muted = mutedIds?.includes(link.id);
         const color = statusColors[link.status];
         return (
           <div key={link.id} style={{
             opacity: 0,
-            animation: revealed ? `chainLinkReveal 0.4s ease ${i * 0.15}s forwards` : 'none',
+            animation: `chainLinkReveal 0.4s ease ${i * 0.15}s forwards`,
           }}>
             <div
               style={{
-                border: `2px solid ${revealed ? color : '#222'}`,
+                border: `2px solid ${color}`,
                 borderRadius: 10,
                 padding: '14px 18px',
-                background: revealed ? `${color}11` : 'rgba(255,255,255,0.02)',
-                transition: 'border-color 0.5s, background 0.5s',
+                background: `${color}11`,
+                transition: 'border-color 0.5s, background 0.5s, opacity 0.5s, filter 0.5s',
+                opacity: muted ? 0.3 : 1,
+                filter: muted ? 'saturate(0)' : 'none',
               }}
             >
               <div style={{
@@ -53,7 +57,7 @@ export function ChainLinks({ links, revealCount, showLinks }: Props) {
                 <span style={{
                   fontWeight: 600,
                   fontSize: '0.95rem',
-                  color: revealed ? '#fff' : '#555',
+                  color: '#fff',
                 }}>
                   {link.label}
                 </span>
@@ -68,17 +72,24 @@ export function ChainLinks({ links, revealCount, showLinks }: Props) {
                   {link.statusLabel}
                 </span>
               </div>
-              <div style={{ fontSize: '0.8rem', color: '#666' }}>
+              <div style={{ fontSize: '0.8rem', color: '#888' }}>
                 {link.problem}
               </div>
-              <div style={{ fontSize: '0.8rem', marginTop: 4 }}>
+              <div style={{
+                fontSize: '0.8rem',
+                marginTop: revealed ? 4 : 0,
+                maxHeight: revealed ? 40 : 0,
+                opacity: revealed ? 1 : 0,
+                overflow: 'hidden',
+                transition: 'max-height 0.5s ease, opacity 0.5s ease, margin-top 0.3s ease',
+              }}>
                 <span style={{ color: '#555' }}>→ </span>
                 {link.link && showLinks ? (
                   <a href={link.link} style={{ color: color, textDecoration: 'none', borderBottom: `1px solid ${color}44` }}>
                     {link.solution}
                   </a>
                 ) : (
-                  <span style={{ color: revealed ? '#bbb' : '#666' }}>{link.solution}</span>
+                  <span style={{ color: '#bbb' }}>{link.solution}</span>
                 )}
               </div>
             </div>
@@ -86,7 +97,7 @@ export function ChainLinks({ links, revealCount, showLinks }: Props) {
             {i < links.length - 1 && (
               <div style={{
                 textAlign: 'center',
-                color: revealed && i + 1 < revealCount ? color : '#222',
+                color: revealed && i + 1 < revealCount ? color : '#333',
                 fontSize: '1rem',
                 lineHeight: 1,
                 transition: 'color 0.5s',

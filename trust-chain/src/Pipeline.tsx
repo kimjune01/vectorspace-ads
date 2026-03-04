@@ -75,6 +75,7 @@ export function Pipeline({ stepId }: Props) {
             links={CHAIN_LINKS}
             revealCount={stepId === 'the-chain' ? 0 : 5}
             showLinks={stepId !== 'the-chain'}
+            mutedIds={stepId === 'what-needs-to-happen' || stepId === 'the-window' ? ['ux', 'incentives'] : undefined}
           />
         )}
         {visualState === 'resolution' && <ResolutionCompare stepId={stepId} />}

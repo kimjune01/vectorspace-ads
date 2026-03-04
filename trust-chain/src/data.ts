@@ -163,6 +163,8 @@ export const SURPLUS_BAR_CONFIG: Record<string, SurplusSegment[] | null> = {
     { label: 'Advertiser', color: '#4CAF50', width: 0.45 },
   ],
   'closing': null,
+  'what-needs-to-happen': null,
+  'the-window': null,
 };
 
 // Pipeline step configuration — maps stepId to visual state
@@ -228,6 +230,8 @@ export const STEP_VISUAL_MAP: Record<string, VisualState> = {
   'zoom-businesses': 'populated-field',
   'zoom-jobs': 'populated-field',
   'closing': 'populated-field',
+  'what-needs-to-happen': 'chain-links',
+  'the-window': 'chain-links',
 };
 
 // Chat messages for ChatMockup

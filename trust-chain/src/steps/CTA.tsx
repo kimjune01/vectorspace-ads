@@ -100,9 +100,9 @@ export function CTA() {
           </a>
         </p>
         <p style={{ marginTop: 8 }}>
-          Written with{' '}
+          Written with help from{' '}
           <a href="https://claude.ai" style={{ color: '#555', textDecoration: 'none', borderBottom: '1px solid #444' }}>
-            Claude Opus 4.6
+            Opus
           </a>
         </p>
         <p style={{ marginTop: 8 }}>
