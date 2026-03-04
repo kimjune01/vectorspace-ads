@@ -41,7 +41,7 @@ export const WrongPathSteps = {
             Dr. Chen could pay $10 for a downhill runner. That patient converts. But the bin doesn't send her downhill runners. It sends everyone who typed "knee." She converts one in twenty. At that rate she can only afford $2.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            Metro converts one in five, not because they're better, but because "general consultation" matches more of the bin. Low resolution rewards the generalist and prices out the specialist.
+            Metro converts one in five. "General consultation" matches more of the bin. Low resolution rewards the generalist and prices out the specialist.
           </p>
         </StepText>
       ),

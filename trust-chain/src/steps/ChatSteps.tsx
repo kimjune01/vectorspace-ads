@@ -42,7 +42,7 @@ export const ChatSteps = {
             You add more detail. The dot brightens slightly. Warmer. Closer. Your intent is getting more specific, and somewhere in the embedding field, an advertiser's circle overlaps with where you're standing.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            The dot glows. Bright. Close. It's not selling anything. It's not a link. It's an ambient signal: <strong style={{ color: '#fff', fontWeight: 500 }}>someone nearby can help with exactly this.</strong>
+            The dot glows. Bright. Close. An ambient signal: <strong style={{ color: '#fff', fontWeight: 500 }}>someone nearby can help with exactly this.</strong>
           </p>
           <p style={{ color: '#888', marginTop: 12 }}>
             You tap it.

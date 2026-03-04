@@ -36,7 +36,7 @@ export const FieldSteps = {
             "my knee hurts when I run downhill but not uphill"
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            Every word stays. The coordinate lands not in a bin, but in an open field. Nearby points mean similar things.
+            Every word stays. The coordinate lands in an open field. Nearby points mean similar things.
           </p>
         </StepText>
       ),
@@ -205,7 +205,7 @@ export const FieldSteps = {
             A TEE, <a href="/the-last-ad-layer/" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>trusted execution environment</a>, is a chip-level enclave. The auction code runs inside it. The exchange can trigger the computation, but it can't read the inputs, alter the logic, or change the output. No middleman ever sees your embedding.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            The result comes out with a cryptographic signature: proof that the code ran exactly as published, unmodified. Not a promise. A receipt you can verify.
+            The result comes out with a cryptographic signature: proof that the code ran exactly as published, unmodified. A receipt you can verify.
           </p>
           <p style={{ color: '#89b3b8', marginTop: 12, fontWeight: 500 }}>
             The user doesn't trust the company. They verify the math.
