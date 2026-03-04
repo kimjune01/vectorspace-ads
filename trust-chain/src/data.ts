@@ -187,7 +187,8 @@ export type VisualState =
   | 'surveillance-compare'
   | 'absorption'
   | 'populated-field'
-  | 'dot-field';
+  | 'dot-field'
+  | 'window-timeline';
 
 export const STEP_VISUAL_MAP: Record<string, VisualState> = {
   'intro-title': 'query-banner',
@@ -231,7 +232,7 @@ export const STEP_VISUAL_MAP: Record<string, VisualState> = {
   'zoom-jobs': 'populated-field',
   'closing': 'populated-field',
   'what-needs-to-happen': 'chain-links',
-  'the-window': 'chain-links',
+  'the-window': 'window-timeline',
 };
 
 // Chat messages for ChatMockup

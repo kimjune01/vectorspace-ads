@@ -13,6 +13,7 @@ import { WhoBuilds } from './components/WhoBuilds';
 import { EnclaveVisual } from './components/EnclaveVisual';
 import { SurveillanceCompare, AbsorptionVisual, PopulatedField, DotField } from './components/ZoomVisuals';
 import { ResolutionCompare } from './components/ResolutionCompare';
+import { WindowTimeline } from './components/WindowTimeline';
 import { KEYWORDS, DISCARDED_WORDS, GOOGLE_RECEIPT, CHAIN_LINKS } from './data';
 
 interface Props {
@@ -75,9 +76,10 @@ export function Pipeline({ stepId }: Props) {
             links={CHAIN_LINKS}
             revealCount={stepId === 'the-chain' ? 0 : 5}
             showLinks={stepId !== 'the-chain'}
-            mutedIds={stepId === 'what-needs-to-happen' || stepId === 'the-window' ? ['ux', 'incentives'] : undefined}
+            mutedIds={stepId === 'what-needs-to-happen' ? ['ux', 'incentives'] : undefined}
           />
         )}
+        {visualState === 'window-timeline' && <WindowTimeline />}
         {visualState === 'resolution' && <ResolutionCompare stepId={stepId} />}
         {visualState === 'surveillance-compare' && <SurveillanceCompare />}
         {visualState === 'absorption' && <AbsorptionVisual />}

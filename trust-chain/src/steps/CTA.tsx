@@ -8,24 +8,6 @@ export function CTA() {
       padding: '120px 24px 160px',
       textAlign: 'center',
     }}>
-      <h2 style={{
-        fontSize: '2.5rem',
-        fontWeight: 700,
-        color: colors.textBright,
-        marginBottom: 16,
-        lineHeight: 1.2,
-      }}>
-        The pieces exist. Nobody has assembled them.
-      </h2>
-      <p style={{
-        color: colors.textDim,
-        fontSize: '1.1rem',
-        lineHeight: 1.7,
-        marginBottom: 40,
-      }}>
-        I proved that the pieces fit together.
-      </p>
-
       <div style={{
         display: 'flex',
         flexDirection: 'column',
