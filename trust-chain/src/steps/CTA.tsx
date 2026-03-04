@@ -80,9 +80,7 @@ export function CTA() {
           <a href="/" style={{ color: '#666', textDecoration: 'none', borderBottom: '1px solid #444' }}>
             June Kim
           </a>
-        </p>
-        <p style={{ marginTop: 8 }}>
-          Written with help from{' '}
+          {' '}with help from{' '}
           <a href="https://claude.ai" style={{ color: '#555', textDecoration: 'none', borderBottom: '1px solid #444' }}>
             Opus
           </a>
@@ -91,6 +89,10 @@ export function CTA() {
           Scrollytelling inspired by{' '}
           <a href="https://pudding.cool" style={{ color: '#555', textDecoration: 'none', borderBottom: '1px solid #444' }}>
             The Pudding
+          </a>
+          {' · '}
+          <a href="https://github.com/kimjune01/vectorspace-ads" style={{ color: '#555', textDecoration: 'none', borderBottom: '1px solid #444' }}>
+            Source
           </a>
         </p>
       </div>
