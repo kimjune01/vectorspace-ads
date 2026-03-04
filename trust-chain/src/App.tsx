@@ -23,7 +23,7 @@ const allSteps = [
 const stepIds = allSteps.map(s => s.id);
 
 export default function App() {
-  const [activeStepId, setActiveStepId] = useState('intro-1999');
+  const [activeStepId, setActiveStepId] = useState('intro-title');
   const [showScrollHint, setShowScrollHint] = useState(true);
 
   // Hide scroll hint after user scrolls past first viewport
