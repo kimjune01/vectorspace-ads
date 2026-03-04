@@ -18,20 +18,19 @@ export const FieldSteps = {
       content: (
         <StepText>
 
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             What if the bin wasn't a bin?
           </h2>
           <p style={{ color: '#bbb' }}>
             The chatbot doesn't extract keywords. It produces an embedding vector, a coordinate in meaning-space that represents <em>everything</em> you said.
           </p>
           <p style={{
-            fontFamily: "'JetBrains Mono', monospace",
+            fontFamily: 'Georgia, "Times New Roman", serif',
+            fontStyle: 'italic',
             fontSize: '1.05rem',
-            color: '#4CAF50',
-            padding: '12px 16px',
-            background: 'rgba(76, 175, 80, 0.08)',
-            borderRadius: 8,
-            border: '1px solid rgba(76, 175, 80, 0.2)',
+            color: '#bbb',
+            padding: '4px 0 4px 16px',
+            borderLeft: '2px solid #444',
             marginTop: 12,
           }}>
             "my knee hurts when I run downhill but not uphill"
@@ -47,7 +46,7 @@ export const FieldSteps = {
       content: (
         <StepText>
 
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             There's one problem.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -67,7 +66,7 @@ export const FieldSteps = {
       content: (
         <StepText>
 
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             Each advertiser claims a spot and a radius.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -87,7 +86,7 @@ export const FieldSteps = {
       content: (
         <StepText>
 
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             Sigma is self-correcting.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -96,7 +95,7 @@ export const FieldSteps = {
           <p style={{ color: '#bbb', marginTop: 12 }}>
             Metro can't fake being a specialist. A narrow sigma kills their volume. Dr. Chen can't fake being a generalist. A wide sigma burns her budget on bad matches.
           </p>
-          <p style={{ color: '#4CAF50', marginTop: 12, fontWeight: 600 }}>
+          <p style={{ color: '#8aab8c', marginTop: 12, fontWeight: 500 }}>
             The sigma that makes you the most money is the one that matches your actual expertise. The honest signal <em>is</em> the greedy signal.
           </p>
         </StepText>
@@ -106,7 +105,7 @@ export const FieldSteps = {
       id: 'keywords-tiny-circles',
       content: (
         <StepText>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             Keywords still work. Nothing breaks.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -123,7 +122,7 @@ export const FieldSteps = {
       content: (
         <StepText>
 
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             What stops people from gaming this?
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -132,7 +131,7 @@ export const FieldSteps = {
           <p style={{ color: '#bbb', marginTop: 12 }}>
             So does every other specialist. They all abandon their niches and crowd the center. The field collapses back into a bin.
           </p>
-          <p style={{ color: '#FF8800', marginTop: 12 }}>
+          <p style={{ color: '#b89a6a', marginTop: 12 }}>
             You lose Dr. Chen. She's standing in the same crowd as Metro Orthopedic again, competing on budget instead of expertise.
           </p>
         </StepText>
@@ -143,7 +142,7 @@ export const FieldSteps = {
       content: (
         <StepText>
 
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             Make lying expensive.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -152,8 +151,8 @@ export const FieldSteps = {
           <p style={{ color: '#bbb', marginTop: 12 }}>
             Dr. Chen runs the numbers. Staying where she is ("downhill running biomechanics") costs nothing. Drifting to "general knee pain" would cost more than the extra impressions are worth. The honest position <em>is</em> the profitable position.
           </p>
-          <p style={{ color: '#4CAF50', marginTop: 12, fontSize: '1rem' }}>
-            <a href="/relocation-fees/" style={{ color: '#4CAF50', textDecoration: 'underline', textDecorationColor: '#2E7D32' }}>Simulations confirm it</a>: with relocation fees, specialist surplus flips from negative to positive. Dr. Chen earns more per impression than Metro.
+          <p style={{ color: '#8aab8c', marginTop: 12, fontSize: '1rem' }}>
+            <a href="/relocation-fees/" style={{ color: '#8aab8c', textDecoration: 'underline', textDecorationColor: '#5a7a5c' }}>Simulations confirm it</a>: with relocation fees, specialist surplus flips from negative to positive. Dr. Chen earns more per impression than Metro.
           </p>
         </StepText>
       ),
@@ -163,7 +162,7 @@ export const FieldSteps = {
       content: (
         <StepText>
 
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             Greed aligns.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -183,7 +182,7 @@ export const FieldSteps = {
       content: (
         <StepText>
 
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             What keeps the exchange honest?
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -199,7 +198,7 @@ export const FieldSteps = {
       id: 'enclave-proof',
       content: (
         <StepText>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             The auction runs inside sealed hardware.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -208,7 +207,7 @@ export const FieldSteps = {
           <p style={{ color: '#bbb', marginTop: 12 }}>
             The result comes out with a cryptographic signature: proof that the code ran exactly as published, unmodified. Not a promise. A receipt you can verify.
           </p>
-          <p style={{ color: '#00BCD4', marginTop: 12, fontWeight: 600 }}>
+          <p style={{ color: '#89b3b8', marginTop: 12, fontWeight: 500 }}>
             The user doesn't trust the company. They verify the math.
           </p>
         </StepText>

@@ -122,7 +122,7 @@ function CTALink({ href, label, desc }: { href: string; label: string; desc: str
         e.currentTarget.style.background = 'transparent';
       }}
     >
-      <div style={{ fontWeight: 600, fontSize: '1.1rem' }}>{label}</div>
+      <div style={{ fontWeight: 500, fontSize: '1.1rem' }}>{label}</div>
       <div style={{ color: colors.textDim, fontSize: '0.9rem', marginTop: 4 }}>{desc}</div>
     </a>
   );

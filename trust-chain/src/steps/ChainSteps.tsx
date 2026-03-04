@@ -4,7 +4,7 @@ import type { StepData } from '../ScrollySection';
 
 function StepText({ children }: { children: ReactNode }) {
   return (
-    <div style={{ fontSize: '1.25rem', lineHeight: 1.7, maxWidth: 440 }}>
+    <div style={{ fontSize: '1.25rem', lineHeight: 1.45, maxWidth: 480 }}>
       {children}
     </div>
   );
@@ -16,7 +16,7 @@ export const ChainSteps = {
       id: 'chatbots-stuck',
       content: (
         <StepText>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             Chatbot providers have the best ad signal ever built, and no way to use it.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -32,7 +32,7 @@ export const ChainSteps = {
       id: 'incumbents-wrong',
       content: (
         <StepText>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             The adtech industry is building around the wrong abstraction.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -54,7 +54,7 @@ export const ChainSteps = {
       id: 'the-chain',
       content: (
         <StepText>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             Each piece exists. Nobody has connected them.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -70,7 +70,7 @@ export const ChainSteps = {
       id: 'the-surface',
       content: (
         <StepText>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             The chat surface still serves you. For now.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -89,7 +89,7 @@ export const ChainSteps = {
       id: 'zoom-surveillance',
       content: (
         <StepText>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             Keyword ads needed surveillance to work. Embedding ads don't.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -108,7 +108,7 @@ export const ChainSteps = {
       id: 'zoom-independence',
       content: (
         <StepText>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             Without revenue, chatbots become subsidiaries.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -127,7 +127,7 @@ export const ChainSteps = {
       id: 'zoom-businesses',
       content: (
         <StepText>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             Dr. Chen is one specialist. There are millions.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -143,7 +143,7 @@ export const ChainSteps = {
       id: 'zoom-jobs',
       content: (
         <StepText>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             Each dot is a business. Each business supports jobs.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -162,7 +162,7 @@ export const ChainSteps = {
       id: 'closing',
       content: (
         <StepText>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             Your knee still hurts. But this time, Dr. Chen is one click away.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -178,22 +178,22 @@ export const ChainSteps = {
       id: 'what-needs-to-happen',
       content: (
         <StepText>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             <a href="/who-builds-it/" style={{ color: '#fff', textDecoration: 'none', borderBottom: '1px solid #888' }}>Here's what needs to happen.</a>
           </h2>
           <p style={{ color: '#bbb' }}>
-            <strong style={{ color: '#fff' }}>IAB Tech Lab</strong>: add three fields to OpenRTB: <span style={{ fontFamily: "'JetBrains Mono', monospace", color: '#4CAF50', fontSize: '0.95em' }}>embedding</span>, <span style={{ fontFamily: "'JetBrains Mono', monospace", color: '#4CAF50', fontSize: '0.95em' }}>embedding_model</span>, <span style={{ fontFamily: "'JetBrains Mono', monospace", color: '#4CAF50', fontSize: '0.95em' }}>sigma</span>.<br />
+            <strong style={{ color: '#fff', fontWeight: 500 }}>IAB Tech Lab</strong>: add three fields to OpenRTB: <span style={{ fontFamily: "'JetBrains Mono', monospace", color: '#8aab8c', fontSize: '0.95em' }}>embedding</span>, <span style={{ fontFamily: "'JetBrains Mono', monospace", color: '#8aab8c', fontSize: '0.95em' }}>embedding_model</span>, <span style={{ fontFamily: "'JetBrains Mono', monospace", color: '#8aab8c', fontSize: '0.95em' }}>sigma</span>.<br />
             <a href="/embedding-gap/" style={{ color: '#888', textDecoration: 'none', borderBottom: '1px solid #555' }}>The $200 Billion Bottleneck</a>
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            <strong style={{ color: '#fff' }}>A chatbot provider</strong>: carry the embedding to the ad boundary.<br />
+            <strong style={{ color: '#fff', fontWeight: 500 }}>A chatbot provider</strong>: carry the embedding to the ad boundary.<br />
             <a href="/perplexity-was-right-to-kill-ads/" style={{ color: '#888', textDecoration: 'none', borderBottom: '1px solid #555' }}>Perplexity Was Right to Kill Ads</a>
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            <strong style={{ color: '#fff' }}>An exchange</strong>: add embedding parameters to the existing auction. CloudX already runs attested auctions in a TEE. The scoring function just needs three optional fields.<br />
+            <strong style={{ color: '#fff', fontWeight: 500 }}>An exchange</strong>: add embedding parameters to the existing auction. CloudX already runs attested auctions in a TEE. The scoring function just needs three optional fields.<br />
             <a href="/letter-to-cloudx/" style={{ color: '#888', textDecoration: 'none', borderBottom: '1px solid #555' }}>An Open Letter to CloudX</a>
           </p>
-          <p style={{ color: '#4CAF50', marginTop: 16, fontWeight: 600 }}>
+          <p style={{ color: '#8aab8c', marginTop: 16, fontWeight: 500 }}>
             Three engineering decisions. Not a moonshot.
           </p>
         </StepText>
@@ -203,7 +203,7 @@ export const ChainSteps = {
       id: 'the-window',
       content: (
         <StepText>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             The window won't stay open.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -212,7 +212,7 @@ export const ChainSteps = {
           <p style={{ color: '#bbb', marginTop: 12 }}>
             The last time an open protocol could have prevented a monopoly was 1998. The web was open. Search was open. Ads weren't. One company filled the gap and spent twenty years extracting the surplus.
           </p>
-          <p style={{ color: '#FF8800', marginTop: 12, fontWeight: 600 }}>
+          <p style={{ color: '#b89a6a', marginTop: 12, fontWeight: 500 }}>
             We're at that moment again. This time, build the pipe before someone owns it.
           </p>
         </StepText>

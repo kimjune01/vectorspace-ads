@@ -4,7 +4,7 @@ import type { StepData } from '../ScrollySection';
 
 function StepText({ children }: { children: ReactNode }) {
   return (
-    <div style={{ fontSize: '1.25rem', lineHeight: 1.7, maxWidth: 440 }}>
+    <div style={{ fontSize: '1.25rem', lineHeight: 1.45, maxWidth: 480 }}>
       {children}
     </div>
   );
@@ -16,7 +16,7 @@ export const ChatSteps = {
       id: 'dot-intro',
       content: (
         <StepText>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             So what does the user actually see?
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -35,14 +35,14 @@ export const ChatSteps = {
       id: 'dot-brightens',
       content: (
         <StepText>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             The dot warms.
           </h2>
           <p style={{ color: '#bbb' }}>
             You add more detail. The dot brightens slightly. Warmer. Closer. Your intent is getting more specific, and somewhere in the embedding field, an advertiser's circle overlaps with where you're standing.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            The dot glows. Bright. Close. It's not selling anything. It's not a link. It's an ambient signal: <strong style={{ color: '#fff' }}>someone nearby can help with exactly this.</strong>
+            The dot glows. Bright. Close. It's not selling anything. It's not a link. It's an ambient signal: <strong style={{ color: '#fff', fontWeight: 500 }}>someone nearby can help with exactly this.</strong>
           </p>
           <p style={{ color: '#888', marginTop: 12 }}>
             You tap it.
@@ -54,7 +54,7 @@ export const ChatSteps = {
       id: 'dot-auction',
       content: (
         <StepText>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             Only when you tap does the auction fire.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -70,7 +70,7 @@ export const ChatSteps = {
       id: 'dot-philosophy',
       content: (
         <StepText>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             Trust isn't promised. It's earned.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -79,7 +79,7 @@ export const ChatSteps = {
           <p style={{ color: '#bbb', marginTop: 12 }}>
             No banner. No "sponsored" label buried in the results. No ad that pretends to be an answer. A proximity signal that earns trust by being right, consistently, over weeks and months, until tapping the dot is something you <em>want</em> to do, not something you endure.
           </p>
-          <p style={{ color: '#00BCD4', marginTop: 12 }}>
+          <p style={{ color: '#89b3b8', marginTop: 12 }}>
             The alternative is much worse. Without an honest ad layer, chatbots either stay unprofitable, or they quietly sell your intent to the same keyword machine. The dot isn't optional. It's the only way this doesn't end like last time.
           </p>
         </StepText>

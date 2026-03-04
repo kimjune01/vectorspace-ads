@@ -3,7 +3,7 @@ import type { StepData } from '../ScrollySection';
 
 function StepText({ children }: { children: ReactNode }) {
   return (
-    <div style={{ fontSize: '1.25rem', lineHeight: 1.7, maxWidth: 440 }}>
+    <div style={{ fontSize: '1.25rem', lineHeight: 1.45, maxWidth: 480 }}>
       {children}
     </div>
   );
@@ -40,7 +40,7 @@ export const IntroSteps = {
       id: 'intro-1999',
       content: (
         <StepText>
-          <h2 style={{ fontSize: '2rem', fontWeight: 700, color: '#fff', marginBottom: 16, lineHeight: 1.3 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16, lineHeight: 1.3 }}>
             It's 1999. Your knee hurts.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -53,20 +53,19 @@ export const IntroSteps = {
       id: 'intro-search',
       content: (
         <StepText>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             You try this new search engine.
           </h2>
           <p style={{ color: '#bbb' }}>
             Your friend told you about Google. You type:
           </p>
           <p style={{
-            fontFamily: "'JetBrains Mono', monospace",
+            fontFamily: 'Georgia, "Times New Roman", serif',
+            fontStyle: 'italic',
             fontSize: '1.1rem',
-            color: '#FFD700',
-            padding: '12px 16px',
-            background: 'rgba(255, 215, 0, 0.08)',
-            borderRadius: 8,
-            border: '1px solid rgba(255, 215, 0, 0.2)',
+            color: '#bbb',
+            padding: '4px 0 4px 16px',
+            borderLeft: '2px solid #444',
             marginTop: 12,
           }}>
             knee pain running downhill
@@ -78,7 +77,7 @@ export const IntroSteps = {
       id: 'intro-results',
       content: (
         <StepText>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             It works.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -95,7 +94,7 @@ export const IntroSteps = {
             But Google is burning through VC money. It needs a business model. And the web already has ads: banner ads, flashing rectangles, untargeted. The same ad whether you're reading about knees or cars.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            The problem isn't that ads exist. Ads are how a specialist in Portland finds the runner who needs her. The problem is that these ads have <strong style={{ color: '#fff' }}>no idea what you really need</strong>.
+            The problem isn't that ads exist. Ads are how a specialist in Portland finds the runner who needs her. The problem is that these ads have <strong style={{ color: '#fff', fontWeight: 500 }}>no idea what you really need</strong>.
           </p>
         </StepText>
       ),

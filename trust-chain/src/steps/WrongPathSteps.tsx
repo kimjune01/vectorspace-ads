@@ -4,7 +4,7 @@ import type { StepData } from '../ScrollySection';
 
 function StepText({ children }: { children: ReactNode }) {
   return (
-    <div style={{ fontSize: '1.25rem', lineHeight: 1.7, maxWidth: 440 }}>
+    <div style={{ fontSize: '1.25rem', lineHeight: 1.45, maxWidth: 480 }}>
       {children}
     </div>
   );
@@ -16,12 +16,12 @@ export const WrongPathSteps = {
       id: 'wrong-path-bins',
       content: (
         <StepText>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             You're thrown into the bin.
           </h2>
           <p style={{ color: '#bbb' }}>
             Your intent, all its nuance, got compressed into{' '}
-            <span style={{ fontFamily: "'JetBrains Mono', monospace", color: '#FF8800' }}>knee pain running</span>{' '}
+            <span style={{ fontFamily: "'JetBrains Mono', monospace", color: '#b89a6a' }}>knee pain running</span>{' '}
             and thrown into a pen. You're crowded in with everyone who ever typed anything vaguely knee-related.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
@@ -34,7 +34,7 @@ export const WrongPathSteps = {
       id: 'wrong-path-auction',
       content: (
         <StepText>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             Same bin, same outcome.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -50,7 +50,7 @@ export const WrongPathSteps = {
       id: 'wrong-path-receipt',
       content: (
         <StepText>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             The old economics repeat.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -66,7 +66,7 @@ export const WrongPathSteps = {
       id: 'resolution-keywords',
       content: (
         <StepText>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             This is what keywords see.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -79,7 +79,7 @@ export const WrongPathSteps = {
       id: 'resolution-embeddings',
       content: (
         <StepText>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             This is what an embedding sees.
           </h2>
           <p style={{ color: '#bbb' }}>

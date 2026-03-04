@@ -4,7 +4,7 @@ import type { StepData } from '../ScrollySection';
 
 function StepText({ children }: { children: ReactNode }) {
   return (
-    <div style={{ fontSize: '1.25rem', lineHeight: 1.7, maxWidth: 440 }}>
+    <div style={{ fontSize: '1.25rem', lineHeight: 1.45, maxWidth: 480 }}>
       {children}
     </div>
   );
@@ -18,7 +18,7 @@ export const HistorySteps = {
       content: (
         <StepText>
 
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             Someone connects ads to intent.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -35,7 +35,7 @@ export const HistorySteps = {
       content: (
         <StepText>
 
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             The highest bidder always wins.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -45,7 +45,7 @@ export const HistorySteps = {
             Google fixes this. AdWords adds <a href="https://en.wikipedia.org/wiki/Quality_Score" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>Quality Score</a>, where your ad's <em>relevance</em> affects your rank, not just your bid. A helpful ad with a lower bid beats a spammy ad with a higher one.
           </p>
           <p style={{ color: '#888', marginTop: 12 }}>
-            This is the part that matters later.
+            Remember this for later.
           </p>
         </StepText>
       ),
@@ -55,7 +55,7 @@ export const HistorySteps = {
       content: (
         <StepText>
 
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             An ecosystem appears. One company buys it all.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -72,14 +72,14 @@ export const HistorySteps = {
       content: (
         <StepText>
 
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             Then the matching gets worse. On purpose.
           </h2>
           <p style={{ color: '#bbb' }}>
-            Google <a href="https://searchengineland.com/google-enhanced-campaigns-now-includes-close-variants-mandatory-200068" target="_blank" rel="noopener noreferrer" style={{ color: '#cc6666', fontWeight: 600, textDecoration: 'underline', textDecorationColor: '#994444' }}>forced</a> close variants, <a href="https://searchengineland.com/google-ads-close-variants-reordered-words-added-removed-function-words-303145" target="_blank" rel="noopener noreferrer" style={{ color: '#cc6666', fontWeight: 600, textDecoration: 'underline', textDecorationColor: '#994444' }}>reordered</a> your keywords, <a href="https://searchengineland.com/googles-exact-match-close-variants-expand-again-now-include-same-meaning-variations-305056" target="_blank" rel="noopener noreferrer" style={{ color: '#cc6666', fontWeight: 600, textDecoration: 'underline', textDecorationColor: '#994444' }}>redefined</a> exact match, <a href="https://searchengineland.com/google-ads-to-limit-search-terms-reporting-citing-privacy-340137" target="_blank" rel="noopener noreferrer" style={{ color: '#cc6666', fontWeight: 600, textDecoration: 'underline', textDecorationColor: '#994444' }}>hid</a> your search terms, <a href="https://searchengineland.com/google-expands-phrase-match-to-include-broad-match-modifier-traffic-345874" target="_blank" rel="noopener noreferrer" style={{ color: '#cc6666', fontWeight: 600, textDecoration: 'underline', textDecorationColor: '#994444' }}>killed</a> broad match modifier, and <a href="https://searchengineland.com/google-ads-broad-match-default-new-search-campaigns-444003" target="_blank" rel="noopener noreferrer" style={{ color: '#cc6666', fontWeight: 600, textDecoration: 'underline', textDecorationColor: '#994444' }}>defaulted</a> every new campaign to broad match.
+            Google <a href="https://searchengineland.com/google-enhanced-campaigns-now-includes-close-variants-mandatory-200068" target="_blank" rel="noopener noreferrer" style={{ color: '#cc6666', fontWeight: 500, textDecoration: 'underline', textDecorationColor: '#994444' }}>forced</a> close variants, <a href="https://searchengineland.com/google-ads-close-variants-reordered-words-added-removed-function-words-303145" target="_blank" rel="noopener noreferrer" style={{ color: '#cc6666', fontWeight: 500, textDecoration: 'underline', textDecorationColor: '#994444' }}>reordered</a> your keywords, <a href="https://searchengineland.com/googles-exact-match-close-variants-expand-again-now-include-same-meaning-variations-305056" target="_blank" rel="noopener noreferrer" style={{ color: '#cc6666', fontWeight: 500, textDecoration: 'underline', textDecorationColor: '#994444' }}>redefined</a> exact match, <a href="https://searchengineland.com/google-ads-to-limit-search-terms-reporting-citing-privacy-340137" target="_blank" rel="noopener noreferrer" style={{ color: '#cc6666', fontWeight: 500, textDecoration: 'underline', textDecorationColor: '#994444' }}>hid</a> your search terms, <a href="https://searchengineland.com/google-expands-phrase-match-to-include-broad-match-modifier-traffic-345874" target="_blank" rel="noopener noreferrer" style={{ color: '#cc6666', fontWeight: 500, textDecoration: 'underline', textDecorationColor: '#994444' }}>killed</a> broad match modifier, and <a href="https://searchengineland.com/google-ads-broad-match-default-new-search-campaigns-444003" target="_blank" rel="noopener noreferrer" style={{ color: '#cc6666', fontWeight: 500, textDecoration: 'underline', textDecorationColor: '#994444' }}>defaulted</a> every new campaign to broad match.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            Each change made the matching vaguer and the auction more crowded. More advertisers per query means higher bids. <strong style={{ color: '#fff' }}>Google makes more money when the matching is vague.</strong>
+            Each change made the matching vaguer and the auction more crowded. More advertisers per query means higher bids. <strong style={{ color: '#fff', fontWeight: 500 }}>Google makes more money when the matching is vague.</strong>
           </p>
         </StepText>
       ),
@@ -88,7 +88,7 @@ export const HistorySteps = {
       id: 'history-antitrust',
       content: (
         <StepText>
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             A court finally looks inside.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -108,20 +108,19 @@ export const HistorySteps = {
       content: (
         <StepText>
 
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             It's 2026. Your knee still hurts.
           </h2>
           <p style={{ color: '#bbb' }}>
             Google can't be forced to change. But it can be routed around. Millions of people are asking chatbots the questions they used to type into Google. You open a chat:
           </p>
           <p style={{
-            fontFamily: "'JetBrains Mono', monospace",
+            fontFamily: 'Georgia, "Times New Roman", serif',
+            fontStyle: 'italic',
             fontSize: '1.05rem',
-            color: '#FFD700',
-            padding: '12px 16px',
-            background: 'rgba(255, 215, 0, 0.08)',
-            borderRadius: 8,
-            border: '1px solid rgba(255, 215, 0, 0.2)',
+            color: '#bbb',
+            padding: '4px 0 4px 16px',
+            borderLeft: '2px solid #444',
             marginTop: 12,
           }}>
             "my knee hurts when I run downhill but not uphill"
@@ -137,7 +136,7 @@ export const HistorySteps = {
       content: (
         <StepText>
 
-          <h2 style={{ fontSize: '1.6rem', fontWeight: 600, color: '#fff', marginBottom: 16 }}>
+          <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
             Google is already absorbing the new surface.
           </h2>
           <p style={{ color: '#bbb' }}>
@@ -146,7 +145,7 @@ export const HistorySteps = {
           <p style={{ color: '#888', marginTop: 12 }}>
             Surfaces don't stay unclaimed. The last time one appeared (search, in 1999) one company captured it in three years. If the chat surface repeats the same pattern, you get the same result with a different logo.
           </p>
-          <p style={{ color: '#bbb', marginTop: 12, fontWeight: 600 }}>
+          <p style={{ color: '#bbb', marginTop: 12, fontWeight: 500 }}>
             Here's what that looks like.
           </p>
         </StepText>
