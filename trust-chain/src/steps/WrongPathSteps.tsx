@@ -83,7 +83,7 @@ export const WrongPathSteps = {
             This is what an embedding sees.
           </h2>
           <p style={{ color: '#bbb' }}>
-            The same query. Every word preserved. Hundreds of semantic dimensions — anatomy, biomechanics, activity, condition — all encoded as a single coordinate. The detail was always there. Keywords just couldn't carry it.
+            The same query. Hundreds of semantic dimensions — anatomy, biomechanics, activity, condition — all encoded as a single coordinate. Not every word survives, but the meaning does. Keywords couldn't carry it.
           </p>
         </StepText>
       ),

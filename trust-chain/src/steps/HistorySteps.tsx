@@ -39,7 +39,7 @@ export const HistorySteps = {
             The highest bidder always wins.
           </h2>
           <p style={{ color: '#bbb' }}>
-            Overture has a flaw: a hedge fund running knee-brace arbitrage can outbid the physical therapist who actually helps runners.
+            GoTo.com — renamed Overture, then acquired by Yahoo — has a flaw: a hedge fund running knee-brace arbitrage can outbid the physical therapist who actually helps runners.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
             Google fixes this. AdWords adds Quality Score<Cite href="https://en.wikipedia.org/wiki/Quality_Score" n={11} /> — your ad's <em>relevance</em> affects your rank, not just your bid. A helpful ad with a lower bid beats a spammy ad with a higher one.
