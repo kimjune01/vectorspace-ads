@@ -12,6 +12,31 @@ function StepText({ children }: { children: ReactNode }) {
 export const IntroSteps = {
   steps: [
     {
+      id: 'intro-title',
+      content: (
+        <StepText>
+          <h1 style={{
+            fontSize: '2.4rem',
+            fontWeight: 800,
+            color: '#fff',
+            lineHeight: 1.2,
+            marginBottom: 20,
+          }}>
+            The Journey of Internet Ads
+          </h1>
+          <p style={{ color: '#bbb', fontSize: '1.15rem', lineHeight: 1.6 }}>
+            By the end of this, you'll understand exactly how ads should work on chatbots — and why no one has built it yet.
+          </p>
+          <p style={{ color: '#666', marginTop: 20, fontSize: '0.95rem', lineHeight: 1.6 }}>
+            How search ads went from useful to exploitative, why chatbots can't repeat the same pattern, and the mechanism that fixes it.
+          </p>
+          <p style={{ color: '#555', marginTop: 24, fontSize: '0.85rem' }}>
+            ↓ Scroll to begin
+          </p>
+        </StepText>
+      ),
+    },
+    {
       id: 'intro-1999',
       content: (
         <StepText>
@@ -70,7 +95,7 @@ export const IntroSteps = {
             But Google is burning through VC money. It needs a business model. And the web already has ads — banner ads, flashing rectangles, untargeted. The same ad whether you're reading about knees or cars.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            The problem isn't that ads exist. Ads are how the web stays free. Ads are how a specialist in Portland finds the runner who needs her. The problem is that these ads have <em style={{ color: '#fff' }}>no idea who you are</em>.
+            The problem isn't that ads exist. Ads are how a specialist in Portland finds the runner who needs her. The problem is that these ads have <strong style={{ color: '#fff' }}>no idea what you really need</strong>.
           </p>
         </StepText>
       ),
