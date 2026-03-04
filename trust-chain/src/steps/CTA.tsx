@@ -41,7 +41,7 @@ export function CTA() {
           fontSize: '1.1rem',
           lineHeight: 1.7,
         }}>
-          If you want to strengthen the case —{' '}
+          If you want to strengthen the case,{' '}
           <a
             href="/vector-space"
             style={{
@@ -53,7 +53,7 @@ export function CTA() {
             let's research together
           </a>
           .<br />
-          If you want to make money —{' '}
+          If you want to make money,{' '}
           <a
             href="/about"
             style={{

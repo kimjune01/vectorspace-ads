@@ -22,7 +22,7 @@ export const FieldSteps = {
             What if the bin wasn't a bin?
           </h2>
           <p style={{ color: '#bbb' }}>
-            The chatbot doesn't extract keywords. It produces an embedding vector — a coordinate in meaning-space that represents <em>everything</em> you said.
+            The chatbot doesn't extract keywords. It produces an embedding vector, a coordinate in meaning-space that represents <em>everything</em> you said.
           </p>
           <p style={{
             fontFamily: "'JetBrains Mono', monospace",
@@ -51,7 +51,7 @@ export const FieldSteps = {
             There's one problem.
           </h2>
           <p style={{ color: '#bbb' }}>
-            Today's ad protocol can't carry this. <a href="https://iabtechlab.com/standards/openrtb/" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>OpenRTB</a> — the standard behind every real-time bid request — has fields for keywords and category codes. No field for a vector.
+            Today's ad protocol can't carry this. <a href="https://iabtechlab.com/standards/openrtb/" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>OpenRTB</a>, the standard behind every real-time bid request, has fields for keywords and category codes. No field for a vector.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
             The full meaning gets dropped at the protocol boundary. The fix is <a href="/embedding-gap/" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>three optional fields</a>. That's the bottleneck.
@@ -71,10 +71,10 @@ export const FieldSteps = {
             Each advertiser claims a spot — and a radius.
           </h2>
           <p style={{ color: '#bbb' }}>
-            In the field, every advertiser declares two things: <em>where</em> they stand (their embedding) and <em>how far</em> they reach (their sigma — <a href="/the-price-of-relevance/" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>σ</a>). Sigma is their self-declared circle of competence.
+            In the field, every advertiser declares two things: <em>where</em> they stand (their embedding) and <em>how far</em> they reach (their sigma, <a href="/the-price-of-relevance/" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>σ</a>). Sigma is their self-declared circle of competence.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            Dr. Chen treats runners with eccentric loading injuries — your exact problem. Narrow σ. Small, bright circle: <em>"I'm excellent at this one thing."</em>
+            Dr. Chen treats runners with eccentric loading injuries. Your exact problem. Narrow σ. Small, bright circle: <em>"I'm excellent at this one thing."</em>
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
             Metro Orthopedic treats everything knee-related. Wide σ. Big, dim circle: <em>"I can handle most knee problems, none of them exceptionally."</em>
@@ -94,7 +94,7 @@ export const FieldSteps = {
             Claim a sigma narrower than your real expertise and you miss queries you could have won. Claim wider and you pay for impressions you can't convert.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            Metro can't fake being a specialist — a narrow sigma kills their volume. Dr. Chen can't fake being a generalist — a wide sigma burns her budget on bad matches.
+            Metro can't fake being a specialist. A narrow sigma kills their volume. Dr. Chen can't fake being a generalist. A wide sigma burns her budget on bad matches.
           </p>
           <p style={{ color: '#4CAF50', marginTop: 12, fontWeight: 600 }}>
             The sigma that makes you the most money is the one that matches your actual expertise. The honest signal <em>is</em> the greedy signal.
@@ -110,7 +110,7 @@ export const FieldSteps = {
             Keywords still work. Nothing breaks.
           </h2>
           <p style={{ color: '#bbb' }}>
-            A keyword is just an embedding with <a href="/keywords-are-tiny-circles/" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>sigma near zero</a> — the tightest possible circle. A single point in the same coordinate system. Every keyword campaign that works today works tomorrow, unchanged.
+            A keyword is just an embedding with <a href="/keywords-are-tiny-circles/" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>sigma near zero</a>, the tightest possible circle. A single point in the same coordinate system. Every keyword campaign that works today works tomorrow, unchanged.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
             The difference is that now sigma can grow. Advertisers who want precision keep their points. Advertisers who want reach expand their circles. Both live in the same field, competing in the same auction.
@@ -127,7 +127,7 @@ export const FieldSteps = {
             What stops people from gaming this?
           </h2>
           <p style={{ color: '#bbb' }}>
-            Nothing yet. Dr. Chen sees that most queries cluster around "knee pain." She lies about her position — drifts away from "downhill eccentric loading" toward the generic center where the traffic is.
+            Nothing yet. Dr. Chen sees that most queries cluster around "knee pain." She lies about her position, drifts away from "downhill eccentric loading" toward the generic center where the traffic is.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
             So does every other specialist. They all abandon their niches and crowd the center. The field collapses back into a bin.
@@ -150,7 +150,7 @@ export const FieldSteps = {
             A relocation fee: shift your declared position, pay proportional to how far you moved. Small adjustments are cheap. Abandoning your niche to chase the center is expensive.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            Dr. Chen runs the numbers. Staying where she is — "downhill running biomechanics" — costs nothing. Drifting to "general knee pain" would cost more than the extra impressions are worth. The honest position <em>is</em> the profitable position.
+            Dr. Chen runs the numbers. Staying where she is ("downhill running biomechanics") costs nothing. Drifting to "general knee pain" would cost more than the extra impressions are worth. The honest position <em>is</em> the profitable position.
           </p>
           <p style={{ color: '#4CAF50', marginTop: 12, fontSize: '1rem' }}>
             <a href="/relocation-fees/" style={{ color: '#4CAF50', textDecoration: 'underline', textDecorationColor: '#2E7D32' }}>Simulations confirm it</a>: with relocation fees, specialist surplus flips from negative to positive. Dr. Chen earns more per impression than Metro.
@@ -167,13 +167,13 @@ export const FieldSteps = {
             Greed aligns.
           </h2>
           <p style={{ color: '#bbb' }}>
-            Dr. Chen stays in her niche because moving is expensive and her niche is where she converts best. Near her point, every impression is a downhill runner — she converts one in four. At that rate she can bid $10 and still profit. Metro, far from your query, can't justify more than $3.
+            Dr. Chen stays in her niche because moving is expensive and her niche is where she converts best. Near her point, every impression is a downhill runner. She converts one in four. At that rate she can bid $10 and still profit. Metro, far from your query, can't justify more than $3.
           </p>
           <p style={{ color: '#888', marginTop: 12 }}>
             Nobody is being altruistic. Everyone is doing what makes them the most money.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            The economics look like 2003 again — before the middlemen took over. A better signal needs less infrastructure.
+            The economics look like 2003 again, before the middlemen took over. A better signal needs less infrastructure.
           </p>
         </StepText>
       ),
@@ -203,10 +203,10 @@ export const FieldSteps = {
             The auction runs inside sealed hardware.
           </h2>
           <p style={{ color: '#bbb' }}>
-            A TEE — <a href="/the-last-ad-layer/" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>trusted execution environment</a> — is a chip-level enclave. The auction code runs inside it. The exchange can trigger the computation, but it can't read the inputs, alter the logic, or change the output. No middleman ever sees your embedding.
+            A TEE, <a href="/the-last-ad-layer/" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>trusted execution environment</a>, is a chip-level enclave. The auction code runs inside it. The exchange can trigger the computation, but it can't read the inputs, alter the logic, or change the output. No middleman ever sees your embedding.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            The result comes out with a cryptographic signature — proof that the code ran exactly as published, unmodified. Not a promise. A receipt you can verify.
+            The result comes out with a cryptographic signature: proof that the code ran exactly as published, unmodified. Not a promise. A receipt you can verify.
           </p>
           <p style={{ color: '#00BCD4', marginTop: 12, fontWeight: 600 }}>
             The user doesn't trust the company. They verify the math.

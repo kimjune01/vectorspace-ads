@@ -22,7 +22,7 @@ export const HistorySteps = {
             Someone connects ads to intent.
           </h2>
           <p style={{ color: '#bbb' }}>
-            1998. A company called <a href="https://en.wikipedia.org/wiki/Pay-per-click" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>GoTo.com</a> lets businesses bid on search keywords. You search "knee pain" — a physio ad appears. You click, they pay. No click, no charge.
+            1998. A company called <a href="https://en.wikipedia.org/wiki/Pay-per-click" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>GoTo.com</a> lets businesses bid on search keywords. You search "knee pain." A physio ad appears. You click, they pay. No click, no charge.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
             For the first time, the ad <em>is the answer to your question</em>.
@@ -39,10 +39,10 @@ export const HistorySteps = {
             The highest bidder always wins.
           </h2>
           <p style={{ color: '#bbb' }}>
-            GoTo.com — renamed Overture, then acquired by Yahoo — has a flaw: a hedge fund running knee-brace arbitrage can outbid the physical therapist who actually helps runners.
+            GoTo.com (renamed Overture, then acquired by Yahoo) has a flaw: a hedge fund running knee-brace arbitrage can outbid the physical therapist who actually helps runners.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            Google fixes this. AdWords adds <a href="https://en.wikipedia.org/wiki/Quality_Score" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>Quality Score</a> — your ad's <em>relevance</em> affects your rank, not just your bid. A helpful ad with a lower bid beats a spammy ad with a higher one.
+            Google fixes this. AdWords adds <a href="https://en.wikipedia.org/wiki/Quality_Score" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>Quality Score</a>, where your ad's <em>relevance</em> affects your rank, not just your bid. A helpful ad with a lower bid beats a spammy ad with a higher one.
           </p>
           <p style={{ color: '#888', marginTop: 12 }}>
             This is the part that matters later.
@@ -59,7 +59,7 @@ export const HistorySteps = {
             An ecosystem appears. One company buys it all.
           </h2>
           <p style={{ color: '#bbb' }}>
-            Publishers need help selling ads. Advertisers need help buying them. Middlemen appear — SSPs, DSPs, exchanges — each solving a real problem, each taking a cut.
+            Publishers need help selling ads. Advertisers need help buying them. Middlemen appear: SSPs, DSPs, exchanges. Each solving a real problem, each taking a cut.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
             Then Google acquires them. 2008: <a href="https://en.wikipedia.org/wiki/DoubleClick" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>DoubleClick</a>. 2009: <a href="https://en.wikipedia.org/wiki/AdMob" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>AdMob</a>. 2010: <a href="https://en.wikipedia.org/wiki/Invite_Media" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>Invite Media</a>. Now Google operates the tool advertisers use to buy, the tool publishers use to sell, <em>and</em> the exchange in the middle.
@@ -98,7 +98,7 @@ export const HistorySteps = {
             The judge rules: <a href="https://en.wikipedia.org/wiki/United_States_v._Google_LLC_(2020)" target="_blank" rel="noopener noreferrer" style={{ color: '#fff', fontWeight: 700, textDecoration: 'underline', textDecorationColor: '#888' }}>monopoly</a>. But the ruling changes nothing. Google has the search box. <a href="https://gs.statcounter.com/search-engine-market-share" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>90%</a> of searches start there. The advertisers can't leave.
           </p>
           <p style={{ color: '#888', marginTop: 12 }}>
-            The only players who ever escaped built their own distribution — Facebook, Instagram, TikTok. But social ads target <em>who you are</em>, not <em>what you need</em>. There's no intent.
+            The only players who ever escaped built their own distribution: Facebook, Instagram, TikTok. But social ads target <em>who you are</em>, not <em>what you need</em>. There's no intent.
           </p>
         </StepText>
       ),
@@ -141,10 +141,10 @@ export const HistorySteps = {
             Google is already absorbing the new surface.
           </h2>
           <p style={{ color: '#bbb' }}>
-            AI Overviews — Google's chatbot answers — now sit above the search results, <a href="https://searchengineland.com/google-ai-overviews-drive-drop-organic-paid-ctr-464212" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>absorbing clicks</a> that used to go to organic links. The playbook is the same: capture the new surface, bolt on the old keyword plumbing, keep the bins.
+            AI Overviews, Google's chatbot answers, now sit above the search results, <a href="https://searchengineland.com/google-ai-overviews-drive-drop-organic-paid-ctr-464212" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>absorbing clicks</a> that used to go to organic links. The playbook is the same: capture the new surface, bolt on the old keyword plumbing, keep the bins.
           </p>
           <p style={{ color: '#888', marginTop: 12 }}>
-            Surfaces don't stay unclaimed. The last time one appeared — search, in 1999 — one company captured it in three years. If the chat surface repeats the same pattern — keywords, bins, highest-bidder-wins — you get the same result with a different logo.
+            Surfaces don't stay unclaimed. The last time one appeared (search, in 1999) one company captured it in three years. If the chat surface repeats the same pattern, you get the same result with a different logo.
           </p>
           <p style={{ color: '#bbb', marginTop: 12, fontWeight: 600 }}>
             Here's what that looks like.
