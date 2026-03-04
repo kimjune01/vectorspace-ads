@@ -16,8 +16,10 @@ export const IntroSteps = {
       content: (
         <StepText>
           <h1 style={{
-            fontSize: '2.4rem',
-            fontWeight: 800,
+            fontFamily: 'Georgia, "Times New Roman", serif',
+            fontStyle: 'italic',
+            fontSize: '2.2rem',
+            fontWeight: 400,
             color: '#fff',
             lineHeight: 1.2,
             marginBottom: 20,
