@@ -22,10 +22,10 @@ export const WrongPathSteps = {
           <p style={{ color: '#bbb' }}>
             Your intent, all its nuance, got compressed into{' '}
             <span style={{ fontFamily: "'JetBrains Mono', monospace", color: '#b89a6a' }}>knee pain running</span>{' '}
-            and thrown into a pen. You're crowded in with everyone who ever typed anything vaguely knee-related.
+            and thrown into a pen. You're crowded in with everyone whose query matched the same three keywords — no matter how different their actual problem is.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            Dr. Chen specializes in eccentric loading for downhill runners. Metro Orthopedic does general consultations. In the bin, they're identical. The one with more budget wins. It's not about relevance. It's about Google's revenue.
+            Different people, different problems. The ad system sees one bin. More people in the bin means more competition, higher bids, more revenue.
           </p>
         </StepText>
       ),

@@ -188,7 +188,8 @@ export type VisualState =
   | 'absorption'
   | 'populated-field'
   | 'dot-field'
-  | 'window-timeline';
+  | 'window-timeline'
+  | 'query-pile';
 
 export const STEP_VISUAL_MAP: Record<string, VisualState> = {
   'intro-title': 'query-banner',
@@ -203,7 +204,7 @@ export const STEP_VISUAL_MAP: Record<string, VisualState> = {
   'history-antitrust': 'history-pipeline',
   'history-chat': 'history-pipeline',
   'history-closing': 'history-pipeline',
-  'wrong-path-bins': 'query-compression',
+  'wrong-path-bins': 'query-pile',
   'wrong-path-auction': 'bid-paddles',
   'wrong-path-receipt': 'receipt-google',
   'resolution-keywords': 'resolution',

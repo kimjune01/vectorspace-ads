@@ -7,9 +7,11 @@ interface Props {
   anisotropic: boolean;
   showStream: boolean;
   showRestrictions: boolean;
+  keywordMode: boolean;
   onAnisotropicToggle: () => void;
   onStreamToggle: () => void;
   onRestrictionsToggle: () => void;
+  onKeywordModeToggle: () => void;
   onReset: () => void;
   onAdvertiserUpdate: (id: string, updates: Partial<Advertiser>) => void;
   onRefineTargeting: (id: string) => void;
@@ -75,9 +77,11 @@ export default function ControlPanel({
   anisotropic,
   showStream,
   showRestrictions,
+  keywordMode,
   onAnisotropicToggle,
   onStreamToggle,
   onRestrictionsToggle,
+  onKeywordModeToggle,
   onReset,
   onAdvertiserUpdate,
   onRefineTargeting,
@@ -108,6 +112,54 @@ export default function ControlPanel({
           >
             close
           </span>
+        </div>
+      )}
+
+      {/* Keyword / Embedding mode toggle */}
+      <div
+        style={{
+          display: "flex",
+          borderRadius: 8,
+          overflow: "hidden",
+          border: "1px solid #ddd",
+        }}
+      >
+        <button
+          onClick={keywordMode ? onKeywordModeToggle : undefined}
+          style={{
+            flex: 1,
+            padding: "10px 12px",
+            background: !keywordMode ? "#1a1a2e" : "white",
+            color: !keywordMode ? "white" : "#555",
+            border: "none",
+            cursor: keywordMode ? "pointer" : "default",
+            fontSize: 13,
+            fontWeight: 600,
+            transition: "all 0.2s",
+          }}
+        >
+          Embedding Mode
+        </button>
+        <button
+          onClick={!keywordMode ? onKeywordModeToggle : undefined}
+          style={{
+            flex: 1,
+            padding: "10px 12px",
+            background: keywordMode ? "#1a1a2e" : "white",
+            color: keywordMode ? "white" : "#555",
+            border: "none",
+            cursor: !keywordMode ? "pointer" : "default",
+            fontSize: 13,
+            fontWeight: 600,
+            transition: "all 0.2s",
+          }}
+        >
+          Keyword Mode
+        </button>
+      </div>
+      {keywordMode && (
+        <div style={{ fontSize: 11, color: "#888", padding: "0 4px", lineHeight: 1.4 }}>
+          All advertisers target exact keywords (σ ≈ 0). Territories are Voronoi cells decided by bid alone.
         </div>
       )}
 
@@ -191,22 +243,24 @@ export default function ControlPanel({
               <div>
                 <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, color: "#666" }}>
                   <span>Reach (sigma)</span>
-                  <span>{adv.sigma.toFixed(2)}</span>
+                  <span>{adv.sigma <= 0.01 ? "σ ≈ 0 (keyword)" : adv.sigma.toFixed(2)}</span>
                 </div>
-                <input
-                  type="range"
-                  min="0.05"
-                  max="0.6"
-                  step="0.01"
-                  value={adv.sigma}
-                  onChange={(e) => onAdvertiserUpdate(adv.id, { sigma: parseFloat(e.target.value) })}
-                  style={{ width: "100%", accentColor: adv.color }}
-                />
+                {!keywordMode && (
+                  <input
+                    type="range"
+                    min="0.01"
+                    max="0.6"
+                    step="0.01"
+                    value={adv.sigma}
+                    onChange={(e) => onAdvertiserUpdate(adv.id, { sigma: parseFloat(e.target.value) })}
+                    style={{ width: "100%", accentColor: adv.color }}
+                  />
+                )}
               </div>
             )}
 
             {/* Anisotropic sliders */}
-            {anisotropic && (
+            {anisotropic && !keywordMode && (
               <>
                 <div>
                   <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, color: "#666" }}>
@@ -215,7 +269,7 @@ export default function ControlPanel({
                   </div>
                   <input
                     type="range"
-                    min="0.05"
+                    min="0.01"
                     max="0.6"
                     step="0.01"
                     value={adv.sigmaX ?? adv.sigma}
@@ -230,7 +284,7 @@ export default function ControlPanel({
                   </div>
                   <input
                     type="range"
-                    min="0.05"
+                    min="0.01"
                     max="0.6"
                     step="0.01"
                     value={adv.sigmaY ?? adv.sigma}

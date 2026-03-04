@@ -14,6 +14,7 @@ import { EnclaveVisual } from './components/EnclaveVisual';
 import { SurveillanceCompare, AbsorptionVisual, PopulatedField, DotField } from './components/ZoomVisuals';
 import { ResolutionCompare } from './components/ResolutionCompare';
 import { WindowTimeline } from './components/WindowTimeline';
+import { QueryPile } from './components/QueryPile';
 import { KEYWORDS, DISCARDED_WORDS, GOOGLE_RECEIPT, CHAIN_LINKS } from './data';
 
 interface Props {
@@ -80,6 +81,7 @@ export function Pipeline({ stepId }: Props) {
           />
         )}
         {visualState === 'window-timeline' && <WindowTimeline />}
+        {visualState === 'query-pile' && <QueryPile />}
         {visualState === 'resolution' && <ResolutionCompare stepId={stepId} />}
         {visualState === 'surveillance-compare' && <SurveillanceCompare />}
         {visualState === 'absorption' && <AbsorptionVisual />}

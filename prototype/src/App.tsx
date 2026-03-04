@@ -1,9 +1,10 @@
 import { useState, useCallback, useMemo } from "react";
 import type { Advertiser, AuctionMetrics, TargetingState } from "./types";
-import { DEFAULT_ADVERTISERS, DEFAULT_CLUSTERS, DEFAULT_RESTRICTION_ZONES } from "./data";
+import { DEFAULT_ADVERTISERS, KEYWORD_ADVERTISERS, DEFAULT_CLUSTERS, DEFAULT_RESTRICTION_ZONES } from "./data";
 import AuctionCanvas from "./AuctionCanvas";
 import ControlPanel from "./ControlPanel";
 import TargetingWizard from "./TargetingWizard";
+import AskFirstDemo from "./askfirst/AskFirstDemo";
 
 const CANVAS_SIZE = 600;
 
@@ -15,14 +16,15 @@ function makeInitialAdvertisers(): Advertiser[] {
   }));
 }
 
-type AppMode = "explorer" | "targeting";
+type AppMode = "askfirst" | "explorer" | "targeting";
 
 function App() {
-  const [mode, setMode] = useState<AppMode>("targeting");
+  const [mode, setMode] = useState<AppMode>("askfirst");
   const [advertisers, setAdvertisers] = useState<Advertiser[]>(makeInitialAdvertisers);
   const [anisotropic, setAnisotropic] = useState(false);
   const [showStream, setShowStream] = useState(false);
   const [showRestrictions, setShowRestrictions] = useState(false);
+  const [keywordMode, setKeywordMode] = useState(false);
   const [metrics, setMetrics] = useState<AuctionMetrics | null>(null);
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [targetingAdvertiserId, setTargetingAdvertiserId] = useState<string | null>("nike");
@@ -69,10 +71,30 @@ function App() {
     setShowRestrictions((prev) => !prev);
   }, []);
 
+  const handleKeywordModeToggle = useCallback(() => {
+    setKeywordMode((prev) => {
+      const goingToKeyword = !prev;
+      if (goingToKeyword) {
+        // Animate to keyword positions: σ=0.01, collapsed to cluster centers
+        setAdvertisers((current) =>
+          current.map((a) => {
+            const kw = KEYWORD_ADVERTISERS.find((k) => k.id === a.id)!;
+            return { ...a, center: kw.center, sigma: kw.sigma, sigmaX: kw.sigma, sigmaY: kw.sigma };
+          }),
+        );
+      } else {
+        // Restore embedding defaults
+        setAdvertisers(makeInitialAdvertisers());
+      }
+      return goingToKeyword;
+    });
+  }, []);
+
   const handleReset = useCallback(() => {
     setAdvertisers(makeInitialAdvertisers());
     setAnisotropic(false);
     setShowStream(false);
+    setKeywordMode(false);
     setTargetingAdvertiserId(null);
     setTargetingState(null);
     setGhostPreview(null);
@@ -154,19 +176,26 @@ function App() {
         {/* Tab bar */}
         <div style={{ display: "flex", gap: 0, marginTop: 16, marginBottom: 16 }}>
           {([
+            { key: "askfirst" as AppMode, label: "Ask First", desc: "Chat demo: proximity dot triggers an auction" },
             { key: "explorer" as AppMode, label: "Auction Explorer", desc: "Drag advertisers, adjust bids, watch territories shift" },
             { key: "targeting" as AppMode, label: "Targeting Wizard", desc: "Navigate embedding space through language and examples" },
-          ]).map((tab) => (
+          ]).map((tab, i, arr) => (
             <button
               key={tab.key}
-              onClick={() => tab.key === "explorer" ? handleSwitchToExplorer() : handleSwitchToTargeting()}
+              onClick={() => {
+                if (tab.key === "explorer") handleSwitchToExplorer();
+                else if (tab.key === "targeting") handleSwitchToTargeting();
+                else setMode("askfirst");
+              }}
               style={{
                 flex: 1,
                 padding: "12px 16px",
                 background: mode === tab.key ? "#1a1a2e" : "white",
                 color: mode === tab.key ? "white" : "#555",
                 border: mode === tab.key ? "1px solid #1a1a2e" : "1px solid #ddd",
-                borderRadius: tab.key === "explorer" ? "8px 0 0 8px" : "0 8px 8px 0",
+                borderRadius:
+                  i === 0 ? "8px 0 0 8px" :
+                  i === arr.length - 1 ? "0 8px 8px 0" : "0",
                 cursor: "pointer",
                 textAlign: "left",
                 transition: "all 0.15s",
@@ -179,74 +208,82 @@ function App() {
         </div>
 
         {/* Main layout */}
-        <div style={{ display: "flex", gap: 20, alignItems: "flex-start" }}>
-          <AuctionCanvas
-            advertisers={advertisers}
-            clusters={DEFAULT_CLUSTERS}
-            anisotropic={anisotropic}
-            width={CANVAS_SIZE}
-            height={CANVAS_SIZE}
-            draggingId={draggingId}
-            showStream={showStream}
-            onDragStart={handleDragStart}
-            onDragMove={handleDragMove}
-            onDragEnd={handleDragEnd}
-            onMetricsUpdate={setMetrics}
-            restrictionZones={DEFAULT_RESTRICTION_ZONES}
-            showRestrictions={showRestrictions}
-            ghostPreview={showWizard ? ghostPreview : null}
-            breadcrumbs={showWizard ? targetingState?.breadcrumbs : undefined}
-            reachCircle={showWizard ? reachCircle : null}
-            activeAdvertiserId={showWizard ? targetingAdvertiserId : null}
-          />
-          {showWizard ? (
-            <TargetingWizard
-              advertiser={targetingAdvertiser}
+        {mode === "askfirst" ? (
+          <AskFirstDemo />
+        ) : (
+          <div style={{ display: "flex", gap: 20, alignItems: "flex-start" }}>
+            <AuctionCanvas
               advertisers={advertisers}
               clusters={DEFAULT_CLUSTERS}
               anisotropic={anisotropic}
-              targetingState={targetingState}
-              onStateChange={setTargetingState}
-              onAdvertiserUpdate={handleAdvertiserUpdate}
-              onGhostPreview={setGhostPreview}
-              onSwitchAdvertiser={handleRefineTargeting}
-            />
-          ) : (
-            <ControlPanel
-              advertisers={advertisers}
-              metrics={metrics}
-              anisotropic={anisotropic}
+              width={CANVAS_SIZE}
+              height={CANVAS_SIZE}
+              draggingId={draggingId}
               showStream={showStream}
+              onDragStart={handleDragStart}
+              onDragMove={handleDragMove}
+              onDragEnd={handleDragEnd}
+              onMetricsUpdate={setMetrics}
+              restrictionZones={DEFAULT_RESTRICTION_ZONES}
               showRestrictions={showRestrictions}
-              onAnisotropicToggle={handleAnisotropicToggle}
-              onStreamToggle={handleStreamToggle}
-              onRestrictionsToggle={handleRestrictionsToggle}
-              onReset={handleReset}
-              onAdvertiserUpdate={handleAdvertiserUpdate}
-              onRefineTargeting={handleRefineTargeting}
+              ghostPreview={showWizard ? ghostPreview : null}
+              breadcrumbs={showWizard ? targetingState?.breadcrumbs : undefined}
+              reachCircle={showWizard ? reachCircle : null}
+              activeAdvertiserId={showWizard ? targetingAdvertiserId : null}
             />
-          )}
-        </div>
+            {showWizard ? (
+              <TargetingWizard
+                advertiser={targetingAdvertiser}
+                advertisers={advertisers}
+                clusters={DEFAULT_CLUSTERS}
+                anisotropic={anisotropic}
+                targetingState={targetingState}
+                onStateChange={setTargetingState}
+                onAdvertiserUpdate={handleAdvertiserUpdate}
+                onGhostPreview={setGhostPreview}
+                onSwitchAdvertiser={handleRefineTargeting}
+              />
+            ) : (
+              <ControlPanel
+                advertisers={advertisers}
+                metrics={metrics}
+                anisotropic={anisotropic}
+                showStream={showStream}
+                showRestrictions={showRestrictions}
+                keywordMode={keywordMode}
+                onAnisotropicToggle={handleAnisotropicToggle}
+                onStreamToggle={handleStreamToggle}
+                onRestrictionsToggle={handleRestrictionsToggle}
+                onKeywordModeToggle={handleKeywordModeToggle}
+                onReset={handleReset}
+                onAdvertiserUpdate={handleAdvertiserUpdate}
+                onRefineTargeting={handleRefineTargeting}
+              />
+            )}
+          </div>
+        )}
 
         {/* Footer explanation */}
-        <div
-          style={{
-            marginTop: 20,
-            padding: 16,
-            background: "white",
-            borderRadius: 8,
-            border: "1px solid #e0e0e0",
-            fontSize: 13,
-            color: "#555",
-            lineHeight: 1.5,
-          }}
-        >
-          <strong>How it works:</strong> Each advertiser has a position, bid, and reach (sigma). The
-          winner at each point is{" "}
-          <code>argmax_i [log(bid_i) - ||x - center_i||^2 / sigma_i^2]</code>, forming a{" "}
-          <strong>power diagram</strong> -- a bid-weighted Voronoi tessellation. Color vibrancy
-          indicates impression traffic density.
-        </div>
+        {mode !== "askfirst" && (
+          <div
+            style={{
+              marginTop: 20,
+              padding: 16,
+              background: "white",
+              borderRadius: 8,
+              border: "1px solid #e0e0e0",
+              fontSize: 13,
+              color: "#555",
+              lineHeight: 1.5,
+            }}
+          >
+            <strong>How it works:</strong> Each advertiser has a position, bid, and reach (sigma). The
+            winner at each point is{" "}
+            <code>argmax_i [log(bid_i) - ||x - center_i||^2 / sigma_i^2]</code>, forming a{" "}
+            <strong>power diagram</strong> -- a bid-weighted Voronoi tessellation. Color vibrancy
+            indicates impression traffic density.
+          </div>
+        )}
       </div>
     </div>
   );

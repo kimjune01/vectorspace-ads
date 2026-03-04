@@ -274,21 +274,47 @@ export default function AuctionCanvas({
     for (const adv of advertisers) {
       const px = adv.center[0] * width;
       const py = (1 - adv.center[1]) * height;
+      const isKeyword = adv.sigma < 0.02;
 
-      // Outer circle (white with border)
-      ctx.beginPath();
-      ctx.arc(px, py, 14, 0, Math.PI * 2);
-      ctx.fillStyle = "white";
-      ctx.fill();
-      ctx.strokeStyle = adv.color;
-      ctx.lineWidth = 3;
-      ctx.stroke();
+      if (isKeyword) {
+        // Crosshair/pin for keyword mode (σ ≈ 0)
+        const arm = 10;
+        ctx.strokeStyle = adv.color;
+        ctx.lineWidth = 2.5;
 
-      // Inner dot
-      ctx.beginPath();
-      ctx.arc(px, py, 5, 0, Math.PI * 2);
-      ctx.fillStyle = adv.color;
-      ctx.fill();
+        // Horizontal line
+        ctx.beginPath();
+        ctx.moveTo(px - arm, py);
+        ctx.lineTo(px + arm, py);
+        ctx.stroke();
+
+        // Vertical line
+        ctx.beginPath();
+        ctx.moveTo(px, py - arm);
+        ctx.lineTo(px, py + arm);
+        ctx.stroke();
+
+        // Center dot
+        ctx.beginPath();
+        ctx.arc(px, py, 3, 0, Math.PI * 2);
+        ctx.fillStyle = adv.color;
+        ctx.fill();
+      } else {
+        // Standard circle marker for embedding mode
+        ctx.beginPath();
+        ctx.arc(px, py, 14, 0, Math.PI * 2);
+        ctx.fillStyle = "white";
+        ctx.fill();
+        ctx.strokeStyle = adv.color;
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        // Inner dot
+        ctx.beginPath();
+        ctx.arc(px, py, 5, 0, Math.PI * 2);
+        ctx.fillStyle = adv.color;
+        ctx.fill();
+      }
 
       // Label
       ctx.font = "bold 11px system-ui, sans-serif";
@@ -296,18 +322,24 @@ export default function AuctionCanvas({
       ctx.fillStyle = "#222";
       ctx.strokeStyle = "white";
       ctx.lineWidth = 3;
-      ctx.strokeText(adv.name, px, py - 20);
-      ctx.fillText(adv.name, px, py - 20);
+      const labelY = isKeyword ? py - 16 : py - 20;
+      ctx.strokeText(adv.name, px, labelY);
+      ctx.fillText(adv.name, px, labelY);
 
       ctx.font = "10px system-ui, sans-serif";
       ctx.fillStyle = "#555";
       ctx.strokeStyle = "white";
       ctx.lineWidth = 2;
-      ctx.strokeText(`$${adv.bid.toFixed(1)}`, px, py - 9);
-      ctx.fillText(`$${adv.bid.toFixed(1)}`, px, py - 9);
+      if (isKeyword) {
+        ctx.strokeText(`$${adv.bid.toFixed(1)}`, px + 20, py - 4);
+        ctx.fillText(`$${adv.bid.toFixed(1)}`, px + 20, py - 4);
+      } else {
+        ctx.strokeText(`$${adv.bid.toFixed(1)}`, px, py - 9);
+        ctx.fillText(`$${adv.bid.toFixed(1)}`, px, py - 9);
+      }
 
-      // Draw anisotropic ellipse if in anisotropic mode
-      if (anisotropic && adv.sigmaX != null && adv.sigmaY != null) {
+      // Draw anisotropic ellipse if in anisotropic mode (not for keyword)
+      if (!isKeyword && anisotropic && adv.sigmaX != null && adv.sigmaY != null) {
         ctx.beginPath();
         ctx.ellipse(
           px,
