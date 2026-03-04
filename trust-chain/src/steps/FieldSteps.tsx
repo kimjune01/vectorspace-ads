@@ -208,7 +208,7 @@ export const FieldSteps = {
             The result comes out with a cryptographic signature: proof that the code ran exactly as published, unmodified. A receipt you can verify.
           </p>
           <p style={{ color: '#89b3b8', marginTop: 12, fontWeight: 500 }}>
-            The user doesn't trust the company. They verify the math.
+            The user doesn't trust the company. They verify the math. (Though <a href="https://blog.zgp.org/why-pets-failed/" target="_blank" rel="noopener noreferrer" style={{ color: '#89b3b8', textDecoration: 'underline', textDecorationColor: '#5a8a8f' }}>math alone isn't enough</a>. Trust is earned by being right, consistently.)
           </p>
         </StepText>
       ),

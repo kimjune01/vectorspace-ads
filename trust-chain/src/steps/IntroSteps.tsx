@@ -93,7 +93,7 @@ export const IntroSteps = {
       content: (
         <StepText>
           <p style={{ color: '#888' }}>
-            But Google is burning through VC money. It needs a business model. And the web already has ads: banner ads, flashing rectangles, untargeted. The same ad whether you're reading about knees or cars.
+            But Google is burning through VC money. It needs a business model. The web already has ads: flashing banners, pop-ups, untargeted. Google does something different: small text ads, matched to your search query. It works.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
             The problem isn't that ads exist. Ads are how a specialist in Portland finds the runner who needs her. The problem is that these ads have <strong style={{ color: '#fff', fontWeight: 500 }}>no idea what you really need</strong>.
