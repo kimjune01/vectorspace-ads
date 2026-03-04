@@ -71,7 +71,7 @@ export function SurplusBar({ stepId }: Props) {
         }}>
           {(displayConfig ?? []).map((segment, i) => (
             <div
-              key={`${segment.label}-${i}`}
+              key={i}
               style={{
                 height: `${segment.width * 100}%`,
                 background: segment.color,
@@ -93,7 +93,7 @@ export function SurplusBar({ stepId }: Props) {
         }}>
           {(displayConfig ?? []).map((segment, i) => (
             <div
-              key={`label-${segment.label}-${i}`}
+              key={`label-${i}`}
               style={{
                 height: `${segment.width * 100}%`,
                 display: 'flex',

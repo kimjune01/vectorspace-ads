@@ -130,7 +130,7 @@ export const SURPLUS_BAR_CONFIG: Record<string, SurplusSegment[] | null> = {
   'everyone-wins': null,
   'exchange-trust': [
     { label: 'Publisher', color: '#2196F3', width: 0.15 },
-    { label: 'Exchange?', color: '#673AB7', width: 0.70 },
+    { label: 'Exchange', color: '#673AB7', width: 0.70 },
     { label: 'Advertiser', color: '#4CAF50', width: 0.15 },
   ],
   'enclave-proof': [
