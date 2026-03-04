@@ -41,8 +41,11 @@ export const ChainSteps = {
           <p style={{ color: '#bbb', marginTop: 12 }}>
             Cognitiv<Cite href="https://www.globenewswire.com/news-release/2024/06/11/2896871/0/en/PubMatic-Is-The-First-SSP-To-Make-Cognitiv-ContextGPT-4-Available-To-Buyers.html" n={16} />, Seedtag<Cite href="https://www.seedtag.com/contextual-ai/" n={24} />, GumGum<Cite href="https://www.businesswire.com/news/home/20200115005272/en/GumGums-Groundbreaking-Contextual-Analysis-Solution-for-Digital-Publishers-Makes-Official-Debut" n={25} /> — they all use embeddings to <em>read</em> page content. But the output collapses to a deal ID or a segment code before it enters the bid stream. The vector never reaches the auction. OpenRTB 2.6 has fields for keywords and category codes. No field for a vector.
           </p>
+          <p style={{ color: '#bbb', marginTop: 12 }}>
+            Google won't fix this. A precise signal means fewer competitors per query, lower bids, and transparent matching — all of which erode the margin that vague keywords protect. The better signal is the one they can't afford to carry.
+          </p>
           <p style={{ color: '#888', marginTop: 12 }}>
-            Everyone is using AI to optimize the selection of the same old primitives. Nobody is changing the pipe.
+            Everyone else is using AI to optimize the selection of the same old primitives. Nobody is changing the pipe.
           </p>
         </StepText>
       ),
