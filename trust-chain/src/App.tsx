@@ -118,7 +118,9 @@ export default function App() {
         onStepChange={setActiveStepId}
         graphic={
           <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'stretch', position: 'relative' }}>
-            <SurplusBar stepId={activeStepId} />
+            <div className="surplus-bar-wrapper" style={{ display: 'contents' }}>
+              <SurplusBar stepId={activeStepId} />
+            </div>
             <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Pipeline stepId={activeStepId} />
             </div>
@@ -128,7 +130,7 @@ export default function App() {
       <CTA />
 
       {/* Scroll hint — fades out after first scroll */}
-      <div style={{
+      <div className="scroll-hint" style={{
         position: 'fixed',
         bottom: 32,
         left: '50%',
@@ -175,6 +177,11 @@ export default function App() {
           outline: 2px solid #4CAF50;
           outline-offset: 2px;
           border-radius: 2px;
+        }
+        @supports (bottom: env(safe-area-inset-bottom)) {
+          .scroll-hint {
+            bottom: max(32px, env(safe-area-inset-bottom)) !important;
+          }
         }
       `}</style>
     </div>

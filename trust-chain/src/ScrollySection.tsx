@@ -57,6 +57,7 @@ const mobileCSS = `
     z-index: 10;
     background: #0a0a1a !important;
     border-bottom: 1px solid #1a1a2a !important;
+    overflow: hidden !important;
   }
   .text-steps {
     width: 100% !important;
@@ -66,6 +67,10 @@ const mobileCSS = `
   .step-item {
     min-height: 60vh !important;
   }
+  .surplus-bar-wrapper,
+  .surplus-bar-wrapper > * {
+    display: none !important;
+  }
 }
 `;
 
@@ -73,6 +78,7 @@ export function ScrollySection({ steps, onStepChange, graphic }: Props) {
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -85,7 +91,7 @@ export function ScrollySection({ steps, onStepChange, graphic }: Props) {
         }
       },
       {
-        rootMargin: '-40% 0px -40% 0px',
+        rootMargin: isMobile ? '-30% 0px -30% 0px' : '-40% 0px -40% 0px',
         threshold: 0,
       }
     );

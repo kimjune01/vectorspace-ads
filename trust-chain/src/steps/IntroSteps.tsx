@@ -18,7 +18,7 @@ export const IntroSteps = {
           <h1 style={{
             fontFamily: 'Georgia, "Times New Roman", serif',
             fontStyle: 'italic',
-            fontSize: '2.2rem',
+            fontSize: 'clamp(1.6rem, 5vw, 2.2rem)',
             fontWeight: 400,
             color: '#fff',
             lineHeight: 1.2,

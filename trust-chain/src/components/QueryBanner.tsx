@@ -70,12 +70,14 @@ export function QueryBanner({ stepId }: Props) {
         <img
           src={`${import.meta.env.BASE_URL}imac.png`}
           alt="iMac G3"
+          className="imac-img"
           style={{
             position: 'absolute',
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -45%)',
             width: 420,
+            maxWidth: '120%',
             zIndex: 1,
             pointerEvents: 'none',
             opacity: showImac ? 1 : 0,
@@ -176,6 +178,7 @@ export function QueryBanner({ stepId }: Props) {
       <img
         src={`${import.meta.env.BASE_URL}swingline.png`}
         alt="Red Swingline stapler"
+        className="desktop-prop"
         style={{
           position: 'absolute',
           right: -20,
@@ -192,6 +195,7 @@ export function QueryBanner({ stepId }: Props) {
       <img
         src={`${import.meta.env.BASE_URL}nbgray.avif`}
         alt=""
+        className="desktop-prop"
         style={{
           position: 'absolute',
           right: 50,
@@ -568,6 +572,14 @@ export function QueryBanner({ stepId }: Props) {
       )}
 
       <style>{`
+        @media (max-width: 768px) {
+          .desktop-prop {
+            display: none !important;
+          }
+          .imac-img {
+            width: 280px !important;
+          }
+        }
         @keyframes fadeSlideUp {
           from { opacity: 0; transform: translateY(12px); }
           to { opacity: 1; transform: translateY(0); }
