@@ -59,6 +59,10 @@ const mobileCSS = `
     border-bottom: 1px solid #1a1a2a !important;
     overflow: hidden !important;
   }
+  .sticky-graphic > * {
+    transform: scale(0.75);
+    transform-origin: center center;
+  }
   .text-steps {
     width: 100% !important;
     margin-left: 0 !important;
