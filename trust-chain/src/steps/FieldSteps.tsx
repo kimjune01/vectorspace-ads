@@ -210,6 +210,9 @@ export const FieldSteps = {
           <p style={{ color: '#89b3b8', marginTop: 12, fontWeight: 500 }}>
             The user doesn't trust the company. They verify the math. (Though <a href="https://blog.zgp.org/why-pets-failed/" target="_blank" rel="noopener noreferrer" style={{ color: '#89b3b8', textDecoration: 'underline', textDecorationColor: '#5a8a8f' }}>math alone isn't enough</a>. Trust is earned by being right, consistently.)
           </p>
+          <p style={{ color: '#888', marginTop: 12 }}>
+            That covers the exchange. But what about the advertisers? An open auction without a gatekeeper has a <a href="/how-to-trust-advertisers/" style={{ color: '#888', textDecoration: 'underline', textDecorationColor: '#555' }}>trust problem of its own</a>.
+          </p>
         </StepText>
       ),
     },
