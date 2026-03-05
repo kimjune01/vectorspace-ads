@@ -77,7 +77,10 @@ export const ChatSteps = {
             One dot. One tap. One verifiable match. That's the entire ad surface.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            No banner. No "sponsored" label buried in the results. No ad that pretends to be an answer. A proximity signal that earns trust by being right, consistently, over weeks and months, until tapping the dot is something you <em>want</em> to do, not something you endure.
+            No banner. No ad that pretends to be an answer. A proximity signal that earns trust by being right, consistently, over weeks and months, until tapping the dot is something you <em>want</em> to do, not something you endure.
+          </p>
+          <p style={{ color: '#bbb', marginTop: 12 }}>
+            When Stanford researchers <a href="https://www.gsb.stanford.edu/faculty-research/working-papers/does-advertising-serve-signal-evidence-field-experiments-mobile" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>labeled a listing as a paid ad</a>, calls went up 77%. The willingness to pay for proximity is itself a trust signal. The dot doesn't hide that it's an ad. That's the point.
           </p>
           <p style={{ color: '#89b3b8', marginTop: 12 }}>
             The alternative is much worse. Without an honest ad layer, chatbots either stay unprofitable, or they quietly sell your intent to the same keyword machine. The dot isn't optional. It's the only way this doesn't end like last time.

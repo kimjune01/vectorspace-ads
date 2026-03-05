@@ -297,13 +297,15 @@ You tapped because you were curious. The match is real because the math is real.
 **VISUAL:** The dot expands into Dr. Chen's card. Clean, minimal, no ad chrome. Side-by-side receipt: $2 click, $0.10 exchange cut, $1.90 to Dr. Chen. Compare with the $8 Google receipt from Step 13. Surplus bar shows: everyone won.
 
 ### Step 25: dot-philosophy
-**Therefore trust isn't promised. It's earned.**
+**The ad label is the signal.**
 
-One dot. One tap. One verifiable match. That's the entire ad surface.
+Stanford researchers ran a field experiment: they randomly showed some users that a restaurant listing was a paid ad. The label — "this is an ad" — increased calls by 77%. Not despite the label. *Because* of it.
 
-No banner. No "sponsored" label buried in the results. No ad that pretends to be an answer. A proximity signal that earns trust by being right, consistently, over weeks and months — until tapping the dot is something you *want* to do, not something you endure.
+A business that pays to be near your query is making a costly commitment — like marble in a bank lobby or a doorman at a hotel. The marble doesn't make the bank more solvent. The doorman's real job isn't opening the door. But the *decision to invest* signals "we plan to be here tomorrow." A scammer won't pay to stand next to your problem for months. Dr. Chen will.
 
-**VISUAL:** The chat interface pulls back to show the full conversation. The dot sits quietly in the margin — small, unobtrusive, trustworthy. The card has already been dismissed. The conversation continues.
+One dot. One tap. One verifiable match. The dot doesn't hide that it's an ad. That's the point. The willingness to pay for proximity *is* the trust signal — and it gets stronger every time the match is right.
+
+**VISUAL:** The chat interface pulls back to show the full conversation. The dot sits quietly in the margin — small, unobtrusive, labeled. A "77%" stat floats briefly. The card has already been dismissed. The conversation continues.
 
 ---
 
