@@ -15,7 +15,7 @@ import { SurveillanceCompare, AbsorptionVisual, PopulatedField, DotField } from 
 import { ResolutionCompare } from './components/ResolutionCompare';
 import { WindowTimeline } from './components/WindowTimeline';
 import { QueryPile } from './components/QueryPile';
-import { KEYWORDS, DISCARDED_WORDS, GOOGLE_RECEIPT, CHAIN_LINKS } from './data';
+import { KEYWORDS, DISCARDED_WORDS, GOOGLE_RECEIPT, GOOGLE_BIDDERS, CHAIN_LINKS } from './data';
 
 interface Props {
   stepId: string;
@@ -56,6 +56,23 @@ export function Pipeline({ stepId }: Props) {
         {visualState === 'receipt-google' && (
           <Receipt data={GOOGLE_RECEIPT} variant="google" visible={true} />
         )}
+        {visualState === 'bid-paddles-with-receipt' && (
+          <div style={{ position: 'relative', width: '100%' }}>
+            <div style={{ opacity: 0.3, filter: 'blur(1px)' }}>
+              <BidPaddleDisplay stepId="wrong-path-auction" />
+            </div>
+            <div style={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              animation: 'receiptSlideIn 0.6s ease forwards',
+              zIndex: 1,
+            }} >
+              <Receipt data={GOOGLE_RECEIPT} variant="google" visible={true} />
+            </div>
+          </div>
+        )}
         {visualState === 'embedding-field' && <EmbeddingField stepId={stepId} />}
         {visualState === 'protocol-form' && <ProtocolForm stepId={stepId} />}
         {visualState === 'chat-mockup' && <ChatMockup stepId={stepId} />}
@@ -92,6 +109,10 @@ export function Pipeline({ stepId }: Props) {
         @keyframes pipelineFadeIn {
           from { opacity: 0; transform: translateY(8px); }
           to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes receiptSlideIn {
+          from { opacity: 0; transform: translate(-50%, -40%); }
+          to { opacity: 1; transform: translate(-50%, -50%); }
         }
         @keyframes dotPulse {
           0%, 100% { box-shadow: 0 0 12px rgba(76, 175, 80, 0.3); }
