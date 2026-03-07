@@ -143,7 +143,7 @@ export const HistorySteps = {
             AI Overviews, Google's chatbot answers, now sit above the search results, <a href="https://searchengineland.com/google-ai-overviews-drive-drop-organic-paid-ctr-464212" target="_blank" rel="noopener noreferrer" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>absorbing clicks</a> that used to go to organic links. The playbook is the same: capture the new surface, bolt on the old keyword plumbing, keep the bins.
           </p>
           <p style={{ color: '#888', marginTop: 12 }}>
-            Surfaces don't stay unclaimed. The last time one appeared (search, in 1999) one company captured it in three years. If the chat surface repeats the same pattern, you get the same result with a different logo.
+            Surfaces don't stay unclaimed. If the chat surface repeats the same pattern, you get the same result with a different logo.
           </p>
           <p style={{ color: '#bbb', marginTop: 12, fontWeight: 500 }}>
             Here's what that looks like.

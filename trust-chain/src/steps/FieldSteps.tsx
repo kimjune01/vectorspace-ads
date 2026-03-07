@@ -149,7 +149,7 @@ export const FieldSteps = {
             A relocation fee: shift your declared position, pay proportional to how far you moved. Small adjustments are cheap. Abandoning your niche to chase the center is expensive.
           </p>
           <p style={{ color: '#bbb', marginTop: 12 }}>
-            Dr. Chen runs the numbers. Staying where she is ("downhill running biomechanics") costs nothing. Drifting to "general knee pain" would cost more than the extra impressions are worth. The honest position <em>is</em> the profitable position.
+            Dr. Chen runs the numbers. Staying where she is ("downhill running biomechanics") costs nothing. Drifting to "general knee pain" would cost more than the extra impressions are worth.
           </p>
           <p style={{ color: '#8aab8c', marginTop: 12, fontSize: '1rem' }}>
             <a href="/relocation-fees/" style={{ color: '#8aab8c', textDecoration: 'underline', textDecorationColor: '#5a7a5c' }}>Simulations confirm it</a>: with relocation fees, specialist surplus flips from negative to positive. Dr. Chen earns more per impression than Metro.
@@ -166,7 +166,7 @@ export const FieldSteps = {
             Greed aligns.
           </h2>
           <p style={{ color: '#bbb' }}>
-            Dr. Chen stays in her niche because moving is expensive and her niche is where she converts best. Near her point, every impression is a downhill runner. She converts one in four. At that rate she can bid $10 and still profit. Metro, far from your query, can't justify more than $3.
+            Dr. Chen stays in her niche because moving is expensive and her niche is where she converts best. Metro can't justify the same bid from across the field.
           </p>
           <p style={{ color: '#888', marginTop: 12 }}>
             Nobody is being altruistic. Everyone is doing what makes them the most money.
