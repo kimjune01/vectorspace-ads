@@ -15,7 +15,7 @@ import { SurveillanceCompare, AbsorptionVisual, PopulatedField, DotField } from 
 import { ResolutionCompare } from './components/ResolutionCompare';
 import { WindowTimeline } from './components/WindowTimeline';
 import { QueryPile } from './components/QueryPile';
-import { KEYWORDS, DISCARDED_WORDS, GOOGLE_RECEIPT, GOOGLE_BIDDERS, CHAIN_LINKS } from './data';
+import { KEYWORDS, DISCARDED_WORDS, GOOGLE_RECEIPT, CHAIN_LINKS } from './data';
 
 interface Props {
   stepId: string;
