@@ -153,7 +153,7 @@ export const ChainSteps = {
             These are the people who do what AI can't: hands-on, local, specialized work that requires showing up. When they get discovered, they hire.
           </p>
           <p style={{ color: '#888', marginTop: 12 }}>
-            That's not a better ad. That's a better labor market.
+            That's a better labor market.
           </p>
         </StepText>
       ),
@@ -194,7 +194,7 @@ export const ChainSteps = {
             <a href="/letter-to-cloudx/" style={{ color: '#888', textDecoration: 'none', borderBottom: '1px solid #555' }}>An Open Letter to CloudX</a>
           </p>
           <p style={{ color: '#8aab8c', marginTop: 16, fontWeight: 500 }}>
-            Three engineering decisions. Not a moonshot.
+            Three engineering decisions. That's it.
           </p>
         </StepText>
       ),

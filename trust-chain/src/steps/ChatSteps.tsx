@@ -71,7 +71,7 @@ export const ChatSteps = {
       content: (
         <StepText>
           <h2 style={{ fontSize: '1.3rem', fontWeight: 500, color: '#fff', marginBottom: 16 }}>
-            Trust isn't promised. It's earned.
+            Trust is earned.
           </h2>
           <p style={{ color: '#bbb' }}>
             One dot. One tap. One verifiable match. That's the entire ad surface.
@@ -83,7 +83,7 @@ export const ChatSteps = {
             When Stanford researchers <a href="https://www.gsb.stanford.edu/faculty-research/working-papers/does-advertising-serve-signal-evidence-field-experiments-mobile" style={{ color: '#bbb', textDecoration: 'underline', textDecorationColor: '#666' }}>labeled a listing as a paid ad</a>, calls went up 77%. The willingness to pay for proximity is itself a trust signal. The dot doesn't hide that it's an ad. That's the point.
           </p>
           <p style={{ color: '#89b3b8', marginTop: 12 }}>
-            The alternative is much worse. Without an honest ad layer, chatbots either stay unprofitable, or they quietly sell your intent to the same keyword machine. The dot isn't optional. It's the only way this doesn't end like last time.
+            The alternative is much worse. Without an honest ad layer, chatbots either stay unprofitable, or they quietly sell your intent to the same keyword machine. The dot is the only way this doesn't end like last time.
           </p>
         </StepText>
       ),

@@ -112,7 +112,7 @@ export const HistorySteps = {
             It's 2026. Your knee still hurts.
           </h2>
           <p style={{ color: '#bbb' }}>
-            Google can't be forced to change. But it can be routed around. Millions of people are asking chatbots the questions they used to type into Google. You open a chat:
+            Google won't change. Route around it. Millions of people are asking chatbots the questions they used to type into Google. You open a chat:
           </p>
           <p style={{
             fontFamily: 'Georgia, "Times New Roman", serif',
