@@ -48,3 +48,9 @@ i*(x) = argmax_i [ log(b_i) - ||x - c_i||² / σ² ]
 ```
 
 This reduces mechanism design to computational geometry: allocation is power diagram construction, payments are Voronoi cell integration.
+
+## Formal verification & contact
+
+The auction mechanism (VCG pricing, `log(price) - dist²/σ²` scoring) is formally verified in Lean 4 with zero `sorry`. Paper: **[Formally Verified VCG Mechanisms for Advertising in Embedding Spaces](https://june.kim/formally-verified-vcg-mechanisms)**. Proofs: **[kimjune01/auction-proof](https://github.com/kimjune01/auction-proof)**.
+
+Maintained by June Kim, <june@june.kim>.
