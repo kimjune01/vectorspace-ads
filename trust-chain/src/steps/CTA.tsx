@@ -16,19 +16,19 @@ export function CTA() {
         marginBottom: 60,
       }}>
         <CTALink
-          href="/vectorspace-ads/"
-          label="Try the auction"
-          desc="Drag advertisers, drop a query, watch proximity win (turn off adblocker)"
+          href="/formally-verified-vcg-mechanisms"
+          label="Read the paper"
+          desc="Formally Verified VCG Mechanisms for Advertising in Embedding Spaces"
         />
         <CTALink
-          href="https://github.com/kimjune01/openauction"
-          label="Run the simulation"
-          desc="15 agents, 50 trials, measure the surplus shift yourself"
+          href="https://github.com/kimjune01/auction-proof"
+          label="Check the proof"
+          desc="Machine-checked in Lean 4, zero sorry, verify it with one build command"
         />
         <CTALink
           href="/vector-space"
-          label="Read the math"
-          desc="From power diagrams to relocation fees, the full mechanism"
+          label="Read the series"
+          desc="From power diagrams to relocation fees, the full case"
         />
       </div>
 
