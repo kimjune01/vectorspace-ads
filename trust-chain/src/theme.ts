@@ -59,6 +59,6 @@ export const colors = {
 } as const;
 
 export const fonts = {
-  body: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+  body: "'Newsreader', Georgia, 'Times New Roman', serif",
   mono: "'JetBrains Mono', 'Fira Code', 'Consolas', monospace",
 } as const;
